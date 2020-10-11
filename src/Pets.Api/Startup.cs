@@ -12,9 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rabbita.Core.DafaultHandlers;
 using Rabbita.Core.FluentExtensions;
-using Rabbita.Core.MessageSerializer;
-using Rabbita.Entity;
-using Rabbita.Entity.FluentExtensions;
 using Rabbita.Entity.MariaDbTarget;
 using Rabbita.InProc.FluentExtensions;
 using Pets.Api.Authorization;
@@ -77,11 +74,11 @@ namespace Pets.Api
             });
 
             services
-                .AddRabbitaSerializer()
+                .AddRabbitaSerializer()/*
                 .AddRabbitaPersistent(
                     options => { },
                     options => { options.UseMySql(Configuration.GetConnectionString("Pets")); }
-                );
+                )*/;
 
             services.AddRabbitaDbPersistentMigrator(options =>
             {

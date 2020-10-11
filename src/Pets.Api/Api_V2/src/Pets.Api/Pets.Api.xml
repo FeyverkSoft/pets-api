@@ -4,5 +4,12 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
+        <member name="M:Pets.Api.Controllers.PetsController.Get(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Get pet list
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

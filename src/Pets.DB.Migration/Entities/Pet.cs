@@ -10,6 +10,12 @@ namespace Pets.DB.Migrations.Entities
     sealed class Pet
     {
         public Guid Id { get; }
+        
+        /// <summary>
+        /// Идентификатор организации которой принадлежит животное
+        /// </summary>
+        public Guid OrganisationId { get; }
+        public Organisation Organisation { get; }
 
         /// <summary>
         /// Имя животного
