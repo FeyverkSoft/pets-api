@@ -55,6 +55,69 @@ namespace Pets.DB.Migrations
             });
 
             #endregion
+            
+            #region Needs
+
+            modelBuilder.Entity<Need>(builder =>
+            {
+                builder.ToTable("Need");
+                builder.HasKey(_ => _.Id);
+                builder.Property(_ => _.Id)
+                    .ValueGeneratedNever();
+                
+                builder.Property(_ => _.MdBody)
+                    .HasMaxLength(2048)
+                    .IsRequired(false);
+                builder.Property(_ => _.ImgLinks)
+                    .HasMaxLength(2048)
+                    .IsRequired(false);
+
+                builder.HasOne(_ => _.Organisation)
+                    .WithMany()
+                    .HasForeignKey(_ => _.OrganisationId)
+                    .HasPrincipalKey(_ => _.Id);
+
+                builder.Property(_ => _.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
+            });
+
+            #endregion
+            
+            #region Resources
+
+            modelBuilder.Entity<Resource>(builder =>
+            {
+                builder.ToTable("Resource");
+                builder.HasKey(_ => _.Id);
+                builder.Property(_ => _.Id)
+                    .ValueGeneratedNever();
+
+                builder.Property(_ => _.State)
+                    .HasConversion<String>()
+                    .HasMaxLength(64)
+                    .IsRequired();
+                builder.Property(_ => _.MdBody)
+                    .HasMaxLength(2048)
+                    .IsRequired(false);
+                builder.Property(_ => _.ImgLink)
+                    .HasMaxLength(512)
+                    .IsRequired(false);
+                builder.Property(_ => _.Title)
+                    .HasMaxLength(256)
+                    .IsRequired(false);
+
+                builder.HasOne(_ => _.Organisation)
+                    .WithMany()
+                    .HasForeignKey(_ => _.OrganisationId)
+                    .HasPrincipalKey(_ => _.Id);
+
+                builder.Property(_ => _.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
+            });
+
+            #endregion
 
             #region Pet
 
@@ -87,6 +150,9 @@ namespace Pets.DB.Migrations
                     .IsRequired(false);
                 builder.Property(_ => _.MdBody)
                     .HasMaxLength(10240)
+                    .IsRequired(false);
+                builder.Property(_ => _.MdShortBody)
+                    .HasMaxLength(512)
                     .IsRequired(false);
 
                 builder.Property(_ => _.OrganisationId)

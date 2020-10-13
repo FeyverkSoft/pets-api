@@ -44,6 +44,12 @@ namespace Pets.DB.Migrations.Entities
         /// <summary>
         /// Тело в markdown
         /// </summary>
+        /// <typeparamref name="NVARCHAR(512) NOT NULL"/>
+        public String MdShortBody { get; }
+        
+        /// <summary>
+        /// Тело в markdown
+        /// </summary>
         /// <typeparamref name="NVARCHAR(10240) NOT NULL"/>
         public String MdBody { get; }
 
