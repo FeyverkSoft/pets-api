@@ -2,8 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Pets.DB.Migrations;
 
 namespace Pets.DB.Migrations.Migrations
 {
@@ -27,11 +25,11 @@ namespace Pets.DB.Migrations.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("ImgLinks")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(2048);
 
                     b.Property<string>("MdBody")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(2048);
 
                     b.Property<Guid>("OrganisationId")
@@ -68,7 +66,7 @@ namespace Pets.DB.Migrations.Migrations
                         .HasMaxLength(512);
 
                     b.Property<string>("MdBody")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(2048);
 
                     b.Property<Guid>("OrganisationId")
@@ -107,7 +105,7 @@ namespace Pets.DB.Migrations.Migrations
                         .HasMaxLength(512);
 
                     b.Property<string>("MdBody")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(10240);
 
                     b.Property<DateTime>("UpdateDate")
@@ -141,7 +139,7 @@ namespace Pets.DB.Migrations.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MdBody")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(10240);
 
                     b.Property<string>("MdShortBody")
@@ -192,7 +190,7 @@ namespace Pets.DB.Migrations.Migrations
                         .HasMaxLength(512);
 
                     b.Property<string>("MdBody")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasColumnType("mediumtext CHARACTER SET utf8mb4")
                         .HasMaxLength(2048);
 
                     b.Property<Guid>("OrganisationId")

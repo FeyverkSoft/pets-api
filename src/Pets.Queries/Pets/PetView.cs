@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Pets.Types;
+
 namespace Pets.Queries.Pets
 {
     /// <summary>
@@ -7,29 +9,49 @@ namespace Pets.Queries.Pets
     /// </summary>
     public class PetView
     {
-        /// <summary>
-        /// Character id
-        /// </summary>
         public Guid Id { get; }
 
         /// <summary>
-        /// Имя персонажа
+        /// Имя животного
         /// </summary>
         public String Name { get; }
 
         /// <summary>
-        /// Класс персонажа
+        /// Ссфлка на фотку до
         /// </summary>
-        public String ClassName { get; }
+        public String? BeforePhotoLink { get; }
 
         /// <summary>
-        /// Признак основного персонажа
+        /// Ссылка на фотку после
         /// </summary>
-        public Boolean IsMain { get; }
-        public Guid UserId { get; }
+        public String? AfterPhotoLink { get; }
 
-        public PetView(Guid id, String name, String className, Boolean isMain, Guid userId)
-                => (Id, Name, ClassName, IsMain, UserId)
-                = (id, name, className, isMain, userId);
+        /// <summary>
+        /// Состояние животного
+        /// </summary>
+        public PetState PetState { get; }
+
+        /// <summary>
+        /// Краткое описание в markdown
+        /// </summary>
+        public String MdShortBody { get; }
+
+        /// <summary>
+        /// Тело в markdown
+        /// </summary>
+        public String? MdBody { get; }
+
+        /// <summary>
+        /// Pet type
+        /// Собака/кот/енот/чупакабра
+        /// </summary>
+        public PetType Type { get; }
+
+        public DateTime UpdateDate { get; }
+
+        public PetView(Guid id, String name, String? beforePhotoLink, String? afterPhotoLink, PetState petState, String mdShortBody, String? mdBody,
+            PetType type, DateTime updateDate)
+            => (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, UpdateDate)
+                = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, updateDate);
     }
 }

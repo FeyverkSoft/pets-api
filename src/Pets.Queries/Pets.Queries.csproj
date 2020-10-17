@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Query.Core\Query.Core.csproj" />
+    <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
   </ItemGroup>
 
 </Project>

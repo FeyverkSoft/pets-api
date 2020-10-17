@@ -1,5 +1,8 @@
 using System;
+using System.Data;
 using System.Net;
+using System.Text.Json.Serialization;
+
 using Asp.Core.FluentExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using MySql.Data.MySqlClient;
+
 using Rabbita.Core.DafaultHandlers;
 using Rabbita.Core.FluentExtensions;
 using Rabbita.Entity.MariaDbTarget;
@@ -49,6 +55,7 @@ namespace Pets.Api
                 {
                     options.JsonSerializerOptions.IgnoreNullValues = true;
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwagger();
@@ -63,9 +70,10 @@ namespace Pets.Api
 
             #endregion
 
+            services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Pets")));
             services.RegQueryProcessor(registry =>
             {
-                //registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();
+                registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();
             });
 
             services.AddExceptionProcessor(registry =>

@@ -4,12 +4,23 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
-        <member name="M:Pets.Api.Controllers.PetsController.Get(System.Guid,System.Threading.CancellationToken)">
+        <member name="M:Pets.Api.Controllers.PetsController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.Pets.GetPetsBinding,System.Threading.CancellationToken)">
             <summary>
             Get pet list
             </summary>
+            
             <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="P:Pets.Api.Models.Pets.GetPetsBinding.OrganisationId">
+            <summary>
+            Организация которой принадлежат петомцы
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.Pets.GetPetsBinding.Filter">
+            <summary>
+            некий фильтр, пока что не понятно какие параметры
+            </summary>
         </member>
     </members>
 </doc>

@@ -5,7 +5,7 @@ namespace Pets.Queries
 {
     public sealed class Page<T> where T : class
     {
-        public Int32 Total { get; set; }
+        public Int64 Total { get; set; }
 
         public Int32 Offset { get; set; }
 

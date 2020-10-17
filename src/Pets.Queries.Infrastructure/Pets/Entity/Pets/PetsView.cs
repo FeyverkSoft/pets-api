@@ -8,16 +8,24 @@ namespace Pets.Queries.Infrastructure.Pets.Entity.Pets
     {
         internal static readonly String Sql = @"
 select 
+    count(p.Id)   
+from `Pet` p
+where 1 = 1
+and OrganisationId = @OrganisationId;
+
+select 
     p.Id,
     p.Name, 
     p.BeforePhotoLink,
     p.AfterPhotoLink,
     p.PetState,
+    p.MdShortBody,
     p.MdBody,
     p.Type,
     p.UpdateDate
-from `Pets` p
+from `Pet` p
 where 1 = 1
+and OrganisationId = @OrganisationId
 order by p.UpdateDate desc 
 ";
 
@@ -46,7 +54,12 @@ order by p.UpdateDate desc
         /// <summary>
         /// Тело в markdown
         /// </summary>
-        public String MdBody { get; }
+        public String MdShortBody { get; }
+        
+        /// <summary>
+        /// Тело в markdown
+        /// </summary>
+        public String? MdBody { get; }
 
         /// <summary>
         /// Pet type

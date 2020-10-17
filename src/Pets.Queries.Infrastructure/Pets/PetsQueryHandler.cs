@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,18 +25,35 @@ namespace Pets.Queries.Infrastructure.Pets
         async Task<Page<PetView>> IQueryHandler<GetPetsQuery, Page<PetView>>.Handle(GetPetsQuery query,
             CancellationToken cancellationToken)
         {
-            var pets = await _db.QueryAsync<Entity.Pets.PetsView>(
+            var pets = await _db.QueryMultipleAsync(
                 new CommandDefinition(
                     commandText: Entity.Pets.PetsView.Sql,
                     parameters: new
                     {
                         Limit = query.Limit,
-                        Offset = query.Offset
+                        Offset = query.Offset,
+                        OrganisationId = query.OrganisationId
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken
                 ));
-            return new Page<PetView>();
+            return new Page<PetView>
+            {
+                Limit = query.Limit,
+                Offset = query.Offset,
+                Total = await pets.ReadSingleAsync<Int64>(),
+                Items = (await pets.ReadAsync<Entity.Pets.PetsView>()).Select(_ => new PetView(
+                    id: _.Id,
+                    name: _.Name,
+                    beforePhotoLink: _.BeforePhotoLink,
+                    afterPhotoLink: _.AfterPhotoLink,
+                    petState: _.PetState,
+                    mdShortBody: _.MdShortBody,
+                    mdBody: _.MdBody,
+                    type: _.Type,
+                    updateDate: _.UpdateDate
+                ))
+            };
         }
     }
 }

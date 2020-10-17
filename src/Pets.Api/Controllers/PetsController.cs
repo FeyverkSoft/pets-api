@@ -1,10 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+
+using Pets.Api.Models.Pets;
+using Pets.Queries;
+using Pets.Queries.Pets;
+
+using Query.Core;
 
 namespace Pets.Api.Controllers
 {
@@ -16,14 +19,23 @@ namespace Pets.Api.Controllers
         /// <summary>
         /// Get pet list
         /// </summary>
+        /// 
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organizationId}/")]
-        [ProducesResponseType(200)]
+        [HttpGet]
+        [ProducesResponseType(typeof(Page<PetView>), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Get(Guid organizationId, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(
+            [FromServices] IQueryProcessor _processor,
+            [FromQuery] GetPetsBinding binding,
+            CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+                organisationId: binding.OrganisationId,
+                offset: binding.Offset,
+                limit: binding.Limit,
+                filter: binding.Filter
+            ), cancellationToken));
         }
     }
 }
