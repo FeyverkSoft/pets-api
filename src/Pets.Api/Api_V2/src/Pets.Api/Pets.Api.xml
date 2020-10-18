@@ -4,6 +4,13 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
+        <member name="M:Pets.Api.Controllers.PageController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.Page.GetPageBinding,System.Threading.CancellationToken)">
+            <summary>
+            Get page
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:Pets.Api.Controllers.PetsController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.Pets.GetPetsBinding,System.Threading.CancellationToken)">
             <summary>
             Get pet list
@@ -11,6 +18,16 @@
             
             <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="P:Pets.Api.Models.Page.GetPageBinding.OrganisationId">
+            <summary>
+            Организация которой принадлежит страница
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.Page.GetPageBinding.Page">
+            <summary>
+            Наименование страницы
+            </summary>
         </member>
         <member name="P:Pets.Api.Models.Pets.GetPetsBinding.OrganisationId">
             <summary>

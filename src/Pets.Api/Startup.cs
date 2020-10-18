@@ -4,7 +4,9 @@ using System.Net;
 using System.Text.Json.Serialization;
 
 using Asp.Core.FluentExtensions;
+
 using FluentValidation.AspNetCore;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +22,11 @@ using Rabbita.Core.DafaultHandlers;
 using Rabbita.Core.FluentExtensions;
 using Rabbita.Entity.MariaDbTarget;
 using Rabbita.InProc.FluentExtensions;
+
 using Pets.Api.Authorization;
 using Pets.Api.Extensions;
 using Pets.Api.Middlewares;
+
 using Query.Core.FluentExtensions;
 
 namespace Pets.Api
@@ -74,15 +78,13 @@ namespace Pets.Api
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();
+                registry.Register<Queries.Infrastructure.Pages.PagesQueryHandler>();
             });
 
-            services.AddExceptionProcessor(registry =>
-            {
-                registry.Register<ExceptionHandler>();
-            });
+            services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
 
             services
-                .AddRabbitaSerializer()/*
+                .AddRabbitaSerializer() /*
                 .AddRabbitaPersistent(
                     options => { },
                     options => { options.UseMySql(Configuration.GetConnectionString("Pets")); }
@@ -94,16 +96,13 @@ namespace Pets.Api
                 options.DbCommandTimeout = 30;
             });
             services.AddEventBus();
-            services.AddEventProcessor(registry =>
-            {
-            });
+            services.AddEventProcessor(registry => { });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()){
                 app.UseDeveloperExceptionPage();
             }
 
@@ -126,7 +125,7 @@ namespace Pets.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Pets Api"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32) HttpStatusCode.Redirect));
         }
     }
 }

@@ -27,6 +27,7 @@ from `Pet` p
 where 1 = 1
 and OrganisationId = @OrganisationId
 order by p.UpdateDate desc 
+limit @Limit offset @Offset
 ";
 
         public Guid Id { get; }
