@@ -23,7 +23,7 @@ namespace Pets.DB.Migrations.Entities
         /// <summary>
         /// Ссылка на картинку
         /// </summary>
-        public String ImgLink { get; }
+        public String? ImgLink { get; }
 
         /// <summary>
         /// Markdown текст описание

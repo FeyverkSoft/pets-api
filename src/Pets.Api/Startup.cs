@@ -79,6 +79,7 @@ namespace Pets.Api
             {
                 registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();
                 registry.Register<Queries.Infrastructure.Pages.PagesQueryHandler>();
+                registry.Register<Queries.Infrastructure.Organisation.OrganisationQueryHandler>();
             });
 
             services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });

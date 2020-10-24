@@ -1,0 +1,67 @@
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Dapper;
+
+using Pets.Queries.Organisation;
+
+using Query.Core;
+
+namespace Pets.Queries.Infrastructure.Organisation
+{
+    public sealed class OrganisationQueryHandler :
+        IQueryHandler<GetContactsQuery, IEnumerable<ContactView>>,
+        IQueryHandler<GetBuildingQuery, IEnumerable<ResourceView>>
+    {
+        private readonly IDbConnection _db;
+
+        public OrganisationQueryHandler(IDbConnection db)
+        {
+            _db = db;
+        }
+
+        async Task<IEnumerable<ContactView>> IQueryHandler<GetContactsQuery, IEnumerable<ContactView>>.Handle(GetContactsQuery query,
+            CancellationToken cancellationToken)
+        {
+            var result = await _db.QueryAsync<Entity.ContactView>(
+                new CommandDefinition(
+                    commandText: Entity.ContactView.Sql,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+            return result.Select(_ => new ContactView(
+                imgLink: _.ImgLink,
+                mdBody: _.MdBody,
+                contactType: _.Type
+            ));
+        }
+
+        async Task<IEnumerable<ResourceView>> IQueryHandler<GetBuildingQuery, IEnumerable<ResourceView>>.Handle(GetBuildingQuery query,
+            CancellationToken cancellationToken)
+        {
+            var result = await _db.QueryAsync<Entity.ResourceView>(
+                new CommandDefinition(
+                    commandText: Entity.ResourceView.Sql,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+            return result.Select(_ => new ResourceView(
+                imgLink: _.ImgLink,
+                mdBody: _.MdBody,
+                title: _.Title,
+                state: _.State
+            ));
+        }
+    }
+}

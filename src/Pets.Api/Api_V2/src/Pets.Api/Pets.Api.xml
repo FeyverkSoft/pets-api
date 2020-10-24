@@ -4,6 +4,20 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
+        <member name="M:Pets.Api.Controllers.OrganisationController.GetContacts(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
+            <summary>
+            Get contact list
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pets.Api.Controllers.OrganisationController.GetBuilding(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
+            <summary>
+            Get res list
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:Pets.Api.Controllers.PageController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.Page.GetPageBinding,System.Threading.CancellationToken)">
             <summary>
             Get page
