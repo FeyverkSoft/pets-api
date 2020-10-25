@@ -22,7 +22,7 @@ namespace Pets.Queries.Infrastructure.Pages
         async Task<PageView?> IQueryHandler<GetPageQuery, PageView?>.Handle(GetPageQuery query,
             CancellationToken cancellationToken)
         {
-            var result = await _db.QuerySingleAsync<Entity.Pages.PageView>(
+            var result = await _db.QuerySingleOrDefaultAsync<Entity.Pages.PageView>(
                 new CommandDefinition(
                     commandText: Entity.Pages.PageView.Sql,
                     parameters: new
@@ -33,6 +33,8 @@ namespace Pets.Queries.Infrastructure.Pages
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken
                 ));
+            if (result == null)
+                return null;
             return new PageView(
                 id: result.Id,
                 organisationId: result.OrganisationId,
