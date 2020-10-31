@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 using Dapper;
 
+using Pets.Helpers;
 using Pets.Queries.Organisation;
+using Pets.Types;
 
 using Query.Core;
 
@@ -15,7 +17,8 @@ namespace Pets.Queries.Infrastructure.Organisation
 {
     public sealed class OrganisationQueryHandler :
         IQueryHandler<GetContactsQuery, IEnumerable<ContactView>>,
-        IQueryHandler<GetBuildingQuery, IEnumerable<ResourceView>>
+        IQueryHandler<GetBuildingQuery, IEnumerable<ResourceView>>,
+        IQueryHandler<GetNeedQuery, IEnumerable<NeedView>>
     {
         private readonly IDbConnection _db;
 
@@ -61,6 +64,27 @@ namespace Pets.Queries.Infrastructure.Organisation
                 imgLink: _.ImgLink,
                 mdBody: _.MdBody,
                 title: _.Title,
+                state: _.State
+            ));
+        }
+
+        async Task<IEnumerable<NeedView>> IQueryHandler<GetNeedQuery, IEnumerable<NeedView>>.Handle(GetNeedQuery query,
+    CancellationToken cancellationToken)
+        {
+            var result = await _db.QueryAsync<Entity.NeedView>(
+                new CommandDefinition(
+                    commandText: Entity.NeedView.Sql,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        State = new[] { NeedState.Active }
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+            return result.Select(_ => new NeedView(
+                imgsLink: _.ImgLinks?.ParseJson<IEnumerable<String?>>() ?? new String[] { },
+                mdBody: _.MdBody,
                 state: _.State
             ));
         }

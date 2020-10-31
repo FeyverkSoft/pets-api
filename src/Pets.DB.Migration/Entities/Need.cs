@@ -24,6 +24,11 @@ namespace Pets.DB.Migrations.Entities
         /// </summary>
         public String MdBody { get; }
 
+        /// <summary>
+        /// Статус
+        /// </summary>
+        public String NeedState { get; }
+
         public Guid ConcurrencyTokens { get; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Pets.Queries.Organisation;
@@ -50,6 +51,25 @@ namespace Pets.Api.Controllers
             CancellationToken cancellationToken)
         {
             var result = await _processor.Process<GetBuildingQuery, IEnumerable<ResourceView>>(new GetBuildingQuery(
+                organisationId: organisationId
+            ), cancellationToken);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Get res list
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpGet("{organisationId}/needs")]
+        [ProducesResponseType(typeof(IEnumerable<NeedView>), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        public async Task<IActionResult> GetNeeds(
+            [FromRoute] Guid organisationId,
+            [FromServices] IQueryProcessor _processor,
+            CancellationToken cancellationToken)
+        {
+            var result = await _processor.Process<GetNeedQuery, IEnumerable<NeedView>>(new GetNeedQuery(
                 organisationId: organisationId
             ), cancellationToken);
             return Ok(result);

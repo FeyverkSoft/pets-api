@@ -55,7 +55,7 @@ namespace Pets.DB.Migrations
             });
 
             #endregion
-            
+
             #region Needs
 
             modelBuilder.Entity<Need>(builder =>
@@ -64,13 +64,17 @@ namespace Pets.DB.Migrations
                 builder.HasKey(_ => _.Id);
                 builder.Property(_ => _.Id)
                     .ValueGeneratedNever();
-                
+
                 builder.Property(_ => _.MdBody)
                     .HasMaxLength(2048)
                     .IsRequired(false);
                 builder.Property(_ => _.ImgLinks)
                     .HasMaxLength(2048)
                     .IsRequired(false);
+
+                builder.Property(_ => _.NeedState)
+                .HasMaxLength(16)
+                .IsRequired(true);
 
                 builder.HasOne(_ => _.Organisation)
                     .WithMany()
@@ -83,7 +87,7 @@ namespace Pets.DB.Migrations
             });
 
             #endregion
-            
+
             #region Resources
 
             modelBuilder.Entity<Resource>(builder =>
@@ -179,7 +183,7 @@ namespace Pets.DB.Migrations
             modelBuilder.Entity<Page>(builder =>
             {
                 builder.ToTable("Page");
-                builder.HasKey(_ => new {_.Id, _.OrganisationId});
+                builder.HasKey(_ => new { _.Id, _.OrganisationId });
                 builder.Property(_ => _.Id)
                     .HasMaxLength(64)
                     .ValueGeneratedNever();
@@ -190,19 +194,19 @@ namespace Pets.DB.Migrations
                     .WithMany()
                     .HasForeignKey(_ => _.OrganisationId)
                     .HasPrincipalKey(_ => _.Id);
-                
+
                 builder.Property(_ => _.MdBody)
                     .HasMaxLength(10240)
                     .IsRequired(false);
                 builder.Property(_ => _.ImgLink)
                     .HasMaxLength(512)
                     .IsRequired(false);
-                
+
                 builder.Property(_ => _.UpdateDate)
                     .IsRequired();
                 builder.Property(_ => _.CreateDate)
                     .IsRequired();
-                
+
                 builder.Property(_ => _.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
