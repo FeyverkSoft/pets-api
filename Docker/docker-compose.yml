@@ -29,7 +29,10 @@ services:
       - ./proxy/public.crt:/etc/nginx/public.crt
       - ./proxy/private.key:/etc/nginx/private.key
       - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
-      - /docker-data/pets/logs/proxy/:/var/log/nginx     
+      - /docker-data/pets/logs/proxy/:/var/log/nginx 
+    depends_on:
+      - pets-webapi
+      - pets-client    
     restart: always
 
 
