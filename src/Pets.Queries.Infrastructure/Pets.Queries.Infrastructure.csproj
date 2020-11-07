@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\Query.Core\Query.Core.csproj" />
+    <ProjectReference Include="..\..\lib\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj" />
     <ProjectReference Include="..\Pets.Queries\Pets.Queries.csproj" />
     <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
