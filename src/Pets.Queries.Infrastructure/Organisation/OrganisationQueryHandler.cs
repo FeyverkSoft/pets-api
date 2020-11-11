@@ -15,14 +15,14 @@ using Query.Core;
 
 namespace Pets.Queries.Infrastructure.Organisation
 {
-    public sealed class OrganisationQueryHandler :
+    public sealed class DocumentsQueryHandler :
         IQueryHandler<GetContactsQuery, IEnumerable<ContactView>>,
         IQueryHandler<GetBuildingQuery, IEnumerable<ResourceView>>,
         IQueryHandler<GetNeedQuery, IEnumerable<NeedView>>
     {
         private readonly IDbConnection _db;
 
-        public OrganisationQueryHandler(IDbConnection db)
+        public DocumentsQueryHandler(IDbConnection db)
         {
             _db = db;
         }

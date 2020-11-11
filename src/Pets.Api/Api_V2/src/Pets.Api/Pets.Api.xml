@@ -4,6 +4,13 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
+        <member name="M:Pets.Api.Controllers.ImgController.GetImage(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
+            <summary>
+            Get contact list
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:Pets.Api.Controllers.OrganisationController.GetContacts(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
             <summary>
             Get contact list

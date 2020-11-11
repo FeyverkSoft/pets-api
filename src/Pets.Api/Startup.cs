@@ -28,6 +28,8 @@ using Pets.Api.Extensions;
 using Pets.Api.Middlewares;
 
 using Query.Core.FluentExtensions;
+using MongoDB.Driver.GridFS;
+using MongoDB.Driver;
 
 namespace Pets.Api
 {
@@ -75,12 +77,18 @@ namespace Pets.Api
             #endregion
 
             services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Pets")));
+            services.AddScoped<IGridFSBucket>(_ =>
+            {
+                var connectionString = Configuration.GetConnectionString("MongoDb");
+                var database = new MongoClient(connectionString).GetDatabase(MongoUrl.Create(connectionString).DatabaseName);
+                return new GridFSBucket(database);
+            });
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();
                 registry.Register<Queries.Infrastructure.Pages.PagesQueryHandler>();
-                registry.Register<Queries.Infrastructure.Organisation.OrganisationQueryHandler>();
-            });
+                registry.Register<Queries.Infrastructure.Organisation.DocumentsQueryHandler>();
+                registry.Register<Queries.Infrastructure.Documents.DocumentsQueryHandler>();            });
 
             services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
 
@@ -98,12 +106,14 @@ namespace Pets.Api
             });
             services.AddEventBus();
             services.AddEventProcessor(registry => { });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()){
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
@@ -126,7 +136,7 @@ namespace Pets.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Pets Api"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32) HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
         }
     }
 }
