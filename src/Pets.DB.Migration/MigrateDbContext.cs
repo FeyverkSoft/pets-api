@@ -8,7 +8,9 @@ namespace Pets.DB.Migrations
 {
     public class MigrateDbContext : DbContext
     {
-        public MigrateDbContext(DbContextOptions<MigrateDbContext> options) : base(options) { }
+        public MigrateDbContext(DbContextOptions<MigrateDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,8 +75,8 @@ namespace Pets.DB.Migrations
                     .IsRequired(false);
 
                 builder.Property(_ => _.NeedState)
-                .HasMaxLength(16)
-                .IsRequired(true);
+                    .HasMaxLength(16)
+                    .IsRequired();
 
                 builder.HasOne(_ => _.Organisation)
                     .WithMany()
@@ -183,7 +185,7 @@ namespace Pets.DB.Migrations
             modelBuilder.Entity<Page>(builder =>
             {
                 builder.ToTable("Page");
-                builder.HasKey(_ => new { _.Id, _.OrganisationId });
+                builder.HasKey(_ => new {_.Id, _.OrganisationId});
                 builder.Property(_ => _.Id)
                     .HasMaxLength(64)
                     .ValueGeneratedNever();
@@ -213,6 +215,80 @@ namespace Pets.DB.Migrations
             });
 
             #endregion
+
+            #region News
+
+            modelBuilder.Entity<News>(builder =>
+            {
+                builder.ToTable("News");
+                builder.HasKey(_ => new {_.Id, _.OrganisationId});
+                builder.HasIndex(_ => _.Id)
+                    .IsUnique();
+                builder.Property(_ => _.Id)
+                    .HasMaxLength(64)
+                    .ValueGeneratedNever();
+
+                builder.Property(_ => _.OrganisationId)
+                    .IsRequired();
+                builder.HasOne(_ => _.Organisation)
+                    .WithMany()
+                    .HasForeignKey(_ => _.OrganisationId)
+                    .HasPrincipalKey(_ => _.Id);
+
+                builder.Property(_ => _.MdBody)
+                    .HasMaxLength(10240)
+                    .IsRequired(false);
+                builder.Property(_ => _.ImgLink)
+                    .HasMaxLength(512)
+                    .IsRequired(false);
+                builder.Property(_ => _.MdShortBody)
+                    .HasMaxLength(512)
+                    .IsRequired(true);
+
+                builder.Property(_ => _.UpdateDate)
+                    .IsRequired();
+                builder.Property(_ => _.CreateDate)
+                    .IsRequired();
+
+                builder.Property(_ => _.Tags)
+                    .HasMaxLength(1024)
+                    .IsRequired();
+
+                builder.Property(_ => _.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
+            });
+
+            #endregion
+
+            modelBuilder.Entity<NewsPets>(b =>
+            {
+                b.ToTable("NewsPets");
+
+                b.HasIndex(np => new {np.NewsId, np.PetId})
+                    .IsUnique();
+                b.HasKey(np => new {np.NewsId, np.PetId});
+
+                b.Property(np => np.NewsId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("NewsId")
+                    .IsRequired();
+
+                b.Property(np => np.PetId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("PetId")
+                    .IsRequired();
+
+                b.HasOne(np => np.Pet)
+                    .WithMany(p => p!.PetNews)
+                    .HasForeignKey(_ => _.PetId)
+                    .HasPrincipalKey(_ => _!.Id);
+
+                b.HasOne(mr => mr.News)
+                    .WithMany(n => n!.NewsPets)
+                    .HasForeignKey(_ => _.NewsId)
+                    .HasPrincipalKey(_ => _!.Id);
+            });
         }
     }
 }

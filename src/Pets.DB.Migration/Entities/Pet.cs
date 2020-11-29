@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 using Pets.Types;
 
 namespace Pets.DB.Migrations.Entities
@@ -66,5 +66,7 @@ namespace Pets.DB.Migrations.Entities
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
         public Guid ConcurrencyTokens { get; }
+
+        public IEnumerable<NewsPets> PetNews { get; }
     }
 }

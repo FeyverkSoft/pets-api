@@ -1,0 +1,1 @@
+dotnet ef migrations add    {NAME}       -o ./Migrations -v --context Pets.DB.Migrations.MigrateDbContext --project ../../src/Pets.DB.Migration/Pets.DB.Migrations.csproj

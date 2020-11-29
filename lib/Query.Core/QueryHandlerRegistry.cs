@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Query.Core.Helper;
 
 namespace Query.Core
 {
-
     public class QueryHandlerRegistry : IQueryHandlerRegistry
     {
         private readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
