@@ -18,6 +18,15 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:Pets.Api.Controllers.NewsController.Get(Query.Core.IQueryProcessor,System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Get news
+            </summary>
+            <param name="organisationId">идентификатор орагнизации</param>
+            <param name="newsId">идентификатор конкретной новости</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:Pets.Api.Controllers.OrganisationController.GetContacts(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
             <summary>
             Get contact list
@@ -51,6 +60,15 @@
             Get pet list
             </summary>
             
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pets.Api.Controllers.PetsController.Get(Query.Core.IQueryProcessor,System.Guid,System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Get pet by id
+            </summary>
+            <param name="organisationId">идентификатор орагнизации</param>
+            <param name="petId">идентификатор конкретного животного</param>
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>

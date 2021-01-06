@@ -11,7 +11,8 @@ select
     count(p.Id)   
 from `Pet` p
 where 1 = 1
-and OrganisationId = @OrganisationId;
+and OrganisationId = @OrganisationId
+and (@PetId is null or p.Id = @PetId);
 
 select 
     p.Id,
@@ -25,7 +26,8 @@ select
     p.UpdateDate
 from `Pet` p
 where 1 = 1
-and OrganisationId = @OrganisationId
+and p.OrganisationId = @OrganisationId
+and (@PetId is null or p.Id = @PetId)
 order by p.UpdateDate desc 
 limit @Limit offset @Offset
 ";

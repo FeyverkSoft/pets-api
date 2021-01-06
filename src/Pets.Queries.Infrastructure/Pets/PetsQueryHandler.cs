@@ -31,7 +31,8 @@ namespace Pets.Queries.Infrastructure.Pets
                     {
                         Limit = query.Limit,
                         Offset = query.Offset,
-                        OrganisationId = query.OrganisationId
+                        OrganisationId = query.OrganisationId,
+                        PetId = query.PetId,
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken

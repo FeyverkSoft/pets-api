@@ -22,7 +22,7 @@ namespace Pets.Api.Models.News
         /// Список тегов по которым выбираются новости
         /// </summary>
         public String? Tags { get; set; }
-
+        
         public Int32 Limit { get; set; } = 8;
 
         public Int32 Offset { get; set; } = 0;

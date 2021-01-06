@@ -17,9 +17,14 @@ namespace Pets.Queries.Pets
         /// </summary>
         public String? Filter { get; }
 
-        public GetPetsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, String? filter = null)
+        /// <summary>
+        /// Идентификатор конкретного животного
+        /// </summary>
+        public Guid? PetId { get; }
+
+        public GetPetsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, Guid? petId = null, String? filter = null)
             : base(offset, limit)
-            => (OrganisationId, Filter)
-                = (organisationId, filter);
+            => (OrganisationId, Filter, PetId)
+                = (organisationId, filter, petId);
     }
 }

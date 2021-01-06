@@ -36,6 +36,7 @@ namespace Pets.Queries.Infrastructure.News
                         Tags = query.Tags,
                         Limit = query.Limit,
                         Offset = query.Offset,
+                        NewsId = query.NewsId,
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken
@@ -54,7 +55,8 @@ namespace Pets.Queries.Infrastructure.News
                     mdShortBody: _.MdShortBody,
                     mdBody: _.MdBody,
                     createDate: _.CreateDate,
-                    linkedPets: _.LinkedPets.TryParseJson<List<LinkedPetsDto>>().Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList(),
+                    linkedPets: _.LinkedPets.TryParseJson<List<LinkedPetsDto>>()
+                        .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList(),
                     tags: _.Tags.TryParseJson<List<String>>()
                 ))
             };

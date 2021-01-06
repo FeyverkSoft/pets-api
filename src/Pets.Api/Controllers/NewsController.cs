@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +37,39 @@ namespace Pets.Api.Controllers
                 tags: binding.Tags,
                 petId: binding.PetId
             ), cancellationToken));
+        }
+
+        /// <summary>
+        /// Get news
+        /// </summary>
+        /// <param name="organisationId">идентификатор орагнизации</param>
+        /// <param name="newsId">идентификатор конкретной новости</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpGet("{organisationId}/{newsId}")]
+        [ProducesResponseType(typeof(NewsView), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Get(
+            [FromServices] IQueryProcessor _processor,
+            [FromRoute] Guid organisationId,
+            [FromRoute] Guid newsId,
+            CancellationToken cancellationToken)
+        {
+            var result = await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+                organisationId: organisationId,
+                offset: 0,
+                limit: 1,
+                newsId: newsId
+            ), cancellationToken);
+
+            if (!result.Items.Any())
+                return NotFound(new ProblemDetails
+                {
+                    Status = 404,
+                    Type = "news_not_found"
+                });
+
+            return Ok(result.Items.First());
         }
     }
 }

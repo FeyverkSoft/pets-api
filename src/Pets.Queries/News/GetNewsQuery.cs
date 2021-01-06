@@ -19,9 +19,14 @@ namespace Pets.Queries.News
         /// </summary>
         public String? Tags { get; }
 
-        public GetNewsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, Guid? petId = null, String? tags = null)
+        /// <summary>
+        /// идентификатор конкретной новости
+        /// </summary>
+        public Guid? NewsId { get; }
+
+        public GetNewsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, Guid? petId = null, String? tags = null, Guid? newsId = null)
             : base(offset, limit)
-            => (OrganisationId, PetId, Tags)
-                = (organisationId, petId, tags);
+            => (OrganisationId, PetId, Tags, NewsId)
+                = (organisationId, petId, tags, newsId);
     }
 }
