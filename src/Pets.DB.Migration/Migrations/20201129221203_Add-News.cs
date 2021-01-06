@@ -11,7 +11,7 @@ namespace Pets.DB.Migrations.Migrations
                 name: "News",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(maxLength: 64, nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     OrganisationId = table.Column<Guid>(nullable: false),
                     Tags = table.Column<string>(maxLength: 1024, nullable: false),
                     ImgLink = table.Column<string>(maxLength: 512, nullable: true),

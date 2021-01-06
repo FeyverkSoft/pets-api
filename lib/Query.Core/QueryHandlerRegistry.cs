@@ -8,7 +8,7 @@ namespace Query.Core
 {
     public class QueryHandlerRegistry : IQueryHandlerRegistry
     {
-        private readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
+        private readonly Dictionary<Type, Type> _handlers = new();
 
         public IEnumerable<Type> RegisteredQueries => _handlers.Keys;
         public IEnumerable<Type> RegisteredHandlers => _handlers.Values;

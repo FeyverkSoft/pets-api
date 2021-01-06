@@ -11,6 +11,13 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:Pets.Api.Controllers.NewsController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.News.GetNewsBinding,System.Threading.CancellationToken)">
+            <summary>
+            Get news list
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:Pets.Api.Controllers.OrganisationController.GetContacts(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
             <summary>
             Get contact list
@@ -46,6 +53,21 @@
             
             <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="P:Pets.Api.Models.News.GetNewsBinding.OrganisationId">
+            <summary>
+            Организация к которой относятся новости
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.News.GetNewsBinding.PetId">
+            <summary>
+            Идентификатор животного по которому выбираются новости
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.News.GetNewsBinding.Tags">
+            <summary>
+            Список тегов по которым выбираются новости
+            </summary>
         </member>
         <member name="P:Pets.Api.Models.Page.GetPageBinding.OrganisationId">
             <summary>

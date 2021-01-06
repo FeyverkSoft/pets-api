@@ -13,7 +13,6 @@ using Query.Core;
 namespace Pets.Queries.Infrastructure.Pets
 {
     public sealed class PetsQueryHandler : IQueryHandler<GetPetsQuery, Page<PetView>>
-
     {
         private readonly IDbConnection _db;
 

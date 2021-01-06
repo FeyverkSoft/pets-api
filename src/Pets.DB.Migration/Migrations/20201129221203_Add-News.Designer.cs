@@ -54,8 +54,7 @@ namespace Pets.DB.Migrations.Migrations
             modelBuilder.Entity("Pets.DB.Migrations.Entities.News", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("char(64)")
-                        .HasMaxLength(64);
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("OrganisationId")
                         .HasColumnType("char(36)");
@@ -102,7 +101,7 @@ namespace Pets.DB.Migrations.Migrations
                 {
                     b.Property<Guid>("NewsId")
                         .HasColumnName("NewsId")
-                        .HasColumnType("char(64)");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("PetId")
                         .HasColumnName("PetId")

@@ -225,7 +225,6 @@ namespace Pets.DB.Migrations
                 builder.HasIndex(_ => _.Id)
                     .IsUnique();
                 builder.Property(_ => _.Id)
-                    .HasMaxLength(64)
                     .ValueGeneratedNever();
 
                 builder.Property(_ => _.OrganisationId)
@@ -251,6 +250,7 @@ namespace Pets.DB.Migrations
                     .IsRequired();
 
                 builder.Property(_ => _.Tags)
+                    .HasDefaultValue("[]")
                     .HasMaxLength(1024)
                     .IsRequired();
 

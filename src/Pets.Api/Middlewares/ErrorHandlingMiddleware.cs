@@ -13,8 +13,8 @@ namespace Pets.Api.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
-        private static readonly ActionDescriptor EmptyActionDescriptor = new ActionDescriptor();
-        private static readonly RouteData EmptyRouteData = new RouteData();
+        private static readonly ActionDescriptor EmptyActionDescriptor = new();
+        private static readonly RouteData EmptyRouteData = new();
 
         private readonly RequestDelegate _next;
         private readonly IActionResultExecutor<ObjectResult> _executor;

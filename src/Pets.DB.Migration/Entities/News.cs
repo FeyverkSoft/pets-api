@@ -41,11 +41,11 @@ namespace Pets.DB.Migrations.Entities
 
         public DateTime UpdateDate { get; }
         public DateTime CreateDate { get; }
-        public Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; }
         
         /// <summary>
         /// Список Петов в новости
         /// </summary>
-        public IEnumerable<NewsPets> NewsPets { get; set; }
+        public IEnumerable<NewsPets> NewsPets { get; }
     }
 }
