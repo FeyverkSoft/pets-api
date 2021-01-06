@@ -7,11 +7,12 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Pets.Public.Queries\bin\Debug\netcoreapp2.2\Pets.Public.Queries.xml</DocumentationFile>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>bin\Debug\Pets.Queries.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>Pets.Public.Queries\bin\Release\netcoreapp2.2\Pets.Public.Queries.xml</DocumentationFile>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DocumentationFile>bin\Release\Pets.Queries.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

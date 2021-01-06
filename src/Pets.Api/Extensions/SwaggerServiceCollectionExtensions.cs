@@ -66,6 +66,7 @@ namespace Pets.Api.Extensions
 
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
                 options.IncludeXmlComments(Path.Combine(basePath, "Pets.Api.xml"));
+                options.IncludeXmlComments(Path.Combine(basePath, "Pets.Queries.xml"));
                 options.IncludeXmlComments(Path.Combine(basePath, "Pets.Types.xml"));
             });
         }
