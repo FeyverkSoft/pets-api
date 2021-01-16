@@ -23,12 +23,12 @@ select
     n.CreateDate
 from
     `News` n
-join (
+left join (
     select
         np.NewsId, JSON_ARRAYAGG(JSON_OBJECT('Id', p.Id , 'Name', p.Name)) as LinkedPets
     from
         `NewsPets` np
-    join `Pet` p on
+    left join `Pet` p on
         p.Id = np.PetId 
     ) _np on  _np.NewsId = n.Id
 where 1 = 1

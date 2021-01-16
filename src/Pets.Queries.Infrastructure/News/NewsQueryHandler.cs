@@ -56,9 +56,9 @@ namespace Pets.Queries.Infrastructure.News
                     mdShortBody: _.MdShortBody,
                     mdBody: _.MdBody,
                     createDate: _.CreateDate,
-                    linkedPets: _.LinkedPets.TryParseJson<List<LinkedPetsDto>>()
-                        .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList(),
-                    tags: _.Tags.TryParseJson<List<String>>()
+                    linkedPets: _.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
+                        .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
+                    tags: _.Tags?.TryParseJson<List<String>>() ?? new List<String>()
                 ))
             };
         }
