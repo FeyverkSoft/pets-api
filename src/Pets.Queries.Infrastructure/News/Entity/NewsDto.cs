@@ -14,6 +14,7 @@ where 1 = 1
 
 select
     n.Id,
+    n.Title,
     n.Tags,
     n.ImgLink,
     n.MdShortBody,
@@ -24,7 +25,7 @@ from
     `News` n
 join (
     select
-        np.NewsId, JSON_ARRAYAGG(JSON_OBJECT(""Id"", p.Id , ""Name"", p.Name)) as LinkedPets
+        np.NewsId, JSON_ARRAYAGG(JSON_OBJECT('Id', p.Id , 'Name', p.Name)) as LinkedPets
     from
         `NewsPets` np
     join `Pet` p on
@@ -74,5 +75,10 @@ limit @Limit offset @Offset";
         /// Json
         /// </summary>
         public String LinkedPets { get; set; }
+
+        /// <summary>
+        /// Заголовок новости
+        /// </summary>
+        public String Title { get; set; }
     }
 }

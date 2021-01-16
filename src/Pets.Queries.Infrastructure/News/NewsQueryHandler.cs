@@ -51,6 +51,7 @@ namespace Pets.Queries.Infrastructure.News
                 Total = await result.ReadSingleAsync<Int64>(),
                 Items = (await result.ReadAsync<Entity.NewsDto>()).Select(_ => new NewsView(
                     id: _.Id,
+                    title: _.Title,
                     imgLink: _.ImgLink,
                     mdShortBody: _.MdShortBody,
                     mdBody: _.MdBody,

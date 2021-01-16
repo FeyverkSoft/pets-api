@@ -229,16 +229,23 @@ namespace Pets.DB.Migrations
 
                 builder.Property(_ => _.OrganisationId)
                     .IsRequired();
+                
                 builder.HasOne(_ => _.Organisation)
                     .WithMany()
                     .HasForeignKey(_ => _.OrganisationId)
                     .HasPrincipalKey(_ => _.Id);
 
+                builder.Property(_ => _.Title)
+                    .HasMaxLength(128)
+                    .IsRequired(true);
+                
                 builder.Property(_ => _.MdBody)
                     .HasMaxLength(10240)
+                    .HasDefaultValue("")
                     .IsRequired(false);
                 builder.Property(_ => _.ImgLink)
                     .HasMaxLength(512)
+                    .HasDefaultValue("")
                     .IsRequired(false);
                 builder.Property(_ => _.MdShortBody)
                     .HasMaxLength(512)

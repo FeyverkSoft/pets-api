@@ -15,6 +15,7 @@ namespace Pets.DB.Migrations.Migrations
                     OrganisationId = table.Column<Guid>(nullable: false),
                     Tags = table.Column<string>(maxLength: 1024, nullable: false),
                     ImgLink = table.Column<string>(maxLength: 512, nullable: true),
+                    Title = table.Column<string>(maxLength: 128, nullable: false, defaultValue: ""),
                     MdShortBody = table.Column<string>(maxLength: 512, nullable: false),
                     MdBody = table.Column<string>(maxLength: 10240, nullable: true),
                     UpdateDate = table.Column<DateTime>(nullable: false),

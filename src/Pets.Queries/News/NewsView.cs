@@ -11,6 +11,11 @@ namespace Pets.Queries.News
         public Guid Id { get; }
 
         /// <summary>
+        /// Заголовок новости
+        /// </summary>
+        public String Title { get; }
+
+        /// <summary>
         /// Теги новости
         /// </summary>
         public ICollection<String> Tags { get; }
@@ -37,9 +42,9 @@ namespace Pets.Queries.News
 
         public ICollection<LinkedPetsView> LinkedPets { get; }
 
-        public NewsView(Guid id, String imgLink, String mdShortBody, String mdBody, DateTime createDate, ICollection<LinkedPetsView> linkedPets,
+        public NewsView(Guid id, String title, String imgLink, String mdShortBody, String mdBody, DateTime createDate, ICollection<LinkedPetsView> linkedPets,
             ICollection<String> tags)
-            => (Id, ImgLink, MdShortBody, MdBody, CreateDate, LinkedPets, Tags)
-                = (id, imgLink, mdShortBody, mdBody, createDate, linkedPets, tags);
+            => (Id, Title, ImgLink, MdShortBody, MdBody, CreateDate, LinkedPets, Tags)
+                = (id, title, imgLink, mdShortBody, mdBody, createDate, linkedPets, tags);
     }
 }

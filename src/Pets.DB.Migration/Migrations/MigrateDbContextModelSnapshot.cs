@@ -67,6 +67,12 @@ namespace Pets.DB.Migrations.Migrations
                     b.Property<string>("ImgLink")
                         .HasColumnType("varchar(512) CHARACTER SET utf8mb4")
                         .HasMaxLength(512);
+                    
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
+                        .HasMaxLength(128)
+                        .HasDefaultValueSql("");
 
                     b.Property<string>("MdBody")
                         .HasColumnType("mediumtext CHARACTER SET utf8mb4")
