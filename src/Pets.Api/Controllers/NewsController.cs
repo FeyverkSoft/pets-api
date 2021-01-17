@@ -34,7 +34,7 @@ namespace Pets.Api.Controllers
                 organisationId: binding.OrganisationId,
                 offset: binding.Offset,
                 limit: binding.Limit,
-                tags: binding.Tags,
+                tag: binding.Tag,
                 petId: binding.PetId
             ), cancellationToken));
         }

@@ -9,8 +9,10 @@ select
     count(n.Id)   
 from `News` n
 where 1 = 1
-  and n.OrganisationId = @OrganisationId
-  and (@NewsId is null or n.Id = @NewsId);
+    and n.OrganisationId = @OrganisationId
+    and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
+    and (@NewsId is null or n.Id = @NewsId)
+    and (@Tag is null or n.Tags like @Tag);
 
 select
     n.Id,
@@ -35,7 +37,7 @@ where 1 = 1
     and n.OrganisationId = @OrganisationId
     and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
     and (@NewsId is null or n.Id = @NewsId)
---    and (@Tags is not null and n.Tags like '')
+    and (@Tag is null or n.Tags like @Tag)
 order by
     n.CreateDate desc
 limit @Limit offset @Offset";

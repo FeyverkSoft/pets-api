@@ -82,7 +82,7 @@
             Идентификатор животного по которому выбираются новости
             </summary>
         </member>
-        <member name="P:Pets.Api.Models.News.GetNewsBinding.Tags">
+        <member name="P:Pets.Api.Models.News.GetNewsBinding.Tag">
             <summary>
             Список тегов по которым выбираются новости
             </summary>

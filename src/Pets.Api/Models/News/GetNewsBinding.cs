@@ -21,7 +21,7 @@ namespace Pets.Api.Models.News
         /// <summary>
         /// Список тегов по которым выбираются новости
         /// </summary>
-        public String? Tags { get; set; }
+        public String? Tag { get; set; }
         
         public Int32 Limit { get; set; } = 8;
 

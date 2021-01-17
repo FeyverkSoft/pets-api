@@ -33,7 +33,7 @@ namespace Pets.Queries.Infrastructure.News
                     {
                         OrganisationId = query.OrganisationId,
                         PetId = query.PetId,
-                        Tags = query.Tags,
+                        Tag = String.IsNullOrEmpty(query.Tag) ? null : $"%{query.Tag}%",
                         Limit = query.Limit,
                         Offset = query.Offset,
                         NewsId = query.NewsId,
