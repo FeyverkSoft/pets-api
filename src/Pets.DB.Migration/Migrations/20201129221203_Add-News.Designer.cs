@@ -82,8 +82,7 @@ namespace Pets.DB.Migrations.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128)
-                        .HasDefaultValueSql("");
+                        .HasMaxLength(128);
 
                     b.Property<string>("Tags")
                         .IsRequired()
