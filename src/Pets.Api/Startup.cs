@@ -31,6 +31,9 @@ using Query.Core.FluentExtensions;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver;
 
+using Pets.Domain.Documents;
+using Pets.Infrastructure.FileStoreService;
+
 namespace Pets.Api
 {
     public class Startup
@@ -51,7 +54,7 @@ namespace Pets.Api
             services.AddControllers();
             services.AddScoped<AuthorizationApiFilter>();
             services
-                .AddMvc(options => { options.EnableEndpointRouting = false; })
+                .AddControllers(options => { options.EnableEndpointRouting = false; })
                 .AddFluentValidation(cfg =>
                 {
                     cfg.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -66,6 +69,13 @@ namespace Pets.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwagger();
 
+            services.AddScoped<IGridFSBucket>(_ =>
+            {
+                var connectionString = Configuration.GetConnectionString("MongoDb");
+                var database = new MongoClient(connectionString).GetDatabase(MongoUrl.Create(connectionString).DatabaseName);
+                return new GridFSBucket(database);
+            });
+            services.AddScoped<IDocumentRepository, MongoDocumentRepository>();
 
             #region DatabaseMigration
 
@@ -77,12 +87,6 @@ namespace Pets.Api
             #endregion
 
             services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Pets")));
-            services.AddScoped<IGridFSBucket>(_ =>
-            {
-                var connectionString = Configuration.GetConnectionString("MongoDb");
-                var database = new MongoClient(connectionString).GetDatabase(MongoUrl.Create(connectionString).DatabaseName);
-                return new GridFSBucket(database);
-            });
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<Queries.Infrastructure.Pets.PetsQueryHandler>();

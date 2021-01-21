@@ -4,11 +4,24 @@
         <name>Pets.Api</name>
     </assembly>
     <members>
+        <member name="T:Pets.Api.Controllers.ImgController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Pets.Api.Controllers.ImgController.GetImage(System.Guid,Query.Core.IQueryProcessor,System.Threading.CancellationToken)">
             <summary>
-            Get contact list
+            Get image by id
             </summary>
             <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pets.Api.Controllers.ImgController.PutImage(Pets.Api.Models.Img.UploadFileBinding,Pets.Domain.Documents.IDocumentRepository,System.Threading.CancellationToken)">
+            <summary>
+            save image
+            </summary>
+            <param name="cancellationToken"></param>
+            <code>validation error, see <see href="https://tools.ietf.org/html/rfc7807#section-3">rfc7807#section-3</see></code>
             <returns></returns>
         </member>
         <member name="M:Pets.Api.Controllers.NewsController.Get(Query.Core.IQueryProcessor,Pets.Api.Models.News.GetNewsBinding,System.Threading.CancellationToken)">
@@ -71,6 +84,28 @@
             <param name="petId">идентификатор конкретного животного</param>
             <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="T:Pets.Api.Models.Img.UploadFileBinding">
+            <summary>
+            модель для заливки картинок
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.Img.UploadFileBinding.File">
+            <summary>
+            Картинка для заливки
+            jpeg / png
+            и не более 10 мегабайт
+            </summary>
+        </member>
+        <member name="T:Pets.Api.Models.Img.UploadFileBindingValidator">
+            <summary>
+            валидатор модели для заливки картинки
+            </summary>
+        </member>
+        <member name="P:Pets.Api.Models.Img.UploadFileView.FileId">
+            <summary>
+            идентификатор картинки
+            </summary>
         </member>
         <member name="P:Pets.Api.Models.News.GetNewsBinding.OrganisationId">
             <summary>

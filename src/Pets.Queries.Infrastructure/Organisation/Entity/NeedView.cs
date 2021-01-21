@@ -15,7 +15,7 @@ select
 from `Need` n
 where 1 = 1
 and OrganisationId = @OrganisationId
-and n.`NeedState` IN(@State)
+and n.`NeedState` IN @State
 ";
 
         /// <summary>

@@ -77,7 +77,7 @@ namespace Pets.Queries.Infrastructure.Organisation
                     parameters: new
                     {
                         OrganisationId = query.OrganisationId,
-                        State = new[] { NeedState.Active }
+                        State = new[] { NeedState.Active }.Select(_=>_.ToString())
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken

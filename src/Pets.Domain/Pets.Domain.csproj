@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
