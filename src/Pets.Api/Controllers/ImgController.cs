@@ -27,6 +27,7 @@ namespace Pets.Api.Controllers
         /// Get image by id
         /// </summary>
         /// <param name="cancellationToken"></param>
+        /// <param name="id">image id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Stream), 200)]
@@ -42,7 +43,7 @@ namespace Pets.Api.Controllers
             if (result == null)
                 return NotFound();
             result.Stream.Position = 0;
-            Response.ContentType = result.ContentType;
+            Response.Headers.Add("Cache-Control", "public,max-age=864000");
             return File(result.Stream, result.ContentType);
         }
 
@@ -50,6 +51,7 @@ namespace Pets.Api.Controllers
         /// save image
         /// </summary>
         /// <param name="cancellationToken"></param>
+        /// <param name="file">model</param>
         /// <code>validation error, see <see href="https://tools.ietf.org/html/rfc7807#section-3">rfc7807#section-3</see></code>
         /// <returns></returns>
         [HttpPost]
