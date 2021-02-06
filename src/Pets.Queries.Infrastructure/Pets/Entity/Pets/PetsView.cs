@@ -12,7 +12,8 @@ select
 from `Pet` p
 where 1 = 1
 and OrganisationId = @OrganisationId
-and (@PetId is null or p.Id = @PetId);
+and (@PetId is null or p.Id = @PetId)                                  
+and (p.`PetState` IN @Status);
 
 select 
     p.Id,
@@ -28,6 +29,7 @@ from `Pet` p
 where 1 = 1
 and p.OrganisationId = @OrganisationId
 and (@PetId is null or p.Id = @PetId)
+and (p.`PetState` IN @Status)
 order by p.UpdateDate desc 
 limit @Limit offset @Offset
 ";

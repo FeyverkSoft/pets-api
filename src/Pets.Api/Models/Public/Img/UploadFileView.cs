@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pets.Api.Models.Img
+namespace Pets.Api.Models.Public.Img
 {
     public sealed class UploadFileView
     {

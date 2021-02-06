@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Pets.Queries.Organisation;
 
 using Query.Core;
 
-namespace Pets.Api.Controllers
+namespace Pets.Api.Controllers.Public
 {
     [Route("[controller]")]
     [ApiController]
-    [ProducesResponseType(typeof(ProblemDetails), 401)]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ProblemDetails), 400)]
     public sealed class OrganisationController : ControllerBase
     {

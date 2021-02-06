@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 using FluentValidation;
 
-namespace Pets.Api.Models.Page
+namespace Pets.Api.Models.Public.Page
 {
     public sealed class GetPageBinding
     {

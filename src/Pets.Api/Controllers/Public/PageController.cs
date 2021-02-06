@@ -1,18 +1,19 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Pets.Api.Models.Page;
+using Pets.Api.Models.Public.Page;
 using Pets.Queries.Pages;
 
 using Query.Core;
 
-namespace Pets.Api.Controllers
+namespace Pets.Api.Controllers.Public
 {
     [Route("[controller]")]
     [ApiController]
-    [ProducesResponseType(typeof(ProblemDetails), 401)]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ProblemDetails), 400)]
     public sealed class PageController : ControllerBase
     {

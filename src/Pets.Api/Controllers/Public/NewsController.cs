@@ -3,71 +3,72 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Pets.Api.Models.Pets;
+using Pets.Api.Models.Public.News;
 using Pets.Queries;
-using Pets.Queries.Pets;
+using Pets.Queries.News;
 
 using Query.Core;
 
-namespace Pets.Api.Controllers
+namespace Pets.Api.Controllers.Public
 {
     [Route("[controller]")]
     [ApiController]
-    [ProducesResponseType(401)]
-    public sealed class PetsController : ControllerBase
+    [AllowAnonymous]
+    public sealed class NewsController : ControllerBase
     {
         /// <summary>
-        /// Get pet list
+        /// Get news list
         /// </summary>
-        /// 
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(Page<PetView>), 200)]
+        [ProducesResponseType(typeof(Page<NewsView>), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
             [FromServices] IQueryProcessor _processor,
-            [FromQuery] GetPetsBinding binding,
+            [FromQuery] GetNewsBinding binding,
             CancellationToken cancellationToken)
         {
-            return Ok(await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+            return Ok(await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
                 organisationId: binding.OrganisationId,
                 offset: binding.Offset,
                 limit: binding.Limit,
-                filter: binding.Filter
+                tag: binding.Tag,
+                petId: binding.PetId
             ), cancellationToken));
         }
-        
+
         /// <summary>
-        /// Get pet by id
+        /// Get news
         /// </summary>
         /// <param name="organisationId">идентификатор орагнизации</param>
-        /// <param name="petId">идентификатор конкретного животного</param>
+        /// <param name="newsId">идентификатор конкретной новости</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/{petId}")]
-        [ProducesResponseType(typeof(PetView), 200)]
+        [HttpGet("{organisationId}/{newsId}")]
+        [ProducesResponseType(typeof(NewsView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
             [FromServices] IQueryProcessor _processor,
             [FromRoute] Guid organisationId,
-            [FromRoute] Guid petId,
+            [FromRoute] Guid newsId,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+            var result = await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
                 organisationId: organisationId,
                 offset: 0,
                 limit: 1,
-                petId: petId
+                newsId: newsId
             ), cancellationToken);
 
             if (!result.Items.Any())
                 return NotFound(new ProblemDetails
                 {
                     Status = 404,
-                    Type = "pet_not_found"
+                    Type = "news_not_found"
                 });
 
             return Ok(result.Items.First());

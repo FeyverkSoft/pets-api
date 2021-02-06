@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Pets.DB.Migrations.Entities
+namespace Pets.Domain.Authentication
 {
     /// <summary>
     /// пользователь системы
     /// </summary>
-    sealed class User
+   public sealed class User
     {
         /// <summary>
         /// идентификатор пользователя

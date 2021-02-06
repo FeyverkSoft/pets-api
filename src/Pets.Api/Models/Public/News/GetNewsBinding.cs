@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 using FluentValidation;
 
-namespace Pets.Api.Models.News
+namespace Pets.Api.Models.Public.News
 {
     public sealed class GetNewsBinding
     {

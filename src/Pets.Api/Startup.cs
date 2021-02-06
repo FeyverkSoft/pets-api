@@ -28,10 +28,13 @@ using Pets.Api.Extensions;
 using Pets.Api.Middlewares;
 
 using Query.Core.FluentExtensions;
+
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver;
 
+using Pets.Domain.Authentication;
 using Pets.Domain.Documents;
+using Pets.Infrastructure.Authentication;
 using Pets.Infrastructure.FileStoreService;
 
 namespace Pets.Api
@@ -68,6 +71,14 @@ namespace Pets.Api
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwagger();
+
+            services.Configure<JwtAuthOptions>(Configuration.GetSection("Auth:Jwt"));
+            services.AddScoped<IAccessTokenFactory, JwtAccessTokenFactory>();
+            services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<AuthenticationService>();
+
 
             services.AddScoped<IGridFSBucket>(_ =>
             {
@@ -112,7 +123,6 @@ namespace Pets.Api
             });
             services.AddEventBus();
             services.AddEventProcessor(registry => { });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -142,7 +152,7 @@ namespace Pets.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Pets Api"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32) HttpStatusCode.Redirect));
         }
     }
 }

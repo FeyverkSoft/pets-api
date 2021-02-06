@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using FluentValidation;
 
-namespace Pets.Api.Models.Pets
+using Pets.Types;
+
+namespace Pets.Api.Models.Public.Pets
 {
     public sealed class GetPetsBinding
     {
@@ -13,14 +16,14 @@ namespace Pets.Api.Models.Pets
         [Required]
         public Guid OrganisationId { get; set; }
 
-        /// <summary>
-        /// некий фильтр, пока что не понятно какие параметры
-        /// </summary>
-        public String? Filter { get; set; }
-
         public Int32 Limit { get; set; } = 8;
 
         public Int32 Offset { get; set; } = 0;
+        
+        /// <summary>
+        /// Статусы животных для отображения
+        /// </summary>
+        public List<PetState> PetStatuses { get; set; } = new() {PetState.Adopted, PetState.Alive, PetState.Critical, PetState.Death, PetState.Wanted};
 
         public sealed class GetPetsBindingValidator : AbstractValidator<GetPetsBinding>
         {

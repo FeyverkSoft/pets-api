@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using Pets.Types;
 
 namespace Pets.Queries.Pets
 {
@@ -13,18 +16,18 @@ namespace Pets.Queries.Pets
         public Guid OrganisationId { get; }
 
         /// <summary>
-        /// некий фильтр, пока что не понятно какие параметры
+        /// фильтр животных по статусам
         /// </summary>
-        public String? Filter { get; }
+        public List<PetState> PetStatuses { get; }
 
         /// <summary>
         /// Идентификатор конкретного животного
         /// </summary>
         public Guid? PetId { get; }
 
-        public GetPetsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, Guid? petId = null, String? filter = null)
+        public GetPetsQuery(Guid organisationId, List<PetState> petStatuses, Int32 offset = 0, Int32 limit = 8, Guid? petId = null)
             : base(offset, limit)
-            => (OrganisationId, Filter, PetId)
-                = (organisationId, filter, petId);
+            => (OrganisationId, PetStatuses, PetId)
+                = (organisationId, petStatuses, petId);
     }
 }

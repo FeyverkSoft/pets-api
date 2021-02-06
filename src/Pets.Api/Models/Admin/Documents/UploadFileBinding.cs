@@ -1,11 +1,9 @@
-﻿using System;
-
-using FluentValidation;
+﻿using FluentValidation;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Pets.Api.Models.Img
+namespace Pets.Api.Models.Admin.Documents
 {
     /// <summary>
     /// модель для заливки картинок
@@ -30,15 +28,25 @@ namespace Pets.Api.Models.Img
         {
             // файл должен быть обязательно
             RuleFor(_ => _.File)
-                .NotNull();
+                .NotNull()
+                .SetValidator(new IFormFileBindingValidator());
+        }
+    }
+    /// <summary>
+    /// валидатор модели для заливки картинки
+    /// </summary>
+    internal sealed class IFormFileBindingValidator : AbstractValidator<IFormFile>
+    {
+        public IFormFileBindingValidator()
+        {
             // только картинка
-            RuleFor(_ => _.File.ContentType)
+            RuleFor(_ => _.ContentType)
                 .NotEmpty()
                 .Must(x => x.Equals("image/jpeg") ||
                            x.Equals("image/jpg") ||
                            x.Equals("image/png"));
             // не более 10 мегабайт
-            RuleFor(_ => _.File.Length)
+            RuleFor(_ => _.Length)
                 .LessThanOrEqualTo(10 * 1024 * 1024)
                 .WithMessage("Размер файла не должен превышать 10 мб");
         }

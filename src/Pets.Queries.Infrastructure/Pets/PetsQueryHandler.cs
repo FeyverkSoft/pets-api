@@ -33,6 +33,7 @@ namespace Pets.Queries.Infrastructure.Pets
                         Offset = query.Offset,
                         OrganisationId = query.OrganisationId,
                         PetId = query.PetId,
+                        Status = query.PetStatuses.Select(_=>_.ToString())
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken

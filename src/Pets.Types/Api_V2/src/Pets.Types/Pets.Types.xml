@@ -4,6 +4,16 @@
         <name>Pets.Types</name>
     </assembly>
     <members>
+        <member name="F:Pets.Types.CustomClaimTypes.Login">
+            <summary>
+            Логин юзвера
+            </summary>
+        </member>
+        <member name="F:Pets.Types.CustomClaimTypes.Scope">
+            <summary>
+            Права доступа юзверя
+            </summary>
+        </member>
         <member name="F:Pets.Types.PetState.Alive">
             <summary>
             Живой
@@ -27,6 +37,11 @@
         <member name="F:Pets.Types.PetState.Wanted">
             <summary>
             Ищит семью
+            </summary>
+        </member>
+        <member name="F:Pets.Types.PetState.OurPets">
+            <summary>
+            Питомцы которые живут в приюте на постоянной основе
             </summary>
         </member>
         <member name="F:Pets.Types.ResourceState.Complete">

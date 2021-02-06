@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using Pets.Queries.Documents;
-
-using Query.Core;
-
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Pets.Api.Models.Img;
-using Pets.Domain.Documents;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Pets.Api.Controllers
+using Pets.Domain.Documents;
+using Pets.Queries.Documents;
+
+using Query.Core;
+
+namespace Pets.Api.Controllers.Public
 {
     /// <summary>
     /// 
     /// </summary>
     [Route("[controller]")]
     [ApiController]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ProblemDetails), 404)]
     [ProducesResponseType(typeof(ProblemDetails), 400)]
     public sealed class ImgController : ControllerBase
@@ -45,25 +45,6 @@ namespace Pets.Api.Controllers
             result.Stream.Position = 0;
             Response.Headers.Add("Cache-Control", "public,max-age=864000");
             return File(result.Stream, result.ContentType);
-        }
-
-        /// <summary>
-        /// save image
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <param name="file">model</param>
-        /// <code>validation error, see <see href="https://tools.ietf.org/html/rfc7807#section-3">rfc7807#section-3</see></code>
-        /// <returns></returns>
-        [HttpPost]
-        [ProducesResponseType(typeof(UploadFileView), 200)]
-        [ProducesResponseType(typeof(ProblemDetails), 404)]
-        public async Task<IActionResult> PutImage(
-            [FromForm] UploadFileBinding file,
-            [FromServices] IDocumentRepository _fileStoreService,
-            CancellationToken cancellationToken)
-        {
-            var fileId = await _fileStoreService.SaveFileAsync(file.File, cancellationToken);
-            return Ok(new UploadFileView(fileId));
         }
     }
 }
