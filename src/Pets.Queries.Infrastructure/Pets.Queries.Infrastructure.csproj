@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon />
     <StartupObject />
-    <TargetFrameworks>netcoreapp3.1;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

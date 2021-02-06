@@ -4,7 +4,7 @@
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netcoreapp3.1;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
