@@ -29,7 +29,7 @@ namespace Pets.Infrastructure.Authentication
         {
             var claims = new List<Claim>
             {
-                new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new (CustomClaimTypes.UserId, user.Id.ToString()),
                 new (ClaimTypes.Name, user.Name),
                 new (CustomClaimTypes.Login, user.Login),
                 new (CustomClaimTypes.Scope, user.Permissions),

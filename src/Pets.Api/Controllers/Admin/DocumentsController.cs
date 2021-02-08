@@ -12,10 +12,10 @@ namespace Pets.Api.Controllers.Admin
     /// <summary>
     /// 
     /// </summary>
-    [Route("[controller]")]
     [ApiController]
     [ProducesResponseType(typeof(ProblemDetails), 404)]
     [ProducesResponseType(typeof(ProblemDetails), 400)]
+    [Route("admin/[controller]")]
     public sealed class DocumentsController : ControllerBase
     {
         /// <summary>

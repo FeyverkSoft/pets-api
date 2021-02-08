@@ -15,5 +15,10 @@ namespace Pets.Types
         /// Права доступа юзверя
         /// </summary>
         public const String Scope = ClaimTypeNamespace + "/scope";
+
+        /// <summary>
+        /// Идентификатор пользователя
+        /// </summary>
+        public const String UserId = ClaimTypeNamespace + "/userId";
     }
 }
