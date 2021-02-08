@@ -44,14 +44,14 @@ namespace Pets.Api.Controllers.Public
                 }
             ), cancellationToken);
             var sb = new StringBuilder(@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"">
+<rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
 <channel>
 <title>Жители добродома</title>
 <link>https://dobrodom.online/pets</link>
 <description><![CDATA[Список питомцев добродома]]></description>
 <language>ru</language>
 <generator>dobrodom.online</generator>");
-            sb.Append($"<pubDate>{DateTime.UtcNow:d}</pubDate>");
+            sb.Append($"<pubDate>{DateTime.UtcNow:u}</pubDate>");
 
             foreach (var petView in result.Items)
             {

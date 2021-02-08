@@ -12,7 +12,7 @@ namespace Pets.Infrastructure.Markdown
     {
         private readonly IMemoryCache _memoryCache;
         private readonly Object _locker = new();
-        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:]+\))", RegexOptions.Multiline & RegexOptions.IgnoreCase);
+        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:]+\))", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
         public Markdown(IMemoryCache memoryCache)
         {
