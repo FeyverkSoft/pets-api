@@ -62,7 +62,7 @@ namespace Pets.Api.Controllers.Public
                     <link>https://dobrodom.online/pets/{petView.Id}</link>
                     <description><![CDATA[<img src=""https://dobrodom.online{petView.AfterPhotoLink ?? petView.BeforePhotoLink}""></img><br>
 {content}]]></description>
-                    <pubDate>{petView.UpdateDate:d}</pubDate>
+                    <pubDate>{petView.UpdateDate:u}</pubDate>
                     <turbo:content><![CDATA[{content}]]>
                     </turbo:content>
                     </item>"
