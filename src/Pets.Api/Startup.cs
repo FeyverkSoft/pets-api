@@ -36,6 +36,7 @@ using Pets.Domain.Authentication;
 using Pets.Domain.Documents;
 using Pets.Infrastructure.Authentication;
 using Pets.Infrastructure.FileStoreService;
+using Pets.Infrastructure.Markdown;
 
 namespace Pets.Api
 {
@@ -72,6 +73,7 @@ namespace Pets.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwagger();
 
+            services.AddSingleton<IMarkdown, Markdown>();
             services.Configure<JwtAuthOptions>(Configuration.GetSection("Auth:Jwt"));
             services.AddScoped<IAccessTokenFactory, JwtAccessTokenFactory>();
             services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
+using Pets.Infrastructure.Markdown;
 using Pets.Queries;
 using Pets.Queries.Pets;
 using Pets.Types;
@@ -24,6 +25,7 @@ namespace Pets.Api.Controllers.Public
         [HttpGet("/rss/{organisationId}/pets")]
         public async Task<IActionResult> GetPetRss(
             [FromServices] IQueryProcessor _processor,
+            [FromServices] IMarkdown _markdown,
             [FromRoute] Guid organisationId,
             CancellationToken cancellationToken)
         {
@@ -53,13 +55,16 @@ namespace Pets.Api.Controllers.Public
 
             foreach (var petView in result.Items)
             {
-                sb.Append(@$"<item>
+                var content = await _markdown.Parse(String.IsNullOrEmpty(petView.MdBody) ? petView.MdShortBody : petView.MdBody);
+                sb.Append(@$"<item turbo=""true"">
                     <title>{petView.Name}</title>
                     <guid isPermaLink=""true"">https://dobrodom.online/pets/{petView.Id}</guid>
                     <link>https://dobrodom.online/pets/{petView.Id}</link>
-                    <description><![CDATA[<img src=""https://dobrodom.online{petView.AfterPhotoLink??petView.BeforePhotoLink}""></img><br>
-{petView.MdShortBody}]]></description>
+                    <description><![CDATA[<img src=""https://dobrodom.online{petView.AfterPhotoLink ?? petView.BeforePhotoLink}""></img><br>
+{content}]]></description>
                     <pubDate>{petView.UpdateDate:d}</pubDate>
+                    <turbo:content><![CDATA[{content}]]>
+                    </turbo:content>
                     </item>"
                 );
             }
