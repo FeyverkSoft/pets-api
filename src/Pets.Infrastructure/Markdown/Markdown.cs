@@ -12,7 +12,12 @@ namespace Pets.Infrastructure.Markdown
     {
         private readonly IMemoryCache _memoryCache;
         private readonly Object _locker = new();
-        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:]+\))", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
+        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:]+\))",
+            RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
+
+        private readonly Regex _linkRegex = new(@"(!:(http(s?):\/\/[a-z./_&=\-+а-я#?]+):([#!?.,а-яa-z\- \w]+):!)",
+            RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
 
         public Markdown(IMemoryCache memoryCache)
         {
@@ -33,8 +38,9 @@ namespace Pets.Infrastructure.Markdown
             {
                 var mdProcessor = new MarkdownSharp.Markdown(new MarkdownOptions { });
                 var prep = _instagramRegex.Replace(md, "<br>instagram integration block<br>");
+                prep = _linkRegex.Replace(prep, "[$4]($2)");
                 var result = mdProcessor.Transform(prep);
-                _memoryCache.Set(key, result, TimeSpan.FromMinutes(15));
+                _memoryCache.Set(key, result, TimeSpan.FromHours(2));
                 return result;
             }
         }
