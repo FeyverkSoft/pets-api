@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Pets.Api.Models.Admin.Documents;
@@ -12,6 +13,7 @@ namespace Pets.Api.Controllers.Admin
     /// <summary>
     /// 
     /// </summary>
+    [Authorize(Policy = "admin")]
     [ApiController]
     [ProducesResponseType(typeof(ProblemDetails), 404)]
     [ProducesResponseType(typeof(ProblemDetails), 400)]

@@ -1,12 +1,15 @@
 using System;
 using System.Data;
 using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 
 using Asp.Core.FluentExtensions;
 
 using FluentValidation.AspNetCore;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 using MySql.Data.MySqlClient;
 
@@ -57,8 +61,14 @@ namespace Pets.Api
 
             services.AddControllers();
             services.AddScoped<AuthorizationApiFilter>();
+            services.AddTransient<ErrorHandlingMiddleware>();
+            
             services
-                .AddControllers(options => { options.EnableEndpointRouting = false; })
+                .AddControllers(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add<AuthorizationApiFilter>();
+                })
                 .AddFluentValidation(cfg =>
                 {
                     cfg.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -71,6 +81,37 @@ namespace Pets.Api
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+
+            #region Authentication
+
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer("admin", options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Auth:Jwt:Audience"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:SecretKey"])),
+                    ValidateIssuerSigningKey = true,
+                };
+            });
+            services.AddAuthorization(o =>
+            {
+                var adminPolicy = new AuthorizationPolicyBuilder("admin").RequireAuthenticatedUser();
+                o.AddPolicy("admin", adminPolicy.Build());
+            });
+
+            #endregion
+
             services.AddSwagger();
 
             services.AddSingleton<IMarkdown, Markdown>();
@@ -141,14 +182,16 @@ namespace Pets.Api
                 builder.AllowAnyMethod();
                 builder.AllowAnyHeader();
             });
-
+            
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            
             app.UseHttpsRedirection();
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseAspNetCorePathBase();
 
             app.UseRouting();
 
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

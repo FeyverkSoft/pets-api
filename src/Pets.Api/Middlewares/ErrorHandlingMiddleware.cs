@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+
 using Pets.Api.Exceptions;
 
 namespace Pets.Api.Middlewares
 {
-    public class ErrorHandlingMiddleware
+    public class ErrorHandlingMiddleware : IMiddleware
     {
         private static readonly ActionDescriptor EmptyActionDescriptor = new();
         private static readonly RouteData EmptyRouteData = new();
 
-        private readonly RequestDelegate _next;
         private readonly IActionResultExecutor<ObjectResult> _executor;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ErrorHandlingMiddleware(RequestDelegate next, IActionResultExecutor<ObjectResult> executor, ILoggerFactory loggerFactory)
+        public ErrorHandlingMiddleware(IActionResultExecutor<ObjectResult> executor, ILoggerFactory loggerFactory)
         {
-            _next = next;
             _executor = executor;
             _loggerFactory = loggerFactory;
         }
 
-        public async Task Invoke(HttpContext context)
+        /// <summary>Request handling method.</summary>
+        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>
+        /// <param name="next">The delegate representing the remaining middleware in the request pipeline.</param>
+        /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the execution of this middleware.</returns>
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (Exception exc)
             {
@@ -41,7 +45,7 @@ namespace Pets.Api.Middlewares
                 var resp = new ProblemDetails
                 {
                     Type = ErrorCodes.InternalServerError,
-                    Status = (Int32)HttpStatusCode.InternalServerError,
+                    Status = (Int32) HttpStatusCode.InternalServerError,
 #if DEBUG
                     Detail = exc.Message,
 #else
@@ -52,7 +56,7 @@ namespace Pets.Api.Middlewares
 
                 await _executor.ExecuteAsync(actionContext, new ObjectResult(resp)
                 {
-                    StatusCode = (Int32)HttpStatusCode.InternalServerError
+                    StatusCode = (Int32) HttpStatusCode.InternalServerError
                 });
             }
         }

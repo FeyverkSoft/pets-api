@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Pets.Api.Extensions
@@ -18,13 +19,13 @@ namespace Pets.Api.Extensions
                     Title = "Pets Api"
                 });
 
-                /*
+    
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
                     Description = "<p>You need to set Bearer Token to get access to API</p>" +
                         "<p><b>Example:</b> <br />" +
-                        "Authorization: Bearer b462e2b7-b3ba-42ca-8bae-963c56d21e18</p>",
+                        "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</p>",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Scheme = "Bearer"
@@ -52,7 +53,6 @@ namespace Pets.Api.Extensions
                         new List<String>()
                     }
                 });
-                */
 
                 options.CustomSchemaIds(type => type.FullName);
 

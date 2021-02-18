@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,9 +11,14 @@ namespace Pets.Api.Authorization
 {
     public class AuthorizationApiFilter : IAsyncAuthorizationFilter
     {
+        private static readonly String[] ReadMethods = {HttpMethod.Get.Method};
+        private static readonly String[] WriteMethods = {HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Delete.Method, HttpMethod.Patch.Method};
+
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var httpMethod = context.HttpContext.Request.Method;
+            var path = context.HttpContext.Request.Path.Value; // возможно стоит посмотреть в сторону context.RouteData
+
             if (httpMethod.Equals(HttpMethod.Options.Method))
                 return;
 
@@ -21,7 +27,7 @@ namespace Pets.Api.Authorization
             {
                 return;
             }
-            
+
             var user = context.HttpContext.User;
             if (user == null || !user.Identity.IsAuthenticated)
             {
@@ -30,17 +36,24 @@ namespace Pets.Api.Authorization
             }
 
             var scope = context.HttpContext.GetApiScope();
-            if(scope?.Actions == null || scope.Actions.Count == 0)
+
+            if (ReadMethods.Any(_ => _.Equals(httpMethod)))
             {
-                context.Result = new UnauthorizedResult();
-                return;
+                if (scope.ReadRequests.Contains("*"))
+                    return;
+                if (scope.ReadRequests.Contains(path, StringComparer.InvariantCultureIgnoreCase))
+                    return;
             }
 
-            if(!scope.Actions.Contains(httpMethod, StringComparer.InvariantCultureIgnoreCase))
+            if (WriteMethods.Any(_ => _.Equals(httpMethod)))
             {
-                context.Result = new UnauthorizedResult();
-                return;
+                if (scope.WriteRequests.Contains("*"))
+                    return;
+                if (scope.ReadRequests.Contains(path, StringComparer.InvariantCultureIgnoreCase))
+                    return;
             }
+
+            context.Result = new UnauthorizedResult();
         }
     }
 }

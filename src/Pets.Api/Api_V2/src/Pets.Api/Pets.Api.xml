@@ -99,6 +99,12 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:Pets.Api.Middlewares.ErrorHandlingMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>Request handling method.</summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>
+            <param name="next">The delegate representing the remaining middleware in the request pipeline.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the execution of this middleware.</returns>
+        </member>
         <member name="T:Pets.Api.Models.Admin.Authorization.AuthBinding">
             <summary>
             модель для авторизации юзера
