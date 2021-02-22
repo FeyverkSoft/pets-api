@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Pets.Api.Authorization;
 using Pets.Api.Models.Admin.Authorization;
 using Pets.Domain.Authentication;
 using Pets.Domain.Authentication.Exceptions;
@@ -45,7 +46,7 @@ namespace Pets.Api.Controllers.Admin
                     try
                     {
                         var (accessToken, expiresIn, refreshToken) =
-                            await authenticationService.AuthenticationByPassword(binding.UserName, binding.Password, cancellationToken);
+                            await authenticationService.AuthenticationByPassword(binding.UserName, binding.Password, HttpContext.GetIp(), cancellationToken);
                         return Ok(new TokenView(accessToken, "Bearer", (Int64) expiresIn.TotalSeconds, refreshToken));
                     }
                     catch (UnauthorizedException)
@@ -61,7 +62,7 @@ namespace Pets.Api.Controllers.Admin
                     try
                     {
                         var (accessToken, expiresIn, refreshToken) =
-                            await authenticationService.AuthenticationByRefreshToken(binding.RefreshToken, cancellationToken);
+                            await authenticationService.AuthenticationByRefreshToken(binding.RefreshToken, HttpContext.GetIp(), cancellationToken);
                         return Ok(new TokenView(accessToken, "Bearer", (Int64) expiresIn.TotalSeconds, refreshToken));
                     }
                     catch (UnauthorizedException)

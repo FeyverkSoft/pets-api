@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
 
 using Pets.Domain.Authentication;
 
@@ -8,14 +11,21 @@ namespace Pets.Infrastructure.Authentication
 {
     public sealed class UserRepository : IUserRepository
     {
-        public async Task<User> Find(String? username, CancellationToken cancellationToken)
+        private readonly AuthenticationDbContext _context;
+
+        public UserRepository(AuthenticationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<User> Find(String? login, CancellationToken cancellationToken)
+        {
+            return await _context.Users.SingleOrDefaultAsync(_ => _.Login == login, cancellationToken);
         }
 
         public async Task<User> Get(Guid userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Users.SingleOrDefaultAsync(_ => _.Id == userId, cancellationToken);
         }
     }
 }

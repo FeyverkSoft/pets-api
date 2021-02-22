@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Pets.DB.Migrations.Entities
+namespace Pets.Domain.Authentication
 {
     /// <summary>
     /// сущность токенов для перевыпуска JWT токена
     /// </summary>
-    internal sealed class RefreshToken
+    public sealed class RefreshToken
     {
         /// <summary>
         /// id токена обновления сессии
@@ -20,11 +20,24 @@ namespace Pets.DB.Migrations.Entities
         /// <summary>
         /// Ip которому был выдан токен
         /// </summary>
-        public String IpAddress{ get; }
+        public String IpAddress { get; }
 
         /// <summary>
         /// Дата стухания
         /// </summary>
-        public DateTime ExpireDate { get; }
+        public DateTime ExpireDate { get; private set; }
+
+        public RefreshToken(String id, Guid userId, String ip, DateTime expireDate)
+        {
+            Id = id;
+            IpAddress = ip;
+            UserId = userId;
+            ExpireDate = expireDate;
+        }
+
+        public void Terminate()
+        {
+            ExpireDate = DateTime.UtcNow;
+        }
     }
 }

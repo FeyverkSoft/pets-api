@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pets.Domain\Pets.Domain.csproj" />
+    <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

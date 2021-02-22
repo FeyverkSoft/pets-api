@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using Pets.Domain.Authentication;
+using Pets.Helpers;
 using Pets.Types;
 
 namespace Pets.Infrastructure.Authentication
@@ -32,7 +33,7 @@ namespace Pets.Infrastructure.Authentication
                 new (CustomClaimTypes.UserId, user.Id.ToString()),
                 new (ClaimTypes.Name, user.Name),
                 new (CustomClaimTypes.Login, user.Login),
-                new (CustomClaimTypes.Scope, user.Permissions),
+                new (CustomClaimTypes.Scope, user.Permissions.ToJson()),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);

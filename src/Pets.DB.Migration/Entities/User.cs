@@ -28,7 +28,7 @@ namespace Pets.DB.Migrations.Entities
         public String PasswordHash { get; }
 
         /// <summary>
-        /// JSON array с правами доступа юзера
+        /// JSON с правами доступа юзера
         /// </summary>
         public String Permissions { get; }
 

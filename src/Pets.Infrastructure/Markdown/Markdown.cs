@@ -13,11 +13,11 @@ namespace Pets.Infrastructure.Markdown
         private readonly IMemoryCache _memoryCache;
         private readonly Object _locker = new();
 
-        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:]+\))",
-            RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
+        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:\-_\+]+\))",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
 
         private readonly Regex _linkRegex = new(@"(!:(http(s?):\/\/[a-z./_&=\-+а-я#?]+):([#!?.,а-яa-z\- \w]+):!)",
-            RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
 
         public Markdown(IMemoryCache memoryCache)
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
 
 using Pets.Infrastructure.Markdown;
@@ -24,10 +25,12 @@ namespace Pets.Api.Controllers.Public
         [HttpGet("/rss/{organisationId}/pets")]
         public async Task<IActionResult> GetPetRss(
             [FromServices] IQueryProcessor _processor,
+            [FromServices] IConfiguration config,
             [FromServices] IMarkdown _markdown,
             [FromRoute] Guid organisationId,
             CancellationToken cancellationToken)
         {
+            var domain = config["Domain"];
             var result = await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
                 organisationId: organisationId,
                 offset: 0,
@@ -42,14 +45,14 @@ namespace Pets.Api.Controllers.Public
                     PetState.OurPets
                 }
             ), cancellationToken);
-            var sb = new StringBuilder(@"<?xml version=""1.0"" encoding=""UTF-8""?>
+            var sb = new StringBuilder(@$"<?xml version=""1.0"" encoding=""UTF-8""?>
 <rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
 <channel>
 <title>Жители добродома</title>
-<link>https://dobrodom.online/pets</link>
+<link>{domain}/pets</link>
 <description><![CDATA[Список питомцев добродома]]></description>
 <language>ru</language>
-<generator>dobrodom.online</generator>");
+<generator>{domain}</generator>");
             sb.Append($"<pubDate>{DateTime.UtcNow:u}</pubDate>");
 
             foreach (var petView in result.Items)
@@ -57,9 +60,9 @@ namespace Pets.Api.Controllers.Public
                 var content = await _markdown.Parse(String.IsNullOrEmpty(petView.MdBody) ? petView.MdShortBody : petView.MdBody);
                 sb.Append(@$"<item turbo=""true"">
                     <title>{petView.Name}</title>
-                    <guid isPermaLink=""true"">https://dobrodom.online/pets/{petView.Id}</guid>
-                    <link>https://dobrodom.online/pets/{petView.Id}</link>
-                    <description><![CDATA[<img src=""https://dobrodom.online{petView.AfterPhotoLink ?? petView.BeforePhotoLink}""></img><br>
+                    <guid isPermaLink=""true"">{domain}/pets/{petView.Id}</guid>
+                    <link>{domain}/pets/{petView.Id}</link>
+                    <description><![CDATA[<img src=""{domain}{petView.AfterPhotoLink ?? petView.BeforePhotoLink}""></img><br>
 {content}]]></description>
                     <pubDate>{petView.UpdateDate:u}</pubDate>
                     <turbo:content><![CDATA[{content}]]>

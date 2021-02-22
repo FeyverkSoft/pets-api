@@ -25,7 +25,7 @@ namespace Pets.Domain.Authentication
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<Token> AuthenticationByPassword(String? username, String? password, CancellationToken cancellationToken)
+        public async Task<Token> AuthenticationByPassword(String? username, String? password, String ip, CancellationToken cancellationToken)
         {
             var user = await _userRepository.Find(username, cancellationToken);
 
@@ -35,7 +35,7 @@ namespace Pets.Domain.Authentication
             if (!_passwordHasher.TestPassword(user, password))
                 throw new UnauthorizedException();
 
-            var refreshToken = await _refreshTokenStore.Issue(user.Id, cancellationToken);
+            var refreshToken = await _refreshTokenStore.Issue(user.Id, ip, cancellationToken);
 
             var accessToken = await _accessTokenFactory.Create(user, cancellationToken);
 
@@ -46,12 +46,12 @@ namespace Pets.Domain.Authentication
             );
         }
 
-        public async Task<Token> AuthenticationByRefreshToken(String? refreshToken, CancellationToken cancellationToken)
+        public async Task<Token> AuthenticationByRefreshToken(String? refreshToken, String ip, CancellationToken cancellationToken)
         {
             if (refreshToken == null)
                 throw new UnauthorizedException();
 
-            var (newRefreshToken, userId) = await _refreshTokenStore.Reissue(refreshToken, cancellationToken);
+            var (newRefreshToken, userId) = await _refreshTokenStore.Reissue(refreshToken, ip, cancellationToken);
 
             if (newRefreshToken == null)
                 throw new UnauthorizedException();
