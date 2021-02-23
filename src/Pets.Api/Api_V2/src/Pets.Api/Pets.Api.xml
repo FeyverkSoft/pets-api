@@ -99,6 +99,11 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="T:Pets.Api.Controllers.Public.YandexSeoController">
+            <summary>
+            Контроллер для генерации статики для поисковика Х.яндекса
+            </summary>
+        </member>
         <member name="M:Pets.Api.Middlewares.ErrorHandlingMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.RequestDelegate)">
             <summary>Request handling method.</summary>
             <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>

@@ -241,11 +241,9 @@ namespace Pets.DB.Migrations
 
                 builder.Property(_ => _.MdBody)
                     .HasMaxLength(10240)
-                    .HasDefaultValue("")
                     .IsRequired(false);
                 builder.Property(_ => _.ImgLink)
                     .HasMaxLength(512)
-                    .HasDefaultValue("")
                     .IsRequired(false);
                 builder.Property(_ => _.MdShortBody)
                     .HasMaxLength(512)
@@ -348,6 +346,8 @@ namespace Pets.DB.Migrations
 
                 builder.Property(refreshToken => refreshToken.IpAddress)
                     .HasMaxLength(64)
+                    .IsRequired();
+                builder.Property(refreshToken => refreshToken.ExpireDate)
                     .IsRequired();
                 
                 builder.HasIndex(refreshToken => refreshToken.UserId);

@@ -115,6 +115,10 @@ namespace Pets.Api
             services.AddSwagger();
 
             services.AddSingleton<IMarkdown, Markdown>();
+            services.AddDbContext<AuthenticationDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Pets"));
+            });
             services.Configure<JwtAuthOptions>(Configuration.GetSection("Auth:Jwt"));
             services.AddScoped<IAccessTokenFactory, JwtAccessTokenFactory>();
             services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();

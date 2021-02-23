@@ -27,6 +27,7 @@ namespace Pets.Domain.Authentication
         /// </summary>
         public DateTime ExpireDate { get; private set; }
 
+        protected RefreshToken(){}
         public RefreshToken(String id, Guid userId, String ip, DateTime expireDate)
         {
             Id = id;

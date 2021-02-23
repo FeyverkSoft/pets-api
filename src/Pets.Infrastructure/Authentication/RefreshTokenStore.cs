@@ -51,7 +51,7 @@ namespace Pets.Infrastructure.Authentication
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return (refreshToken, oldRefreshToken.UserId);
+            return (newRefreshToken.Id, oldRefreshToken.UserId);
         }
 
         public async Task ExpireAllTokens(Guid userId, CancellationToken cancellationToken)
