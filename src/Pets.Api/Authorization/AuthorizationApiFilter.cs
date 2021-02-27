@@ -49,7 +49,7 @@ namespace Pets.Api.Authorization
             {
                 if (scope.WriteRequests.Contains("*"))
                     return;
-                if (scope.ReadRequests.Contains(path, StringComparer.InvariantCultureIgnoreCase))
+                if (scope.WriteRequests.Contains(path, StringComparer.InvariantCultureIgnoreCase))
                     return;
             }
 
