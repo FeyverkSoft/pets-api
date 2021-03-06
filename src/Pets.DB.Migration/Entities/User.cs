@@ -13,6 +13,12 @@ namespace Pets.DB.Migrations.Entities
         public Guid Id { get; }
         
         /// <summary>
+        /// Идентификатор организации которой принадлежит сотрудник
+        /// </summary>
+        public Guid OrganisationId { get; }
+        public Organisation Organisation { get; }
+
+        /// <summary>
         /// login пользователя
         /// </summary>
         public String Login { get; }

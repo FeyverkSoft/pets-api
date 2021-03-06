@@ -38,6 +38,11 @@ namespace Pets.Domain.Authentication
         public String State { get; }
 
         public Guid ConcurrencyToken { get; private set; } = Guid.NewGuid();
+        
+        /// <summary>
+        /// Организация которой принадлежит юзер
+        /// </summary>
+        public Guid OrganisationId { get; private set; }
 
         public void SetPasswordHash(String passwordHash)
         {

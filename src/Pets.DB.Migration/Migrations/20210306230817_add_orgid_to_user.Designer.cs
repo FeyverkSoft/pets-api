@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pets.DB.Migrations;
 
 namespace Pets.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    partial class MigrateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210306230817_add_orgid_to_user")]
+    partial class add_orgid_to_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -20,5 +20,11 @@ namespace Pets.Types
         /// Идентификатор пользователя
         /// </summary>
         public const String UserId = ClaimTypeNamespace + "/userId";
+        
+        /// <summary>
+        /// Идентификатор организации пользователя
+        /// </summary>
+        public const String OrganisationId = ClaimTypeNamespace + "/OrganisationId";
+        
     }
 }

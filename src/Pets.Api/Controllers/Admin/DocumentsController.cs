@@ -17,6 +17,7 @@ namespace Pets.Api.Controllers.Admin
     [ApiController]
     [ProducesResponseType(typeof(ProblemDetails), 404)]
     [ProducesResponseType(typeof(ProblemDetails), 400)]
+    [ProducesResponseType(typeof(ProblemDetails), 401)]
     [Route("admin/[controller]")]
     public sealed class DocumentsController : ControllerBase
     {

@@ -49,6 +49,9 @@ namespace Pets.Infrastructure.Authentication
                         converterForm => converterForm == null ? new ScopeAction() : converterForm.ParseJson<ScopeAction>()
                     );
 
+                builder.Property(_ => _.OrganisationId)
+                    .IsRequired();
+                
                 builder.Property(user => user.ConcurrencyToken)
                     .IsRequired()
                     .IsConcurrencyToken();

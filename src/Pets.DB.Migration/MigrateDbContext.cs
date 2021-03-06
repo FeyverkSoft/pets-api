@@ -326,6 +326,13 @@ namespace Pets.DB.Migrations
                 builder.Property(user => user.Permissions)
                     .IsRequired()
                     .HasMaxLength(2048);
+                
+                builder.Property(_ => _.OrganisationId)
+                    .IsRequired();
+                builder.HasOne(_ => _.Organisation)
+                    .WithMany()
+                    .HasForeignKey(_ => _.OrganisationId)
+                    .HasPrincipalKey(_ => _.Id);
 
                 builder.Property(user => user.ConcurrencyToken)
                     .IsRequired()

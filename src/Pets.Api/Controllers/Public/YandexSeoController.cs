@@ -54,6 +54,8 @@ namespace Pets.Api.Controllers.Public
             var content = await _markdown.Parse(String.IsNullOrEmpty(pet.MdBody) ? pet.MdShortBody : pet.MdBody);
             var sb = new StringBuilder(@"<html lang=""ru""><head><meta charset=""utf-8""/>");
             sb.Append($"<title>Добродом - наши питомцы: {pet.Name}</title>");
+            sb.Append($@"<meta name=""description"" content=""Добродом, помощь бездомным животным в Оренбурге, {pet.Name}"">");
+            sb.Append($@"<meta name=""keywords"" content=""Добродом, Оренбург, помощь бездомным животным в Оренбурге, {pet.Name}, {await _markdown.Parse(pet.MdShortBody)}""/>");
             sb.Append("</head><body>");
             sb.Append(content);
             sb.Append("</body></html>");
