@@ -38,7 +38,7 @@ namespace Pets.Domain.Authentication
 
         public void Terminate()
         {
-            ExpireDate = DateTime.UtcNow;
+            ExpireDate = DateTime.UtcNow.AddSeconds(15);// дадим 10 секунд на просраться, запросам с фронт систем.
         }
     }
 }

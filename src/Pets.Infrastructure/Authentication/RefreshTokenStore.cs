@@ -17,7 +17,7 @@ namespace Pets.Infrastructure.Authentication
     {
         private readonly TimeSpan _lifeTime = TimeSpan.FromDays(1);
         private readonly AuthenticationDbContext _context;
-        
+
         public RefreshTokenStore(AuthenticationDbContext context)
         {
             _context = context;
@@ -42,11 +42,17 @@ namespace Pets.Infrastructure.Authentication
 
             if (oldRefreshToken == null)
                 throw new UnauthorizedException();
+            
+            var dd = DateTime.UtcNow.AddSeconds(-1 * _lifeTime.Seconds * 0.1);
+            // берём токен которому ещё жить более 10%
+            var newRefreshToken = await _context.RefreshTokens.SingleOrDefaultAsync(token =>
+                                      token.UserId == oldRefreshToken.UserId
+                                      && token.ExpireDate > dd, cancellationToken) ??
+                                  new RefreshToken(Guid.NewGuid().ToString(), oldRefreshToken.UserId, ip, DateTime.UtcNow.Add(_lifeTime));
 
-            oldRefreshToken.Terminate();
-
-            var newRefreshToken = new RefreshToken(Guid.NewGuid().ToString(), oldRefreshToken.UserId, ip, DateTime.UtcNow.Add(_lifeTime));
-
+            if(newRefreshToken.Id != oldRefreshToken.Id)
+                oldRefreshToken.Terminate();
+            
             await _context.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
