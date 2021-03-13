@@ -34,7 +34,9 @@ namespace Pets.Queries.Infrastructure.Pets
                         Offset = query.Offset,
                         OrganisationId = query.OrganisationId,
                         PetId = query.PetId,
-                        Status = query.PetStatuses.Select(_=>_.ToString())
+                        Status = query.PetStatuses.Select(_ => _.ToString()),
+                        Genders = query.Genders.Select(_ => _.ToString()),
+                        Filter = query.Filter == null ? null : $"%{query.Filter}%",
                     },
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken

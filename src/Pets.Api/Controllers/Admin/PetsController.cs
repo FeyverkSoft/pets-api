@@ -47,6 +47,7 @@ namespace Pets.Api.Controllers.Admin
                 offset: 0,
                 limit: 1,
                 petId: binding.PetId,
+                genders: new (),
                 petStatuses: new List<PetState>
                 {
                     PetState.Adopted,

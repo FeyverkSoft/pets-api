@@ -25,9 +25,21 @@ namespace Pets.Queries.Pets
         /// </summary>
         public Guid? PetId { get; }
 
-        public GetPetsQuery(Guid organisationId, List<PetState> petStatuses, Int32 offset = 0, Int32 limit = 8, Guid? petId = null)
+        /// <summary>
+        /// Фильтр по полу
+        /// </summary>
+        public List<PetGender> Genders { get; }
+
+        /// <summary>
+        /// Текстовый фильтр
+        /// Пока что по имени и краткому описанию
+        /// </summary>
+        public String? Filter { get; }
+
+        public GetPetsQuery(Guid organisationId, List<PetState> petStatuses, List<PetGender> genders, String? filter = null,
+            Int32 offset = 0, Int32 limit = 8, Guid? petId = null)
             : base(offset, limit)
-            => (OrganisationId, PetStatuses, PetId)
-                = (organisationId, petStatuses, petId);
+            => (OrganisationId, PetStatuses, PetId, Filter, Genders)
+                = (organisationId, petStatuses, petId, filter, genders);
     }
 }

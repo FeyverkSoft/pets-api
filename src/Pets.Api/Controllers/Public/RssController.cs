@@ -35,6 +35,7 @@ namespace Pets.Api.Controllers.Public
                 organisationId: organisationId,
                 offset: 0,
                 limit: 100,
+                genders: new List<PetGender>(),
                 petStatuses: new List<PetState>
                 {
                     PetState.Adopted,

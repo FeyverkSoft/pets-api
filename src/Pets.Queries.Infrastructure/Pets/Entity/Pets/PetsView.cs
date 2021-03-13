@@ -12,8 +12,10 @@ select
 from `Pet` p
 where 1 = 1
 and OrganisationId = @OrganisationId
-and (@PetId is null or p.Id = @PetId)                                  
-and (p.`PetState` IN @Status);
+and (@PetId is null or p.Id = @PetId)     
+and (@Filter is null or p.`Name` like @Filter or p.`MdShortBody` like @Filter)
+and (p.`PetState` IN @Status)
+and (p.`Gender` IN @Genders);
 
 select 
     p.Id,
@@ -30,7 +32,9 @@ from `Pet` p
 where 1 = 1
 and p.OrganisationId = @OrganisationId
 and (@PetId is null or p.Id = @PetId)
+and (@Filter is null or p.`Name` like @Filter or p.`MdShortBody` like @Filter)
 and (p.`PetState` IN @Status)
+and (p.`Gender` IN @Genders)
 order by p.UpdateDate desc 
 limit @Limit offset @Offset
 ";

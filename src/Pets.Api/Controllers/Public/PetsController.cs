@@ -39,8 +39,17 @@ namespace Pets.Api.Controllers.Public
                 organisationId: binding.OrganisationId,
                 offset: binding.Offset,
                 limit: binding.Limit,
+                filter: binding.Text,
+                genders: binding.Genders.Count == 0
+                    ? new()
+                    {
+                        PetGender.Female,
+                        PetGender.Male,
+                        PetGender.Unset
+                    }
+                    : binding.Genders,
                 petStatuses: binding.PetStatuses.Count == 0
-                    ? new List<PetState>
+                    ? new()
                     {
                         PetState.Adopted,
                         PetState.Alive,
@@ -73,6 +82,8 @@ namespace Pets.Api.Controllers.Public
                 offset: 0,
                 limit: 1,
                 petId: petId,
+                genders: new (),
+                filter: null,
                 petStatuses: new List<PetState>
                 {
                     PetState.Adopted,
