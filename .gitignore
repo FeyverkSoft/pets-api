@@ -246,3 +246,4 @@ logs/
 # Idea
 .idea/
 Pets.Types.xml
+/src/Pets.Api/Api_V2/src/Pets.Api/Pets.Api.xml

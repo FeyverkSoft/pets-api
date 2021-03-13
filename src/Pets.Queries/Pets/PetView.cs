@@ -46,12 +46,18 @@ namespace Pets.Queries.Pets
         /// Собака/кот/енот/чупакабра
         /// </summary>
         public PetType Type { get; }
+        
+        /// <summary>
+        /// Pet type
+        /// Мальчик/Девочка/Неизвестно
+        /// </summary>
+        public PetGender Gender { get; }
 
         public DateTime UpdateDate { get; }
 
         public PetView(Guid id, String name, String? beforePhotoLink, String? afterPhotoLink, PetState petState, String mdShortBody, String? mdBody,
-            PetType type, DateTime updateDate)
-            => (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, UpdateDate)
-                = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, updateDate);
+            PetType type, PetGender gender, DateTime updateDate)
+            => (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, Gender, UpdateDate)
+                = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, gender, updateDate);
     }
 }

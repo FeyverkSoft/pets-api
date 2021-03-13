@@ -58,7 +58,13 @@ namespace Pets.DB.Migrations.Entities
         /// Собака/кот/енот/чупакабра
         /// </summary>
         public PetType Type { get; }
-
+        
+        /// <summary>
+        /// Pet type
+        /// Мальчик/Девочка/Неизвестно
+        /// </summary>
+        public PetGender Gender { get; }
+        
         public DateTime UpdateDate { get; }
         public DateTime CreateDate { get; }
 

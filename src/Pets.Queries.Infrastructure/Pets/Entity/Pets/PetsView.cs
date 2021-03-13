@@ -24,6 +24,7 @@ select
     p.MdShortBody,
     p.MdBody,
     p.Type,
+    p.Gender,
     p.UpdateDate
 from `Pet` p
 where 1 = 1
@@ -71,6 +72,12 @@ limit @Limit offset @Offset
         /// Собака/кот/енот/чупакабра
         /// </summary>
         public PetType Type { get; }
+        
+        /// <summary>
+        /// Pet type
+        /// Мальчик/Девочка/Неизвестно
+        /// </summary>
+        public PetGender Gender { get; }
 
         public DateTime UpdateDate { get; }
     }

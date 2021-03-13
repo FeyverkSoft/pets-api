@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dapper;
 
 using Pets.Queries.Pets;
+using Pets.Types;
 
 using Query.Core;
 
@@ -52,6 +53,7 @@ namespace Pets.Queries.Infrastructure.Pets
                     mdShortBody: _.MdShortBody,
                     mdBody: _.MdBody,
                     type: _.Type,
+                    gender: _.Gender,
                     updateDate: _.UpdateDate
                 ))
             };

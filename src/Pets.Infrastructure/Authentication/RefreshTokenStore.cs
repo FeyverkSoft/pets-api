@@ -50,10 +50,11 @@ namespace Pets.Infrastructure.Authentication
                                       && token.ExpireDate > dd, cancellationToken) ??
                                   new RefreshToken(Guid.NewGuid().ToString(), oldRefreshToken.UserId, ip, DateTime.UtcNow.Add(_lifeTime));
 
-            if(newRefreshToken.Id != oldRefreshToken.Id)
+            if (newRefreshToken.Id != oldRefreshToken.Id)
+            {
                 oldRefreshToken.Terminate();
-            
-            await _context.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
+                await _context.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
+            }
 
             await _context.SaveChangesAsync(cancellationToken);
 

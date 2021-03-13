@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using Pets.DB.Migrations.Entities;
+using Pets.Types;
 
 namespace Pets.DB.Migrations
 {
@@ -142,6 +143,11 @@ namespace Pets.DB.Migrations
                     .IsRequired();
                 builder.Property(_ => _.Type)
                     .HasConversion<String>()
+                    .HasMaxLength(64)
+                    .IsRequired();
+                builder.Property(_ => _.Gender)
+                    .HasConversion<String>()
+                    .HasDefaultValue(PetGender.Unset)
                     .HasMaxLength(64)
                     .IsRequired();
 
@@ -328,6 +334,7 @@ namespace Pets.DB.Migrations
                     .HasMaxLength(2048);
                 
                 builder.Property(_ => _.OrganisationId)
+                    .HasDefaultValue(Guid.Parse("10000000-0000-4000-0000-000000000000"))
                     .IsRequired();
                 builder.HasOne(_ => _.Organisation)
                     .WithMany()

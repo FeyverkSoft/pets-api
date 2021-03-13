@@ -11,7 +11,7 @@ namespace Pets.DB.Migrations.Migrations
                 name: "OrganisationId",
                 table: "User",
                 nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                defaultValue: new Guid("10000000-0000-4000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_OrganisationId",
