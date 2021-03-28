@@ -339,7 +339,8 @@ namespace Pets.DB.Migrations
                 builder.HasOne(_ => _.Organisation)
                     .WithMany()
                     .HasForeignKey(_ => _.OrganisationId)
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired(false);
 
                 builder.Property(user => user.ConcurrencyToken)
                     .IsRequired()
