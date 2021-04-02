@@ -33,7 +33,7 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
 
         internal static readonly String SqlPets = @"
   select 
-      CAST(p.Id as CHAR(36)),
+      CAST(p.Id as CHAR(36)) as Id,
       'Pet' as Type,
       IFNULL(p.AfterPhotoLink, p.BeforePhotoLink) as Img, 
       p.Name as Title, 
@@ -46,7 +46,7 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
 ";
         internal static readonly String  SqlNews= @"
   select 
-      n.Id as Id, 
+      CAST(n.Id as CHAR(36)) as Id,
       'News' as Type,
       n.ImgLink as Img, 
       '' as Title, 

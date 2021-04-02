@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 using Dapper;
 
-using Pets.Queries.Pets;
 using Pets.Queries.Search;
-using Pets.Types;
 
 using Query.Core;
 
@@ -42,7 +40,7 @@ namespace Pets.Queries.Infrastructure.Search
             var items = new List<Search.Entity.Search.SearchDto>(query.Limit);
             var total = query.Offset + query.Limit;
 
-            if (total >= counts.PetCount && counts.PetCount > 0)
+            if (query.Offset < counts.PetCount && counts.PetCount > 0)
             {
                 items.AddRange(await _db.QueryAsync<Entity.Search.SearchDto>(new CommandDefinition(
                     commandText: Entity.Search.SearchDto.SqlPets,
@@ -56,7 +54,7 @@ namespace Pets.Queries.Infrastructure.Search
                     cancellationToken: cancellationToken)));
             }
 
-            if (total > counts.PetCount && counts.NewsCount > 0)
+            if (total >= counts.PetCount && counts.NewsCount > 0)
             {
                 var limit = total - counts.PetCount;
                 limit = limit > query.Limit ? query.Limit : limit;
