@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
+    <PackageVersion>1.2.18</PackageVersion>
+    <AssemblyVersion>1.2.18</AssemblyVersion>
+    <FileVersion>1.2.18</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

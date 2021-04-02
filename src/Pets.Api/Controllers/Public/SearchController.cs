@@ -30,7 +30,7 @@ namespace Pets.Api.Controllers.Public
             [FromQuery] SearchBinding binding,
             CancellationToken cancellationToken)
         {
-            return Ok(_processor.Process<SearchQuery,Page<SearchView>>(new SearchQuery(
+            return Ok(await _processor.Process<SearchQuery,Page<SearchView>>(new SearchQuery(
                 organisationId: binding.OrganisationId,
                 query: binding.Query,
                 limit: binding.Limit,

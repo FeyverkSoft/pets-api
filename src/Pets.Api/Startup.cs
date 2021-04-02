@@ -152,6 +152,7 @@ namespace Pets.Api
                 registry.Register<Queries.Infrastructure.Organisation.DocumentsQueryHandler>();
                 registry.Register<Queries.Infrastructure.Documents.DocumentsQueryHandler>();
                 registry.Register<Queries.Infrastructure.News.PetsQueryHandler>();
+                registry.Register<Queries.Infrastructure.Search.SearchQueryHandler>();
             });
 
             services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });

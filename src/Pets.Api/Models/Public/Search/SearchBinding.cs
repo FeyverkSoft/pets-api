@@ -42,7 +42,7 @@ namespace Pets.Api.Models.Public.Search
                 RuleFor(_ => _.Query)
                     .NotEmpty()
                     .NotNull()
-                    .MaximumLength(128);
+                    .Length(2,128);
                 
                 RuleFor(_ => _.Limit)
                     .InclusiveBetween(1, 20);

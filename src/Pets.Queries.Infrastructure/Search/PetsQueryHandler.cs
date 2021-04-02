@@ -9,6 +9,7 @@ using Dapper;
 
 using Pets.Queries.Pets;
 using Pets.Queries.Search;
+using Pets.Types;
 
 using Query.Core;
 
@@ -28,7 +29,7 @@ namespace Pets.Queries.Infrastructure.Search
         {
             var counts = await _db.QuerySingleAsync<(Int32 PetCount, Int32 NewsCount, Int32 PageCount)>(
                 new CommandDefinition(
-                    commandText: Entity.Search.SearchView.SqlCounts,
+                    commandText: Entity.Search.SearchDto.SqlCounts,
                     parameters: new
                     {
                         OrganisationId = query.OrganisationId,
@@ -38,14 +39,66 @@ namespace Pets.Queries.Infrastructure.Search
                     cancellationToken: cancellationToken
                 ));
 
-            var items = new List<SearchView>(query.Limit);
-            throw new NotImplementedException("Дописать!");
+            var items = new List<Search.Entity.Search.SearchDto>(query.Limit);
+            var total = query.Offset + query.Limit;
+
+            if (total >= counts.PetCount && counts.PetCount > 0)
+            {
+                items.AddRange(await _db.QueryAsync<Entity.Search.SearchDto>(new CommandDefinition(
+                    commandText: Entity.Search.SearchDto.SqlPets,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        Filter = $"%{query.Query}%",
+                        Limit = query.Limit,
+                        Offset = query.Offset,
+                    }, commandType: CommandType.Text,
+                    cancellationToken: cancellationToken)));
+            }
+
+            if (total > counts.PetCount && counts.NewsCount > 0)
+            {
+                var limit = total - counts.PetCount;
+                limit = limit > query.Limit ? query.Limit : limit;
+                var offset = query.Offset - counts.PetCount;
+                offset = offset > 0 ? offset : 0;
+                items.AddRange(await _db.QueryAsync<Entity.Search.SearchDto>(new CommandDefinition(
+                    commandText: Entity.Search.SearchDto.SqlNews,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        Filter = $"%{query.Query}%",
+                        Limit = limit,
+                        Offset = offset,
+                    }, commandType: CommandType.Text,
+                    cancellationToken: cancellationToken)));
+            }
+
+            if (total > counts.PetCount + counts.NewsCount && counts.PageCount > 0)
+            {
+                var limit = total - (counts.PetCount + counts.NewsCount);
+                limit = limit > query.Limit ? query.Limit : limit;
+                var offset = query.Offset - (counts.PetCount + counts.NewsCount);
+                offset = offset > 0 ? offset : 0;
+               
+                items.AddRange(await _db.QueryAsync<Entity.Search.SearchDto>(new CommandDefinition(
+                    commandText: Entity.Search.SearchDto.SqlPages,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        Filter = $"%{query.Query}%",
+                        Limit = limit,
+                        Offset = offset,
+                    }, commandType: CommandType.Text,
+                    cancellationToken: cancellationToken)));
+            }
+
             return new Page<SearchView>
             {
                 Limit = query.Limit,
                 Offset = query.Offset,
                 Total = counts.NewsCount + counts.PageCount + counts.PetCount,
-                Items = items,
+                Items = items.Select(_ => new SearchView(_.Id, _.Type, _.Img, _.Title, _.ShortText)),
             };
         }
     }
