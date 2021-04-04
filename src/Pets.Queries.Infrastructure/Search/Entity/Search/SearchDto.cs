@@ -49,7 +49,7 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
       CAST(n.Id as CHAR(36)) as Id,
       'News' as Type,
       n.ImgLink as Img, 
-      '' as Title, 
+      n.Title as Title, 
       n.MdShortBody as ShortText
   from `News` n
   where 1 = 1
@@ -63,7 +63,7 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
       'Page' as Type,
       p.ImgLink as Img, 
       '' as Title, 
-      LEFT(p.MdBody, 512) as ShortText
+      LEFT(p.MdBody, 384) as ShortText
   from `Page` p
   where 1 = 1
     and p.OrganisationId = @OrganisationId
