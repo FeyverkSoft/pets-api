@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Microsoft.Net.Http.Headers;
 
 using Pets.Infrastructure.Markdown;
 using Pets.Queries;
+using Pets.Queries.News;
 using Pets.Queries.Pets;
 using Pets.Types;
 
@@ -66,6 +68,51 @@ namespace Pets.Api.Controllers.Public
                     <description><![CDATA[<img src=""{domain}{petView.AfterPhotoLink ?? petView.BeforePhotoLink}""></img><br>
 {content}]]></description>
                     <pubDate>{petView.UpdateDate:u}</pubDate>
+                    <turbo:content><![CDATA[{content}]]>
+                    </turbo:content>
+                    </item>"
+                );
+            }
+
+            sb.Append(@"</channel></rss>");
+            return Content(sb.ToString(), MediaTypeHeaderValue.Parse("text/xml; charset=utf-8"));
+        }
+        
+         [HttpGet("/rss/{organisationId}/news")]
+        public async Task<IActionResult> GetNewsRss(
+            [FromServices] IQueryProcessor _processor,
+            [FromServices] IConfiguration config,
+            [FromServices] IMarkdown _markdown,
+            [FromRoute] Guid organisationId,
+            CancellationToken cancellationToken)
+        {
+            var domain = config["Domain"];
+            var result = await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+                organisationId: organisationId,
+                offset: 0,
+                limit: 100
+            ), cancellationToken);
+            
+            var sb = new StringBuilder(@$"<?xml version=""1.0"" encoding=""UTF-8""?>
+<rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
+<channel>
+<title>Новости</title>
+<link>{domain}/pets</link>
+<description><![CDATA[Новости]]></description>
+<language>ru</language>
+<generator>{domain}</generator>");
+            sb.Append($"<pubDate>{(result.Items.FirstOrDefault()?.CreateDate ?? DateTime.UtcNow):u}</pubDate>");
+
+            foreach (var newsView in result.Items)
+            {
+                var content = await _markdown.Parse(String.IsNullOrEmpty(newsView.MdBody) ? newsView.MdShortBody : newsView.MdBody);
+                sb.Append(@$"<item turbo=""true"">
+                    <title>{newsView.Title}</title>
+                    <guid isPermaLink=""true"">{domain}/news/{newsView.Id}</guid>
+                    <link>{domain}/news/{newsView.Id}</link>
+                    <description><![CDATA[<img src=""{domain}{newsView.ImgLink}""></img><br>
+{content}]]></description>
+                    <pubDate>{newsView.CreateDate:u}</pubDate>
                     <turbo:content><![CDATA[{content}]]>
                     </turbo:content>
                     </item>"
