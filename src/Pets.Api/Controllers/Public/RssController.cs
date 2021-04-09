@@ -37,16 +37,8 @@ namespace Pets.Api.Controllers.Public
                 organisationId: organisationId,
                 offset: 0,
                 limit: 100,
-                genders: new List<PetGender>(),
-                petStatuses: new List<PetState>
-                {
-                    PetState.Adopted,
-                    PetState.Alive,
-                    PetState.Critical,
-                    PetState.Death,
-                    PetState.Wanted,
-                    PetState.OurPets
-                }
+                genders: new(),
+                petStatuses: new()
             ), cancellationToken);
             var sb = new StringBuilder(@$"<?xml version=""1.0"" encoding=""UTF-8""?>
 <rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
@@ -56,7 +48,7 @@ namespace Pets.Api.Controllers.Public
 <description><![CDATA[Список питомцев добродома]]></description>
 <language>ru</language>
 <generator>{domain}</generator>");
-            sb.Append($"<pubDate>{DateTime.UtcNow:u}</pubDate>");
+            sb.Append($"<pubDate>{(result.Items.FirstOrDefault()?.UpdateDate ?? DateTime.UtcNow):u}</pubDate>");
 
             foreach (var petView in result.Items)
             {
@@ -77,8 +69,8 @@ namespace Pets.Api.Controllers.Public
             sb.Append(@"</channel></rss>");
             return Content(sb.ToString(), MediaTypeHeaderValue.Parse("text/xml; charset=utf-8"));
         }
-        
-         [HttpGet("/rss/{organisationId}/news")]
+
+        [HttpGet("/rss/{organisationId}/news")]
         public async Task<IActionResult> GetNewsRss(
             [FromServices] IQueryProcessor _processor,
             [FromServices] IConfiguration config,
@@ -92,7 +84,7 @@ namespace Pets.Api.Controllers.Public
                 offset: 0,
                 limit: 100
             ), cancellationToken);
-            
+
             var sb = new StringBuilder(@$"<?xml version=""1.0"" encoding=""UTF-8""?>
 <rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
 <channel>

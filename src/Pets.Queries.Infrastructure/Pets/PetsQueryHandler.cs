@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -15,6 +16,9 @@ namespace Pets.Queries.Infrastructure.Pets
 {
     public sealed class PetsQueryHandler : IQueryHandler<GetPetsQuery, Page<PetView>>
     {
+        private static readonly List<PetState> DefaultPetStatuses = Enum.GetNames(typeof(PetState)).Select(Enum.Parse<PetState>).ToList();
+        private static readonly List<PetGender> DefaultPetGenders = Enum.GetNames(typeof(PetGender)).Select(Enum.Parse<PetGender>).ToList();
+
         private readonly IDbConnection _db;
 
         public PetsQueryHandler(IDbConnection db)
@@ -34,8 +38,8 @@ namespace Pets.Queries.Infrastructure.Pets
                         Offset = query.Offset,
                         OrganisationId = query.OrganisationId,
                         PetId = query.PetId,
-                        Status = query.PetStatuses.Select(_ => _.ToString()),
-                        Genders = query.Genders.Select(_ => _.ToString()),
+                        Status = (query.PetStatuses.Any() ? query.PetStatuses : DefaultPetStatuses).Select(_ => _.ToString()),
+                        Genders = (query.Genders.Any() ? query.Genders : DefaultPetGenders).Select(_ => _.ToString()),
                         Filter = query.Filter == null ? null : $"%{query.Filter}%",
                     },
                     commandType: CommandType.Text,

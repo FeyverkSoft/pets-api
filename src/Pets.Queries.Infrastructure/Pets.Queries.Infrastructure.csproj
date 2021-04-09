@@ -4,9 +4,10 @@
     <OutputType>Library</OutputType>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
-    <ApplicationIcon />
-    <StartupObject />
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <PackageVersion>1.2.22</PackageVersion>
+    <AssemblyVersion>1.2.22</AssemblyVersion>
+    <FileVersion>1.2.22</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
