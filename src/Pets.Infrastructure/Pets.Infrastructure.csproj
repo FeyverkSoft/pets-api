@@ -5,9 +5,9 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <PackageVersion>1.2.21</PackageVersion>
-    <AssemblyVersion>1.2.21</AssemblyVersion>
-    <FileVersion>1.2.21</FileVersion>
+    <PackageVersion>1.2.23</PackageVersion>
+    <AssemblyVersion>1.2.23</AssemblyVersion>
+    <FileVersion>1.2.23</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -13,9 +13,9 @@ namespace Pets.Infrastructure.Markdown
         private readonly IMemoryCache _memoryCache;
         private readonly Object _locker = new();
 
-        private readonly Regex _instagramRegex = new(@"(!inst\([a-z/_0-9.:\-_\+]+\))",
+        private readonly Regex _instagramRegex = new(@"(!inst\(([\w а-я0-9#/.:_-]+)\))",
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
-        
+
         private readonly Regex _mapsRegex = new(@"(!maps\((https:\/\/www.google.com[\wa-z!0-9#/%.:_=?-\\]+)\))",
             RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Multiline);
 
@@ -40,9 +40,9 @@ namespace Pets.Infrastructure.Markdown
             lock (_locker)
             {
                 var mdProcessor = new MarkdownSharp.Markdown(new MarkdownOptions { });
-                var prep = _instagramRegex.Replace(md, "<br>instagram integration block<br>");
-                prep = _linkRegex.Replace(prep, "[$4]($2)");
-                prep = _mapsRegex.Replace(md, @"<a href=""$2"">GMaps</a>");
+                var prep = _instagramRegex.Replace(md, @"[instagram integration block]($2)");
+                prep = _linkRegex.Replace(prep, "[$2]($4)");
+                prep = _mapsRegex.Replace(prep, "[$2](GMaps)");
                 var result = mdProcessor.Transform(prep);
                 _memoryCache.Set(key, result, TimeSpan.FromHours(2));
                 return result;
