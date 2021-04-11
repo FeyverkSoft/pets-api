@@ -5,9 +5,9 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <PackageVersion>1.2.24</PackageVersion>
-    <AssemblyVersion>1.2.24</AssemblyVersion>
-    <FileVersion>1.2.24</FileVersion>
+    <PackageVersion>1.2.25</PackageVersion>
+    <AssemblyVersion>1.2.25</AssemblyVersion>
+    <FileVersion>1.2.25</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
   </ItemGroup>
 

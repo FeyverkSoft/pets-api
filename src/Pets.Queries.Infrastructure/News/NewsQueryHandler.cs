@@ -15,7 +15,9 @@ using Query.Core;
 
 namespace Pets.Queries.Infrastructure.News
 {
-    public sealed class PetsQueryHandler : IQueryHandler<GetNewsQuery, Page<NewsView>>
+    public sealed class PetsQueryHandler :
+        IQueryHandler<GetNewsQuery, Page<NewsView>>,
+        IQueryHandler<GetSingleNewsQuery, NewsView?>
     {
         private readonly IDbConnection _db;
 
@@ -41,8 +43,13 @@ namespace Pets.Queries.Infrastructure.News
                     commandType: CommandType.Text,
                     cancellationToken: cancellationToken
                 ));
-            if (result == null)
-                return null;
+            if (result is null)
+                return new Page<NewsView>
+                {
+                    Limit = query.Limit,
+                    Offset = query.Offset,
+                    Total = 0,
+                };
 
             return new Page<NewsView>
             {
@@ -61,6 +68,35 @@ namespace Pets.Queries.Infrastructure.News
                     tags: _.Tags?.TryParseJson<List<String>>() ?? new List<String>()
                 ))
             };
+        }
+
+        public async Task<NewsView?> Handle(GetSingleNewsQuery query, CancellationToken cancellationToken)
+        {
+            var result = await _db.QuerySingleOrDefaultAsync<Entity.NewsDto>(
+                new CommandDefinition(
+                    commandText: Entity.SingleNewsDto.Sql,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        NewsId = query.NewsId,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+            if (result is null)
+                return null;
+
+            return new NewsView(
+                id: result.Id,
+                title: result.Title,
+                imgLink: result.ImgLink,
+                mdShortBody: result.MdShortBody,
+                mdBody: result.MdBody,
+                createDate: result.CreateDate,
+                linkedPets: result.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
+                    .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
+                tags: result.Tags?.TryParseJson<List<String>>() ?? new List<String>()
+            );
         }
     }
 }

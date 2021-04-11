@@ -58,21 +58,19 @@ namespace Pets.Api.Controllers.Public
             [FromRoute] Guid newsId,
             CancellationToken cancellationToken)
         {
-            var result = await processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+            var result = await processor.Process<GetSingleNewsQuery, NewsView?>(new GetSingleNewsQuery(
                 organisationId: organisationId,
-                offset: 0,
-                limit: 1,
                 newsId: newsId
             ), cancellationToken);
 
-            if (!result.Items.Any())
+            if (result is null)
                 return NotFound(new ProblemDetails
                 {
                     Status = (Int32)HttpStatusCode.NotFound,
                     Type = "news_not_found"
                 });
 
-            return Ok(result.Items.First());
+            return Ok(result);
         }
     }
 }

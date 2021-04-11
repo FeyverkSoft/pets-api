@@ -63,15 +63,14 @@ namespace Pets.Api.Controllers.Public
             [FromRoute] Guid newsId,
             CancellationToken cancellationToken)
         {
-            var result = await processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+            var news = await processor.Process<GetSingleNewsQuery, NewsView?>(new GetSingleNewsQuery(
                 organisationId: organisationId,
-                petId: newsId,
-                offset: 0,
-                limit: 100
+                newsId: newsId
             ), cancellationToken);
-            if (result.Total == 0)
+
+            if (news is null)
                 return NotFound();
-            var news = result.Items.First();
+
             var content = await markdown.Parse(String.IsNullOrEmpty(news.MdBody) ? news.MdShortBody : news.MdBody);
             var sb = new StringBuilder(@"<html lang=""ru""><head><meta charset=""utf-8""/>");
             sb.Append($"<title>Добродом - Новости: {news.Title}</title>");

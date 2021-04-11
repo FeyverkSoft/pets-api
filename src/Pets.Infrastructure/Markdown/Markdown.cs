@@ -41,8 +41,8 @@ namespace Pets.Infrastructure.Markdown
             {
                 var mdProcessor = new MarkdownSharp.Markdown(new MarkdownOptions { });
                 var prep = _instagramRegex.Replace(md, @"[instagram integration block]($2)");
-                prep = _linkRegex.Replace(prep, "[$2]($4)");
-                prep = _mapsRegex.Replace(prep, "[$2](GMaps)");
+                prep = _linkRegex.Replace(prep, "[$4]($2)");
+                prep = _mapsRegex.Replace(prep, "[GMaps]($2)");
                 var result = mdProcessor.Transform(prep);
                 _memoryCache.Set(key, result, TimeSpan.FromHours(2));
                 return result;
