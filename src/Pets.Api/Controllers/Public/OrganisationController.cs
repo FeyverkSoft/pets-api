@@ -23,15 +23,15 @@ namespace Pets.Api.Controllers.Public
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/contacts")]
+        [HttpGet("{organisationId:guid}/contacts")]
         [ProducesResponseType(typeof(IEnumerable<ContactView>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> GetContacts(
             [FromRoute] Guid organisationId,
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetContactsQuery, IEnumerable<ContactView>>(new GetContactsQuery(
+            var result = await processor.Process<GetContactsQuery, IEnumerable<ContactView>>(new GetContactsQuery(
                 organisationId: organisationId
             ), cancellationToken);
             return Ok(result);
@@ -42,15 +42,15 @@ namespace Pets.Api.Controllers.Public
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/building")]
+        [HttpGet("{organisationId:guid}/building")]
         [ProducesResponseType(typeof(IEnumerable<ResourceView>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> GetBuilding(
             [FromRoute] Guid organisationId,
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetBuildingQuery, IEnumerable<ResourceView>>(new GetBuildingQuery(
+            var result = await processor.Process<GetBuildingQuery, IEnumerable<ResourceView>>(new GetBuildingQuery(
                 organisationId: organisationId
             ), cancellationToken);
             return Ok(result);
@@ -61,15 +61,15 @@ namespace Pets.Api.Controllers.Public
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/needs")]
+        [HttpGet("{organisationId:guid}/needs")]
         [ProducesResponseType(typeof(IEnumerable<NeedView>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> GetNeeds(
             [FromRoute] Guid organisationId,
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetNeedQuery, IEnumerable<NeedView>>(new GetNeedQuery(
+            var result = await processor.Process<GetNeedQuery, IEnumerable<NeedView>>(new GetNeedQuery(
                 organisationId: organisationId
             ), cancellationToken);
             return Ok(result);

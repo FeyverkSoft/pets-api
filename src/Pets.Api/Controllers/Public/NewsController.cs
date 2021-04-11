@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,11 +29,11 @@ namespace Pets.Api.Controllers.Public
         [ProducesResponseType(typeof(Page<NewsView>), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromQuery] GetNewsBinding binding,
             CancellationToken cancellationToken)
         {
-            return Ok(await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+            return Ok(await processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
                 organisationId: binding.OrganisationId,
                 offset: binding.Offset,
                 limit: binding.Limit,
@@ -48,16 +49,16 @@ namespace Pets.Api.Controllers.Public
         /// <param name="newsId">идентификатор конкретной новости</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/{newsId}")]
+        [HttpGet("{organisationId:guid}/{newsId:guid}")]
         [ProducesResponseType(typeof(NewsView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromRoute] Guid organisationId,
             [FromRoute] Guid newsId,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+            var result = await processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
                 organisationId: organisationId,
                 offset: 0,
                 limit: 1,
@@ -67,7 +68,7 @@ namespace Pets.Api.Controllers.Public
             if (!result.Items.Any())
                 return NotFound(new ProblemDetails
                 {
-                    Status = 404,
+                    Status = (Int32)HttpStatusCode.NotFound,
                     Type = "news_not_found"
                 });
 

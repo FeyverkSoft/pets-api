@@ -14,7 +14,9 @@ using Query.Core;
 
 namespace Pets.Queries.Infrastructure.Pets
 {
-    public sealed class PetsQueryHandler : IQueryHandler<GetPetsQuery, Page<PetView>>
+    public sealed class PetsQueryHandler :
+        IQueryHandler<GetPetsQuery, Page<PetView>>,
+        IQueryHandler<GetPetQuery, PetView?>
     {
         private static readonly List<PetState> DefaultPetStatuses = Enum.GetNames(typeof(PetState)).Select(Enum.Parse<PetState>).ToList();
         private static readonly List<PetGender> DefaultPetGenders = Enum.GetNames(typeof(PetGender)).Select(Enum.Parse<PetGender>).ToList();
@@ -63,6 +65,37 @@ namespace Pets.Queries.Infrastructure.Pets
                     updateDate: _.UpdateDate
                 ))
             };
+        }
+
+        public async Task<PetView?> Handle(GetPetQuery query, CancellationToken cancellationToken)
+        {
+            var pet = await _db.QuerySingleOrDefaultAsync<Entity.Pets.PetView>(
+                new CommandDefinition(
+                    commandText: Entity.Pets.PetView.Sql,
+                    parameters: new
+                    {
+                        OrganisationId = query.OrganisationId,
+                        PetId = query.PetId,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+
+            if (pet is null)
+                return null;
+
+            return new PetView(
+                id: pet.Id,
+                name: pet.Name,
+                beforePhotoLink: pet.BeforePhotoLink,
+                afterPhotoLink: pet.AfterPhotoLink,
+                petState: pet.PetState,
+                mdShortBody: pet.MdShortBody,
+                mdBody: pet.MdBody,
+                type: pet.Type,
+                gender: pet.Gender,
+                updateDate: pet.UpdateDate
+            );
         }
     }
 }

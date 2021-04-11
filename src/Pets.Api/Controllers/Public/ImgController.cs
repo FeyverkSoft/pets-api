@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Pets.Domain.Documents;
 using Pets.Queries.Documents;
 
 using Query.Core;
@@ -29,15 +28,15 @@ namespace Pets.Api.Controllers.Public
         /// <param name="cancellationToken"></param>
         /// <param name="id">image id</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(Stream), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> GetImage(
             [FromRoute] Guid id,
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetImgQuery, DocumentInfo?>(new GetImgQuery(
+            var result = await processor.Process<GetImgQuery, DocumentInfo?>(new GetImgQuery(
                 imageId: id
             ), cancellationToken);
             if (result == null)

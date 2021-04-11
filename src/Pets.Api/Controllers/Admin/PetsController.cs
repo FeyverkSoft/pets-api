@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,9 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using Pets.Api.Authorization;
 using Pets.Api.Models.Admin.Pets;
+using Pets.Domain.Pet;
 using Pets.Queries;
 using Pets.Queries.Pets;
 using Pets.Types;
+using Pets.Types.Exceptions;
 
 using Query.Core;
 
@@ -35,38 +39,40 @@ namespace Pets.Api.Controllers.Admin
         [HttpPost]
         [ProducesResponseType(typeof(PetView), 200)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
+            [FromServices] IPetCreateService petCreateService,
             [FromBody] CreatePetBinding binding,
             CancellationToken cancellationToken)
         {
-            // тут создание пета
-
-
-            var result = await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
-                organisationId: User.GetOrganisationId(),
-                offset: 0,
-                limit: 1,
-                petId: binding.PetId,
-                genders: new (),
-                petStatuses: new List<PetState>
+            try
+            {
+                await petCreateService.Create(
+                    petId: binding.PetId,
+                    organisationId: HttpContext.GetOrganisationId(),
+                    name: binding.Name,
+                    gender: binding.PetGender,
+                    type: binding.Type,
+                    petState: binding.PetState,
+                    afterPhotoLink: binding.AfterPhotoLink,
+                    beforePhotoLink: binding.BeforePhotoLink,
+                    mdShortBody: binding.MdShortBody,
+                    mdBody: binding.MdBody,
+                    cancellationToken: cancellationToken);
+            }
+            catch (IdempotencyCheckException e)
+            {
+                return Conflict(new ProblemDetails
                 {
-                    PetState.Adopted,
-                    PetState.Alive,
-                    PetState.Critical,
-                    PetState.Death,
-                    PetState.Wanted,
-                    PetState.OurPets
-                }
-            ), cancellationToken);
-
-            if (!result.Items.Any())
-                return NotFound(new ProblemDetails
-                {
-                    Status = 404,
-                    Type = "pet_not_found"
+                    Status = (Int32) HttpStatusCode.Conflict,
+                    Type = "pet_already_exists",
+                    Detail = e.Message,
                 });
+            }
 
-            return Ok(result.Items.First());
+            return Ok(await processor.Process<GetPetQuery, PetView?>(new GetPetQuery(
+                organisationId: User.GetOrganisationId(),
+                petId: binding.PetId
+            ), cancellationToken));
         }
     }
 }

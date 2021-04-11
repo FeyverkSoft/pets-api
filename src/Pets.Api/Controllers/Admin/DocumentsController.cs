@@ -24,6 +24,7 @@ namespace Pets.Api.Controllers.Admin
         /// <summary>
         /// save image
         /// </summary>
+        /// <param name="fileStoreService"></param>
         /// <param name="cancellationToken"></param>
         /// <param name="file">model</param>
         /// <code>validation error, see <see href="https://tools.ietf.org/html/rfc7807#section-3">rfc7807#section-3</see></code>
@@ -33,10 +34,10 @@ namespace Pets.Api.Controllers.Admin
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> PutImage(
             [FromForm] UploadFileBinding file,
-            [FromServices] IDocumentRepository _fileStoreService,
+            [FromServices] IDocumentRepository fileStoreService,
             CancellationToken cancellationToken)
         {
-            var fileId = await _fileStoreService.SaveFileAsync(file.File, cancellationToken);
+            var fileId = await fileStoreService.SaveFileAsync(file.File, cancellationToken);
             return Ok(new UploadFileView(fileId));
         }
     }

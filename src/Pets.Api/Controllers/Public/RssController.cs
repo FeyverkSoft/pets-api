@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,7 +13,6 @@ using Pets.Infrastructure.Markdown;
 using Pets.Queries;
 using Pets.Queries.News;
 using Pets.Queries.Pets;
-using Pets.Types;
 
 using Query.Core;
 
@@ -26,14 +24,14 @@ namespace Pets.Api.Controllers.Public
     {
         [HttpGet("/rss/{organisationId}/pets")]
         public async Task<IActionResult> GetPetRss(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromServices] IConfiguration config,
-            [FromServices] IMarkdown _markdown,
+            [FromServices] IMarkdown markdown,
             [FromRoute] Guid organisationId,
             CancellationToken cancellationToken)
         {
             var domain = config["Domain"];
-            var result = await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+            var result = await processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
                 organisationId: organisationId,
                 offset: 0,
                 limit: 100,
@@ -52,7 +50,7 @@ namespace Pets.Api.Controllers.Public
 
             foreach (var petView in result.Items)
             {
-                var content = await _markdown.Parse(String.IsNullOrEmpty(petView.MdBody) ? petView.MdShortBody : petView.MdBody);
+                var content = await markdown.Parse(String.IsNullOrEmpty(petView.MdBody) ? petView.MdShortBody : petView.MdBody);
                 sb.Append(@$"<item turbo=""true"">
                     <title>{petView.Name}</title>
                     <guid isPermaLink=""true"">{domain}/pets/{petView.Id}</guid>
@@ -72,14 +70,14 @@ namespace Pets.Api.Controllers.Public
 
         [HttpGet("/rss/{organisationId}/news")]
         public async Task<IActionResult> GetNewsRss(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromServices] IConfiguration config,
-            [FromServices] IMarkdown _markdown,
+            [FromServices] IMarkdown markdown,
             [FromRoute] Guid organisationId,
             CancellationToken cancellationToken)
         {
             var domain = config["Domain"];
-            var result = await _processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
+            var result = await processor.Process<GetNewsQuery, Page<NewsView>>(new GetNewsQuery(
                 organisationId: organisationId,
                 offset: 0,
                 limit: 100
@@ -97,7 +95,7 @@ namespace Pets.Api.Controllers.Public
 
             foreach (var newsView in result.Items)
             {
-                var content = await _markdown.Parse(String.IsNullOrEmpty(newsView.MdBody) ? newsView.MdShortBody : newsView.MdBody);
+                var content = await markdown.Parse(String.IsNullOrEmpty(newsView.MdBody) ? newsView.MdShortBody : newsView.MdBody);
                 sb.Append(@$"<item turbo=""true"">
                     <title>{newsView.Title}</title>
                     <guid isPermaLink=""true"">{domain}/news/{newsView.Id}</guid>

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,11 +31,11 @@ namespace Pets.Api.Controllers.Public
         [ProducesResponseType(typeof(Page<PetView>), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromQuery] GetPetsBinding binding,
             CancellationToken cancellationToken)
         {
-            return Ok(await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+            return Ok(await processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
                 organisationId: binding.OrganisationId,
                 offset: binding.Offset,
                 limit: binding.Limit,
@@ -63,33 +63,28 @@ namespace Pets.Api.Controllers.Public
         /// <param name="petId">идентификатор конкретного животного</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet("{organisationId}/{petId}")]
+        [HttpGet("{organisationId:guid}/{petId:guid}")]
         [ProducesResponseType(typeof(PetView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromRoute] Guid organisationId,
             [FromRoute] Guid petId,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetPetsQuery, Page<PetView>>(new GetPetsQuery(
+            var result = await processor.Process<GetPetQuery, PetView?>(new GetPetQuery(
                 organisationId: organisationId,
-                offset: 0,
-                limit: 1,
-                petId: petId,
-                genders: new(),
-                filter: null,
-                petStatuses: new()
+                petId: petId
             ), cancellationToken);
 
-            if (!result.Items.Any())
+            if (result is null)
                 return NotFound(new ProblemDetails
                 {
-                    Status = 404,
+                    Status = (Int32)HttpStatusCode.NotFound,
                     Type = "pet_not_found"
                 });
 
-            return Ok(result.Items.First());
+            return Ok(result);
         }
     }
 }

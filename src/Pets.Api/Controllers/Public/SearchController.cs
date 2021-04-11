@@ -26,11 +26,11 @@ namespace Pets.Api.Controllers.Public
         [ProducesResponseType(typeof(Page<SearchView>), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromQuery] SearchBinding binding,
             CancellationToken cancellationToken)
         {
-            return Ok(await _processor.Process<SearchQuery,Page<SearchView>>(new SearchQuery(
+            return Ok(await processor.Process<SearchQuery,Page<SearchView>>(new SearchQuery(
                 organisationId: binding.OrganisationId,
                 query: binding.Query,
                 limit: binding.Limit,

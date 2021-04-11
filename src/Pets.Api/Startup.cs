@@ -6,6 +6,8 @@ using System.Text.Json.Serialization;
 
 using Asp.Core.FluentExtensions;
 
+using Core;
+
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +40,7 @@ using MongoDB.Driver;
 
 using Pets.Domain.Authentication;
 using Pets.Domain.Documents;
+using Pets.Domain.Pet;
 using Pets.Infrastructure.Authentication;
 using Pets.Infrastructure.FileStoreService;
 using Pets.Infrastructure.Markdown;
@@ -62,7 +65,7 @@ namespace Pets.Api
             services.AddControllers();
             services.AddScoped<AuthorizationApiFilter>();
             services.AddTransient<ErrorHandlingMiddleware>();
-            
+
             services
                 .AddControllers(options =>
                 {
@@ -113,12 +116,13 @@ namespace Pets.Api
             #endregion
 
             services.AddSwagger();
+            services.AddSingleton<IDateTimeGetter, DefaultDateTimeGetter>();
 
             services.AddSingleton<IMarkdown, Markdown>();
-            services.AddDbContext<AuthenticationDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Pets"));
-            });
+
+            #region auth
+
+            services.AddDbContextPool<AuthenticationDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Pets")); });
             services.Configure<JwtAuthOptions>(Configuration.GetSection("Auth:Jwt"));
             services.AddScoped<IAccessTokenFactory, JwtAccessTokenFactory>();
             services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
@@ -126,6 +130,15 @@ namespace Pets.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<AuthenticationService>();
 
+            #endregion
+
+            #region pet
+
+            services.AddScoped<Domain.Pet.IPetCreateService, Domain.Pet.PetCreateService>();
+            services.AddScoped<Domain.Pet.IPetRepository, Infrastructure.Pet.PetRepository>();
+            services.AddDbContextPool<Infrastructure.Pet.PetDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Pets")); });
+
+            #endregion
 
             services.AddScoped<IGridFSBucket>(_ =>
             {
@@ -187,16 +200,16 @@ namespace Pets.Api
                 builder.AllowAnyMethod();
                 builder.AllowAnyHeader();
             });
-            
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            
+
             app.UseHttpsRedirection();
             app.UseAspNetCorePathBase();
 
             app.UseRouting();
 
             app.UseAuthorization();
-            
+
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

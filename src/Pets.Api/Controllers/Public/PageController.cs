@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
@@ -26,18 +28,18 @@ namespace Pets.Api.Controllers.Public
         [ProducesResponseType(typeof(PageView), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor _processor,
+            [FromServices] IQueryProcessor processor,
             [FromQuery] GetPageBinding binding,
             CancellationToken cancellationToken)
         {
-            var result = await _processor.Process<GetPageQuery, PageView?>(new GetPageQuery(
+            var result = await processor.Process<GetPageQuery, PageView?>(new GetPageQuery(
                 organisationId: binding.OrganisationId,
                 page: binding.Page
             ), cancellationToken);
             if (result == null)
                 return NotFound(new ProblemDetails
                 {
-                    Status = 404,
+                    Status = (Int32)HttpStatusCode.NotFound,
                     Type = "page_not_found"
                 });
             return Ok(result);
