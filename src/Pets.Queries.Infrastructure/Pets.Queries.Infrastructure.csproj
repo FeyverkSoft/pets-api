@@ -5,9 +5,9 @@
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <PackageVersion>1.2.22</PackageVersion>
-    <AssemblyVersion>1.2.22</AssemblyVersion>
-    <FileVersion>1.2.22</FileVersion>
+    <PackageVersion>1.2.24</PackageVersion>
+    <AssemblyVersion>1.2.24</AssemblyVersion>
+    <FileVersion>1.2.24</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

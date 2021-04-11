@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <PackageVersion>1.2.24</PackageVersion>
+    <AssemblyVersion>1.2.24</AssemblyVersion>
+    <FileVersion>1.2.24</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
