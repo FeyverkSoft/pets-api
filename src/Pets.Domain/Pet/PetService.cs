@@ -11,12 +11,14 @@ using Pets.Types.Exceptions;
 
 namespace Pets.Domain.Pet
 {
-    public sealed class PetCreateService : IPetCreateService
+    public sealed class PetService :
+        IPetCreateService,
+        IPetUpdateService
     {
         private readonly IPetRepository _petRepository;
         private readonly IDateTimeGetter _dateTimeGetter;
 
-        public PetCreateService(
+        public PetService(
             IPetRepository petRepository,
             IDateTimeGetter dateTimeGetter
         )
@@ -67,7 +69,7 @@ namespace Pets.Domain.Pet
                     (mdBody is not null && !mdBody.Equals(pet.MdBody, StringComparison.InvariantCultureIgnoreCase))
                 )
                     throw new PetAlreadyExistsException(petId);
-                
+
                 return pet.Id;
             }
 
@@ -88,6 +90,83 @@ namespace Pets.Domain.Pet
                 cancellationToken: cancellationToken
             );
             return petId;
+        }
+
+        /// <summary>
+        /// Обновить информацию о питомце
+        /// </summary>
+        /// <param name="petId"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="afterPhotoLink"></param>
+        /// <param name="beforePhotoLink"></param>
+        /// <param name="mdShortBody"></param>
+        /// <param name="mdBody"></param>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="PetNotFoundException"></exception>
+        /// <param name="cancellationToken">Токен признака отмены запроса</param>
+        /// <returns></returns>
+        public async Task Update(
+            Guid petId,
+            Guid organisationId,
+            String? afterPhotoLink,
+            String? beforePhotoLink,
+            String? mdShortBody,
+            String? mdBody,
+            CancellationToken cancellationToken)
+        {
+            var pet = await _petRepository.GetAsync(petId: petId, organisation: (Organisation) organisationId, cancellationToken: cancellationToken);
+
+            if (pet is null)
+                throw new PetNotFoundException(petId, organisationId);
+
+            pet.UpdateDescription(mdShortBody, mdBody, _dateTimeGetter.Get());
+            pet.UpdateImg(beforePhotoLink, afterPhotoLink, _dateTimeGetter.Get());
+
+            await _petRepository.SaveAsync(
+                pet: pet,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        /// <summary>
+        /// Обновить имя питомцу
+        /// </summary>
+        /// <param name="petId"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="name">Новое имя питомца</param>
+        /// <param name="reason">Причина изменения имени</param>
+        /// <param name="cancellationToken"></param>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="PetNotFoundException"></exception>
+        /// <returns></returns>
+        public async Task UpdateName(Guid petId, Guid organisationId, String name, String reason, CancellationToken cancellationToken)
+        {
+            var pet = await _petRepository.GetAsync(petId: petId, organisation: (Organisation) organisationId, cancellationToken: cancellationToken);
+
+            if (pet is null)
+                throw new PetNotFoundException(petId, organisationId);
+            
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Изменить пол у питомца
+        /// </summary>
+        /// <param name="petId"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="gender">Новый пол питомца</param>
+        /// <param name="cancellationToken"></param>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="PetNotFoundException"></exception>
+        /// <returns></returns>
+        public async Task SetGender(Guid petId, Guid organisationId, PetGender gender, CancellationToken cancellationToken)
+        {
+            var pet = await _petRepository.GetAsync(petId: petId, organisation: (Organisation) organisationId, cancellationToken: cancellationToken);
+
+            if (pet is null)
+                throw new PetNotFoundException(petId, organisationId);
+            
+            throw new NotImplementedException();
         }
     }
 }

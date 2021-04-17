@@ -5,9 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Pets.Domain.Pet.Entity;
 using Pets.Types;
 
+using Rabbita.Entity;
+using Rabbita.Entity.FluentExtensions;
+
 namespace Pets.Infrastructure.Pet
 {
-    public sealed class PetDbContext : DbContext
+    public sealed class PetDbContext : PersistentMessagingDbContext
     {
         public PetDbContext(DbContextOptions<PetDbContext> options) : base(options)
         {
@@ -69,6 +72,8 @@ namespace Pets.Infrastructure.Pet
                     .IsRequired();
                 builder.Property(_ => _.CreateDate)
                     .IsRequired();
+                
+                builder.IsEvents(_ => _.Events);
 
                 builder.Property(_ => _.ConcurrencyTokens)
                     .IsConcurrencyToken()

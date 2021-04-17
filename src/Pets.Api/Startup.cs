@@ -134,7 +134,8 @@ namespace Pets.Api
 
             #region pet
 
-            services.AddScoped<Domain.Pet.IPetCreateService, Domain.Pet.PetCreateService>();
+            services.AddScoped<Domain.Pet.IPetCreateService, Domain.Pet.PetService>();
+            services.AddScoped<Domain.Pet.IPetUpdateService, Domain.Pet.PetService>();
             services.AddScoped<Domain.Pet.IPetRepository, Infrastructure.Pet.PetRepository>();
             services.AddDbContextPool<Infrastructure.Pet.PetDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Pets")); });
 
