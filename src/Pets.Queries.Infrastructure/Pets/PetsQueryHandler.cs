@@ -62,7 +62,8 @@ namespace Pets.Queries.Infrastructure.Pets
                     mdBody: _.MdBody,
                     type: _.Type,
                     gender: _.Gender,
-                    updateDate: _.UpdateDate
+                    updateDate: _.UpdateDate,
+                    animalId: _.AnimalId
                 ))
             };
         }
@@ -94,7 +95,8 @@ namespace Pets.Queries.Infrastructure.Pets
                 mdBody: pet.MdBody,
                 type: pet.Type,
                 gender: pet.Gender,
-                updateDate: pet.UpdateDate
+                updateDate: pet.UpdateDate,
+                animalId: pet.AnimalId
             );
         }
     }

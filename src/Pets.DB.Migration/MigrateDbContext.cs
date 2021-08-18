@@ -150,6 +150,8 @@ namespace Pets.DB.Migrations
                     .HasDefaultValue(PetGender.Unset)
                     .HasMaxLength(64)
                     .IsRequired();
+                builder.Property(_ => _.AnimalId)
+                    .IsRequired(false);
 
                 builder.Property(_ => _.Name)
                     .HasMaxLength(512)

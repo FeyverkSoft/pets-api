@@ -16,6 +16,11 @@ namespace Pets.DB.Migrations.Entities
         /// </summary>
         public Guid OrganisationId { get; }
         public Organisation Organisation { get; }
+        
+        /// <summary>
+        /// 15 значный номер чипа
+        /// </summary>
+        public Decimal? AnimalId { get; }
 
         /// <summary>
         /// Имя животного

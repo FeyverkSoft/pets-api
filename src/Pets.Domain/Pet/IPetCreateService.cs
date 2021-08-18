@@ -26,11 +26,12 @@ namespace Pets.Domain.Pet
         /// <param name="beforePhotoLink">Ссылка на фотку До</param>
         /// <param name="mdShortBody">Краткий текст</param>
         /// <param name="mdBody">Длинный текст</param>
+        /// <param name="animalId">Уникальный идентификатор петомца в Animal-Id</param>
         /// <param name="cancellationToken">Токен признака отмены запроса</param>
         /// <exception cref="PetAlreadyExistsException"></exception>
         /// <exception cref="IdempotencyCheckException"></exception>
         /// <returns></returns>
         Task<Guid> Create(Guid petId, Guid organisationId, String name, PetGender gender, PetType type, PetState petState, String? afterPhotoLink,
-            String? beforePhotoLink, String? mdShortBody, String? mdBody, CancellationToken cancellationToken);
+            String? beforePhotoLink, String? mdShortBody, String? mdBody, Decimal? animalId, CancellationToken cancellationToken);
     }
 }

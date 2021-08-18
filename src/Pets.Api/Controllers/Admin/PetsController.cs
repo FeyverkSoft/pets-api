@@ -53,6 +53,7 @@ namespace Pets.Api.Controllers.Admin
                     beforePhotoLink: binding.BeforePhotoLink,
                     mdShortBody: binding.MdShortBody,
                     mdBody: binding.MdBody,
+                    animalId: binding.AnimalId,
                     cancellationToken: cancellationToken);
             }
             catch (IdempotencyCheckException e)
@@ -79,7 +80,7 @@ namespace Pets.Api.Controllers.Admin
         /// <returns></returns>
         [HttpPatch("{petId:guid}")]
         [ProducesResponseType(typeof(PetView), 200)]
-        public async Task<IActionResult> Get(
+        public async Task<IActionResult> Patch(
             [FromRoute] Guid petId,
             [FromServices] IQueryProcessor processor,
             [FromServices] IPetUpdateService petUpdateService,
@@ -95,6 +96,124 @@ namespace Pets.Api.Controllers.Admin
                     beforePhotoLink: binding.BeforePhotoLink,
                     mdShortBody: binding.MdShortBody,
                     mdBody: binding.MdBody,
+                    cancellationToken: cancellationToken);
+            }
+            catch (NotFoundException e)
+            {
+                return Conflict(new ProblemDetails
+                {
+                    Status = (Int32) HttpStatusCode.NotFound,
+                    Type = "pet_not_found",
+                    Detail = e.Message,
+                });
+            }
+
+            return Ok(await processor.Process<GetPetQuery, PetView?>(new GetPetQuery(
+                organisationId: User.GetOrganisationId(),
+                petId: petId
+            ), cancellationToken));
+        }
+        
+        /// <summary>
+        /// Update pet name
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="petId"></param>
+        /// <returns></returns>
+        [HttpPatch("{petId:guid}")]
+        [ProducesResponseType(typeof(PetView), 200)]
+        public async Task<IActionResult> PatchName(
+            [FromRoute] Guid petId,
+            [FromServices] IQueryProcessor processor,
+            [FromServices] IPetUpdateService petUpdateService,
+            [FromBody] PatchNamePetBinding binding,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await petUpdateService.UpdateName(
+                    petId: petId,
+                    organisationId: HttpContext.GetOrganisationId(),
+                    name: binding.Name,
+                    reason: binding.Reason,
+                    cancellationToken: cancellationToken);
+            }
+            catch (NotFoundException e)
+            {
+                return Conflict(new ProblemDetails
+                {
+                    Status = (Int32) HttpStatusCode.NotFound,
+                    Type = "pet_not_found",
+                    Detail = e.Message,
+                });
+            }
+
+            return Ok(await processor.Process<GetPetQuery, PetView?>(new GetPetQuery(
+                organisationId: User.GetOrganisationId(),
+                petId: petId
+            ), cancellationToken));
+        }
+        
+        /// <summary>
+        /// Update pet gender
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="petId"></param>
+        /// <returns></returns>
+        [HttpPatch("{petId:guid}")]
+        [ProducesResponseType(typeof(PetView), 200)]
+        public async Task<IActionResult> UpdateGender(
+            [FromRoute] Guid petId,
+            [FromServices] IQueryProcessor processor,
+            [FromServices] IPetUpdateService petUpdateService,
+            [FromBody] UpdateGenderPetBinding binding,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await petUpdateService.SetGender(
+                    petId: petId,
+                    organisationId: HttpContext.GetOrganisationId(),
+                    gender: binding.Gender,
+                    cancellationToken: cancellationToken);
+            }
+            catch (NotFoundException e)
+            {
+                return Conflict(new ProblemDetails
+                {
+                    Status = (Int32) HttpStatusCode.NotFound,
+                    Type = "pet_not_found",
+                    Detail = e.Message,
+                });
+            }
+
+            return Ok(await processor.Process<GetPetQuery, PetView?>(new GetPetQuery(
+                organisationId: User.GetOrganisationId(),
+                petId: petId
+            ), cancellationToken));
+        }
+        
+        /// <summary>
+        /// Update pet state
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="petId"></param>
+        /// <returns></returns>
+        [HttpPatch("{petId:guid}")]
+        [ProducesResponseType(typeof(PetView), 200)]
+        public async Task<IActionResult> UpdateStatus(
+            [FromRoute] Guid petId,
+            [FromServices] IQueryProcessor processor,
+            [FromServices] IPetUpdateService petUpdateService,
+            [FromBody] UpdateStatusPetBinding binding,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await petUpdateService.SetStatus(
+                    petId: petId,
+                    organisationId: HttpContext.GetOrganisationId(),
+                    state: binding.State,
                     cancellationToken: cancellationToken);
             }
             catch (NotFoundException e)

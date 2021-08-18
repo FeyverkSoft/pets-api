@@ -27,6 +27,7 @@ select
     p.MdBody,
     p.Type,
     p.Gender,
+    p.AnimalId,
     p.UpdateDate
 from `Pet` p
 where 1 = 1
@@ -40,6 +41,11 @@ limit @Limit offset @Offset
 ";
 
         public Guid Id { get; }
+        
+        /// <summary>
+        /// Идентификтор чипа пета
+        /// </summary>
+        public Decimal? AnimalId { get; }
 
         /// <summary>
         /// Имя животного

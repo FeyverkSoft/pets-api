@@ -60,6 +60,8 @@ namespace Pets.Infrastructure.Pet
                 builder.Property(_ => _.MdShortBody)
                     .HasMaxLength(512)
                     .IsRequired(false);
+                builder.Property(_ => _.AnimalId)
+                    .IsRequired(false);
 
                 builder.Property(_ => _.Organisation)
                     .HasColumnName("OrganisationId")

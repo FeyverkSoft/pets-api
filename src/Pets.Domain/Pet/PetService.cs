@@ -40,6 +40,7 @@ namespace Pets.Domain.Pet
         /// <param name="beforePhotoLink">Ссылка на фотку До</param>
         /// <param name="mdShortBody">Краткий текст</param>
         /// <param name="mdBody">Длинный текст</param>
+        /// <param name="animalId">Уникальный идентификатор петомца в Animal-Id</param>
         /// <param name="cancellationToken">Токен признака отмены запроса</param>
         /// <exception cref="PetAlreadyExistsException"></exception>
         /// <exception cref="IdempotencyCheckException"></exception>
@@ -55,6 +56,7 @@ namespace Pets.Domain.Pet
             String? beforePhotoLink,
             String? mdShortBody,
             String? mdBody,
+            Decimal? animalId,
             CancellationToken cancellationToken)
         {
             var pet = await _petRepository.GetAsync(petId: petId, organisation: (Organisation) organisationId, cancellationToken: cancellationToken);
@@ -64,6 +66,7 @@ namespace Pets.Domain.Pet
                 if (pet.Gender != gender ||
                     pet.Type != type ||
                     pet.PetState != petState ||
+                    pet.AnimalId != animalId ||
                     !name.Equals(pet.Name, StringComparison.InvariantCultureIgnoreCase) ||
                     (mdShortBody is not null && !mdShortBody.Equals(pet.MdShortBody, StringComparison.InvariantCultureIgnoreCase)) ||
                     (mdBody is not null && !mdBody.Equals(pet.MdBody, StringComparison.InvariantCultureIgnoreCase))
@@ -85,6 +88,7 @@ namespace Pets.Domain.Pet
                     beforePhotoLink: beforePhotoLink,
                     mdShortBody: mdShortBody,
                     mdBody: mdBody,
+                    animalId: animalId,
                     createDate: _dateTimeGetter.Get(),
                     updateDate: _dateTimeGetter.Get()),
                 cancellationToken: cancellationToken
@@ -145,8 +149,17 @@ namespace Pets.Domain.Pet
 
             if (pet is null)
                 throw new PetNotFoundException(petId, organisationId);
-            
-            throw new NotImplementedException();
+
+            pet.ChangePetName(
+                newName: name,
+                reason: reason,
+                updateDate: _dateTimeGetter.Get()
+            );
+
+            await _petRepository.SaveAsync(
+                pet: pet,
+                cancellationToken: cancellationToken
+            );
         }
 
         /// <summary>
@@ -165,8 +178,42 @@ namespace Pets.Domain.Pet
 
             if (pet is null)
                 throw new PetNotFoundException(petId, organisationId);
-            
-            throw new NotImplementedException();
+
+            pet.ChangePetGender(
+                gender: gender,
+                updateDate: _dateTimeGetter.Get()
+            );
+
+            await _petRepository.SaveAsync(
+                pet: pet,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        /// <summary>
+        /// Изменить статус питомца
+        /// </summary>
+        /// <param name="petId"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="gender"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task SetStatus(Guid petId, Guid organisationId, PetState state, CancellationToken cancellationToken)
+        {
+            var pet = await _petRepository.GetAsync(petId: petId, organisation: (Organisation) organisationId, cancellationToken: cancellationToken);
+
+            if (pet is null)
+                throw new PetNotFoundException(petId, organisationId);
+
+            pet.ChangePetStatus(
+                state: state,
+                updateDate: _dateTimeGetter.Get()
+            );
+
+            await _petRepository.SaveAsync(
+                pet: pet,
+                cancellationToken: cancellationToken
+            );
         }
     }
 }

@@ -16,6 +16,11 @@ namespace Pets.Domain.Pet.Entity
         public Guid Id { get; }
 
         /// <summary>
+        /// 15 значный номер чипа
+        /// </summary>
+        public Decimal? AnimalId { get; private set; }
+
+        /// <summary>
         /// Организация которой принадлежит животное
         /// </summary>
         public Organisation Organisation { get; }
@@ -23,32 +28,32 @@ namespace Pets.Domain.Pet.Entity
         /// <summary>
         /// Имя животного
         /// </summary>
-        public String Name { get; }
+        public String Name { get; private set; }
 
         /// <summary>
         /// Ссфлка на фотку до
         /// </summary>
-        public String? BeforePhotoLink { get; set; }
+        public String? BeforePhotoLink { get; private set; }
 
         /// <summary>
         /// Ссылка на фотку после
         /// </summary>
-        public String? AfterPhotoLink { get; set; }
+        public String? AfterPhotoLink { get; private set; }
 
         /// <summary>
         /// Состояние животного
         /// </summary>
-        public PetState PetState { get; }
+        public PetState PetState { get; private set; }
 
         /// <summary>
         /// Тело в markdown
         /// </summary>
-        public String? MdShortBody { get; set; }
+        public String? MdShortBody { get; private set; }
 
         /// <summary>
         /// Тело в markdown
         /// </summary>
-        public String? MdBody { get; set; }
+        public String? MdBody { get; private set; }
 
         /// <summary>
         /// Pet type
@@ -60,9 +65,9 @@ namespace Pets.Domain.Pet.Entity
         /// Pet type
         /// Мальчик/Девочка/Неизвестно
         /// </summary>
-        public PetGender Gender { get; }
+        public PetGender Gender { get; private set; }
 
-        public DateTime UpdateDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdateDate { get; private set; } = DateTime.UtcNow;
         public DateTime CreateDate { get; } = DateTime.UtcNow;
 
         /// <summary>
@@ -90,7 +95,8 @@ namespace Pets.Domain.Pet.Entity
             String? mdShortBody,
             String? mdBody,
             DateTime createDate,
-            DateTime updateDate
+            DateTime updateDate,
+            Decimal? animalId
         )
         {
             Id = petId;
@@ -105,6 +111,7 @@ namespace Pets.Domain.Pet.Entity
             Organisation = organisation;
             CreateDate = createDate;
             UpdateDate = updateDate;
+            AnimalId = animalId;
         }
 
         /// <summary>
@@ -166,6 +173,72 @@ namespace Pets.Domain.Pet.Entity
             }
 
             UpdateDate = date;
+        }
+
+        public void ChangePetName(String newName, String reason, DateTime updateDate)
+        {
+            if (!String.IsNullOrEmpty(Name) && Name.Equals(newName))
+                return;
+            if (String.IsNullOrEmpty(newName?.Trim()))
+                throw new InvalidOperationException("Incorrect new name");
+
+            Events.Add(new PetNameChanged(
+                petId: Id,
+                name: newName,
+                oldName: Name,
+                reason: reason,
+                date: updateDate)
+            );
+            Name = newName.Trim();
+            UpdateDate = updateDate;
+        }
+
+        public void ChangePetGender(PetGender gender, DateTime updateDate)
+        {
+            if (Gender == gender)
+                return;
+
+            Events.Add(new PetGenderChanged(
+                petId: Id,
+                gender: gender,
+                oldGender: Gender,
+                date: updateDate)
+            );
+
+            Gender = gender;
+            UpdateDate = updateDate;
+        }
+
+        public void ChangePetStatus(PetState state, DateTime updateDate)
+        {
+            if (PetState == state)
+                return;
+
+            Events.Add(new PetStateChanged(
+                petId: Id,
+                state: state,
+                oldState: PetState,
+                date: updateDate)
+            );
+
+            PetState = state;
+            UpdateDate = updateDate;
+        }
+
+        public void ChangeAnimalId(Decimal? animalId, DateTime updateDate)
+        {
+            if (AnimalId == animalId)
+                return;
+
+            Events.Add(new PetAnimalIdChanged(
+                petId: Id,
+                animalId: animalId,
+                oldAnimalId: animalId,
+                date: updateDate)
+            );
+
+            AnimalId = animalId;
+            UpdateDate = updateDate;
         }
     }
 }

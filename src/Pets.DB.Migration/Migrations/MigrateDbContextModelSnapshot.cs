@@ -207,6 +207,9 @@ namespace Pets.DB.Migrations.Migrations
                         .HasColumnType("varchar(512) CHARACTER SET utf8mb4")
                         .HasMaxLength(512);
 
+                    b.Property<decimal?>("AnimalId")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<string>("BeforePhotoLink")
                         .HasColumnType("varchar(512) CHARACTER SET utf8mb4")
                         .HasMaxLength(512);
@@ -341,7 +344,8 @@ namespace Pets.DB.Migrations.Migrations
                         .HasMaxLength(256);
 
                     b.Property<Guid>("OrganisationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasDefaultValue(new Guid("10000000-0000-4000-0000-000000000000"));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("varchar(512) CHARACTER SET utf8mb4")
@@ -441,9 +445,7 @@ namespace Pets.DB.Migrations.Migrations
                 {
                     b.HasOne("Pets.DB.Migrations.Entities.Organisation", "Organisation")
                         .WithMany()
-                        .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrganisationId");
                 });
 #pragma warning restore 612, 618
         }

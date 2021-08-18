@@ -53,5 +53,15 @@ namespace Pets.Domain.Pet
         /// <exception cref="PetNotFoundException"></exception>
         /// <returns></returns>
         Task SetGender(Guid petId, Guid organisationId, PetGender gender, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Изменить статус питомца
+        /// </summary>
+        /// <param name="petId"></param>
+        /// <param name="organisationId"></param>
+        /// <param name="state"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SetStatus(Guid petId, Guid organisationId, PetState state, CancellationToken cancellationToken);
     }
 }

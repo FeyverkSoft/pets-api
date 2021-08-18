@@ -54,10 +54,15 @@ namespace Pets.Queries.Pets
         public PetGender Gender { get; }
 
         public DateTime UpdateDate { get; }
+        
+        /// <summary>
+        /// Идентификтор чипа пета
+        /// </summary>
+        public Decimal? AnimalId { get; }
 
         public PetView(Guid id, String name, String? beforePhotoLink, String? afterPhotoLink, PetState petState, String mdShortBody, String? mdBody,
-            PetType type, PetGender gender, DateTime updateDate)
-            => (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, Gender, UpdateDate)
-                = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, gender, updateDate);
+            PetType type, PetGender gender, DateTime updateDate, Decimal? animalId)
+            => (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, Gender, UpdateDate, AnimalId)
+                = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, gender, updateDate, animalId);
     }
 }

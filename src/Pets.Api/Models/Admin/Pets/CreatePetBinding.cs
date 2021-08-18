@@ -12,6 +12,11 @@ namespace Pets.Api.Models.Admin.Pets
         /// Идентификатор питомца
         /// </summary>
         public Guid PetId { get; set; }
+        
+        /// <summary>
+        /// 15 значный ID чипа
+        /// </summary>
+        public Decimal? AnimalId { get; set;  }
 
         /// <summary>
         /// Имя пета
