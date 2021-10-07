@@ -120,7 +120,7 @@ namespace Pets.Api.Controllers.Admin
         /// <param name="cancellationToken"></param>
         /// <param name="petId"></param>
         /// <returns></returns>
-        [HttpPatch("{petId:guid}")]
+        [HttpPatch("{petId:guid}/name")]
         [ProducesResponseType(typeof(PetView), 200)]
         public async Task<IActionResult> PatchName(
             [FromRoute] Guid petId,
@@ -160,7 +160,7 @@ namespace Pets.Api.Controllers.Admin
         /// <param name="cancellationToken"></param>
         /// <param name="petId"></param>
         /// <returns></returns>
-        [HttpPatch("{petId:guid}")]
+        [HttpPatch("{petId:guid}/gender")]
         [ProducesResponseType(typeof(PetView), 200)]
         public async Task<IActionResult> UpdateGender(
             [FromRoute] Guid petId,
@@ -199,7 +199,7 @@ namespace Pets.Api.Controllers.Admin
         /// <param name="cancellationToken"></param>
         /// <param name="petId"></param>
         /// <returns></returns>
-        [HttpPatch("{petId:guid}")]
+        [HttpPatch("{petId:guid}/state")]
         [ProducesResponseType(typeof(PetView), 200)]
         public async Task<IActionResult> UpdateStatus(
             [FromRoute] Guid petId,
