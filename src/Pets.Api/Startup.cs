@@ -40,10 +40,11 @@ using MongoDB.Driver;
 
 using Pets.Domain.Authentication;
 using Pets.Domain.Documents;
-using Pets.Domain.Pet;
 using Pets.Infrastructure.Authentication;
 using Pets.Infrastructure.FileStoreService;
 using Pets.Infrastructure.Markdown;
+
+using Rabbita.Entity.FluentExtensions;
 
 namespace Pets.Api
 {
@@ -172,11 +173,11 @@ namespace Pets.Api
             services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
 
             services
-                .AddRabbitaSerializer() /*
+                .AddRabbitaSerializer() 
                 .AddRabbitaPersistent(
                     options => { },
                     options => { options.UseMySql(Configuration.GetConnectionString("Pets")); }
-                )*/;
+                );
 
             services.AddRabbitaDbPersistentMigrator(options =>
             {
