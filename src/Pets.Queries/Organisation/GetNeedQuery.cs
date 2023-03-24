@@ -1,22 +1,20 @@
-﻿using System;
+﻿namespace Pets.Queries.Organisation;
+
 using System.Collections.Generic;
 
-using Query.Core;
-
-namespace Pets.Queries.Organisation
+/// <summary>
+///     Запрос на получение списка нужд
+/// </summary>
+public sealed class GetNeedQuery : IRequest<IEnumerable<NeedView>>
 {
-    /// <summary>
-    /// Запрос на получение списка нужд
-    /// </summary>
-    public sealed class GetNeedQuery : IQuery<IEnumerable<NeedView>>
+    public GetNeedQuery(Guid organisationId)
     {
-        /// <summary>
-        /// Организация
-        /// </summary>
-        public Guid OrganisationId { get; }
-
-        public GetNeedQuery(Guid organisationId)
-            => (OrganisationId)
-                = (organisationId);
+        OrganisationId
+            = organisationId;
     }
+
+    /// <summary>
+    ///     Организация
+    /// </summary>
+    public Guid OrganisationId { get; }
 }

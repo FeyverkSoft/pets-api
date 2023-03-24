@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Pets.Domain.Authentication.Exceptions;
 
-namespace Pets.Domain.Authentication.Exceptions
+public sealed class UnauthorizedException : Exception
 {
-    public sealed class UnauthorizedException : Exception
-    {
-    }
 }

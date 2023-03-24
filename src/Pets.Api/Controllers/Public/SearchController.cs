@@ -1,41 +1,36 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Pets.Api.Controllers.Public;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Pets.Api.Models.Public.Search;
-using Pets.Queries;
-using Pets.Queries.Search;
+using Models.Public.Search;
 
-using Query.Core;
+using Queries;
+using Queries.Search;
 
-namespace Pets.Api.Controllers.Public
+[Route("[controller]")]
+[ApiController]
+[AllowAnonymous]
+public sealed class SearchController : ControllerBase
 {
-    [Route("[controller]")]
-    [ApiController]
-    [AllowAnonymous]
-    public sealed class SearchController : ControllerBase
+    /// <summary>
+    ///     Search documents and pets
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("{OrganisationId}")]
+    [ProducesResponseType(typeof(Page<SearchView>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Get(
+        [FromServices] IMediator processor,
+        [FromQuery] SearchBinding binding,
+        CancellationToken cancellationToken)
     {
-        /// <summary>
-        /// Search documents and pets
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [HttpGet("{OrganisationId}")]
-        [ProducesResponseType(typeof(Page<SearchView>), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor processor,
-            [FromQuery] SearchBinding binding,
-            CancellationToken cancellationToken)
-        {
-            return Ok(await processor.Process<SearchQuery,Page<SearchView>>(new SearchQuery(
-                organisationId: binding.OrganisationId,
-                query: binding.Query,
-                limit: binding.Limit,
-                offset: binding.Offset
-                ), cancellationToken));
-        }
+        return Ok(await processor.Send(new SearchQuery(
+            binding.OrganisationId,
+            binding.Query,
+            limit: binding.Limit,
+            offset: binding.Offset
+        ), cancellationToken));
     }
 }

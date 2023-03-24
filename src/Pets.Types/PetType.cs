@@ -1,8 +1,7 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum PetType
 {
-    public enum PetType
-    {
-        Dog,
-        Cat
-    }
+    Dog,
+    Cat
 }

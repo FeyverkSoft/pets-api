@@ -1,20 +1,19 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum ResourceState
 {
-    public enum ResourceState
-    {
-        /// <summary>
-        /// Больше не требуется
-        /// </summary>
-        Complete,
+    /// <summary>
+    ///     Больше не требуется
+    /// </summary>
+    Complete,
 
-        /// <summary>
-        /// Активен сбор
-        /// </summary>
-        Active,
+    /// <summary>
+    ///     Активен сбор
+    /// </summary>
+    Active,
 
-        /// <summary>
-        /// Срочно необходимо
-        /// </summary>
-        Urgently
-    }
+    /// <summary>
+    ///     Срочно необходимо
+    /// </summary>
+    Urgently
 }

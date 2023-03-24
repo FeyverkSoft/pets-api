@@ -1,8 +1,7 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum GrantType
 {
-    public enum GrantType
-    {
-            password,
-            refresh_token
-    }
+    password,
+    refresh_token
 }

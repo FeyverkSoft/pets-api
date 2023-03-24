@@ -1,10 +1,10 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.News.Entity;
 
-namespace Pets.Queries.Infrastructure.News.Entity
+using System;
+
+internal sealed class NewsDto
 {
-    internal sealed class NewsDto
-    {
-        internal static readonly String Sql = @"
+    internal static readonly String Sql = @"
 select 
     count(n.Id)   
 from `News` n
@@ -42,45 +42,44 @@ order by
     n.CreateDate desc
 limit @Limit offset @Offset";
 
-        /// <summary>
-        /// Идентификатор новости
-        /// </summary>
-        public Guid Id { get; }
+    /// <summary>
+    ///     Идентификатор новости
+    /// </summary>
+    public Guid Id { get; }
 
-        /// <summary>
-        /// Теги новости
-        /// JSON массив строк
-        /// </summary>
-        public String Tags { get; }
+    /// <summary>
+    ///     Теги новости
+    ///     JSON массив строк
+    /// </summary>
+    public String Tags { get; }
 
-        /// <summary>
-        /// Ссылка на картинку шапки
-        /// </summary>
-        public String ImgLink { get; }
+    /// <summary>
+    ///     Ссылка на картинку шапки
+    /// </summary>
+    public String ImgLink { get; }
 
-        /// <summary>
-        /// Предпросмотр новости в markdown
-        /// </summary>
-        public String MdShortBody { get; }
+    /// <summary>
+    ///     Предпросмотр новости в markdown
+    /// </summary>
+    public String MdShortBody { get; }
 
-        /// <summary>
-        /// Тело в markdown
-        /// </summary>
-        public String MdBody { get; }
+    /// <summary>
+    ///     Тело в markdown
+    /// </summary>
+    public String MdBody { get; }
 
-        /// <summary>
-        /// Дата публикации новости
-        /// </summary>
-        public DateTime CreateDate { get; }
+    /// <summary>
+    ///     Дата публикации новости
+    /// </summary>
+    public DateTime CreateDate { get; }
 
-        /// <summary>
-        /// Json
-        /// </summary>
-        public String LinkedPets { get; set; }
+    /// <summary>
+    ///     Json
+    /// </summary>
+    public String LinkedPets { get; set; }
 
-        /// <summary>
-        /// Заголовок новости
-        /// </summary>
-        public String Title { get; set; }
-    }
+    /// <summary>
+    ///     Заголовок новости
+    /// </summary>
+    public String Title { get; set; }
 }

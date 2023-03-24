@@ -1,12 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Pets.Domain.Authentication;
 
-namespace Pets.Domain.Authentication
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        Task<User> Find(String? login, CancellationToken cancellationToken);
-        Task<User> Get(Guid userId, CancellationToken cancellationToken);
-    }
+    Task<User> Find(String? login, CancellationToken cancellationToken);
+    Task<User> Get(Guid userId, CancellationToken cancellationToken);
 }

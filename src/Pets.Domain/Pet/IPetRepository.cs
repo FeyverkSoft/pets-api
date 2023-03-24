@@ -1,31 +1,26 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Pets.Domain.Pet;
 
-using Pets.Domain.Pet.Entity;
+using Entity;
 
-namespace Pets.Domain.Pet
+/// <summary>
+///     Репозиторий питомец
+/// </summary>
+public interface IPetRepository
 {
     /// <summary>
-    /// Репозиторий питомец
+    ///     Получить питомца по его id
     /// </summary>
-    public interface IPetRepository
-    {
-        /// <summary>
-        /// Получить питомца по его id
-        /// </summary>
-        /// <param name="petId"></param>
-        /// <param name="organisation"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<Entity.Pet?> GetAsync(Guid petId, Organisation organisation, CancellationToken cancellationToken);
+    /// <param name="petId"></param>
+    /// <param name="organisation"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Pet?> GetAsync(Guid petId, Organisation organisation, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Сохранить питомца
-        /// </summary>
-        /// <param name="pet"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task SaveAsync(Entity.Pet pet, CancellationToken cancellationToken);
-    }
+    /// <summary>
+    ///     Сохранить питомца
+    /// </summary>
+    /// <param name="pet"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task SaveAsync(Pet pet, CancellationToken cancellationToken);
 }

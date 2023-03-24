@@ -1,48 +1,43 @@
-﻿using System;
+﻿namespace Pets.Api.Controllers.Public;
+
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Pets.Api.Models.Public.Page;
-using Pets.Queries.Pages;
+using Models.Public.Page;
 
-using Query.Core;
+using Queries.Pages;
 
-namespace Pets.Api.Controllers.Public
+[Route("[controller]")]
+[ApiController]
+[AllowAnonymous]
+[ProducesResponseType(typeof(ProblemDetails), 400)]
+public sealed class PageController : ControllerBase
 {
-    [Route("[controller]")]
-    [ApiController]
-    [AllowAnonymous]
-    [ProducesResponseType(typeof(ProblemDetails), 400)]
-    public sealed class PageController : ControllerBase
+    /// <summary>
+    ///     Get page
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(PageView), 200)]
+    [ProducesResponseType(typeof(ProblemDetails), 404)]
+    public async Task<IActionResult> Get(
+        [FromServices] IMediator processor,
+        [FromQuery] GetPageBinding binding,
+        CancellationToken cancellationToken)
     {
-        /// <summary>
-        /// Get page
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(PageView), 200)]
-        [ProducesResponseType(typeof(ProblemDetails), 404)]
-        public async Task<IActionResult> Get(
-            [FromServices] IQueryProcessor processor,
-            [FromQuery] GetPageBinding binding,
-            CancellationToken cancellationToken)
-        {
-            var result = await processor.Process<GetPageQuery, PageView?>(new GetPageQuery(
-                organisationId: binding.OrganisationId,
-                page: binding.Page
-            ), cancellationToken);
-            if (result == null)
-                return NotFound(new ProblemDetails
-                {
-                    Status = (Int32)HttpStatusCode.NotFound,
-                    Type = "page_not_found"
-                });
-            return Ok(result);
-        }
+        var result = await processor.Send(new GetPageQuery(
+            binding.OrganisationId,
+            binding.Page
+        ), cancellationToken);
+        if (result == null)
+            return NotFound(new ProblemDetails
+            {
+                Status = (Int32)HttpStatusCode.NotFound,
+                Type = "page_not_found"
+            });
+        return Ok(result);
     }
 }

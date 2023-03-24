@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Pets.Helpers
+﻿namespace Pets.Helpers
 {
+    using System;
+
     public static class DateTimeHelper
     {
         public static DateTime Trunc(this DateTime date, DateTruncType type)

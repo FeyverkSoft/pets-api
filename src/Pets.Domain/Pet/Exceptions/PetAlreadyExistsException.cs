@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Pets.Domain.Pet.Exceptions;
 
-using Pets.Types.Exceptions;
+using Types.Exceptions;
 
-namespace Pets.Domain.Pet.Exceptions
+/// <summary>
+///     Питомец уже существует но с отличающимся набором полей, проверка идемпотентности не прошла
+/// </summary>
+public sealed class PetAlreadyExistsException : IdempotencyCheckException
 {
-    /// <summary>
-    /// Питомец уже существует но с отличающимся набором полей, проверка идемпотентности не прошла
-    /// </summary>
-    public sealed class PetAlreadyExistsException : IdempotencyCheckException
+    public PetAlreadyExistsException(Guid petId) : base($"Pet with id: {petId} and not matching data already exists;")
     {
-        public PetAlreadyExistsException(Guid petId) : base($"Pet with id: {petId} and not matching data already exists;")
-        {
-        }
     }
 }

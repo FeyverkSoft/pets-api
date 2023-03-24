@@ -1,17 +1,20 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
+    using System;
+
     /// <summary>
-    /// Обёртка над датой и временем для удобства покрытия тестами
+    ///     Обёртка над датой и временем для удобства покрытия тестами
     /// </summary>
     public interface IDateTimeGetter
     {
         /// <summary>
-        /// Получить текущую дату и время
+        ///     Получить текущую дату и время
         /// </summary>
         /// <returns></returns>
-        public DateTime Get() => DateTime.UtcNow;
+        public DateTime Get()
+        {
+            return DateTime.UtcNow;
+        }
     }
 
     public sealed class DefaultDateTimeGetter : IDateTimeGetter

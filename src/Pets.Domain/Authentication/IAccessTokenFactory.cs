@@ -1,10 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Pets.Domain.Authentication;
 
-namespace Pets.Domain.Authentication
+public interface IAccessTokenFactory
 {
-    public interface IAccessTokenFactory
-    {
-        Task<AccessToken> Create(User user, CancellationToken cancellationToken);
-    }
+    Task<AccessToken> Create(User user, CancellationToken cancellationToken);
 }

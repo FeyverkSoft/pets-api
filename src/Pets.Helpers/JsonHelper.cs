@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-
-namespace Pets.Helpers
+﻿namespace Pets.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using Newtonsoft.Json;
+
     public static class JsonHelper
     {
         public static String ToJson(this Object obj)
@@ -25,7 +26,7 @@ namespace Pets.Helpers
         }
 
         /// <summary>
-        /// Преобразовать строку сожержащую JSON в объект
+        ///     Преобразовать строку сожержащую JSON в объект
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
@@ -39,13 +40,13 @@ namespace Pets.Helpers
         }
 
         /// <summary>
-        /// Преобразовать строку сожержащую JSON в объект
+        ///     Преобразовать строку сожержащую JSON в объект
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
         public static T ParseJson<T>(this String json)
         {
-            if (string.IsNullOrEmpty(json))
+            if (String.IsNullOrEmpty(json))
                 return default;
             var serializer = new JsonSerializer
             {
@@ -78,5 +79,4 @@ namespace Pets.Helpers
             }
         }
     }
-
 }

@@ -1,44 +1,44 @@
-﻿using System;
+﻿namespace Pets.Domain.Authentication;
 
-namespace Pets.Domain.Authentication
+/// <summary>
+///     сущность токенов для перевыпуска JWT токена
+/// </summary>
+public sealed class RefreshToken
 {
-    /// <summary>
-    /// сущность токенов для перевыпуска JWT токена
-    /// </summary>
-    public sealed class RefreshToken
+    protected RefreshToken()
     {
-        /// <summary>
-        /// id токена обновления сессии
-        /// </summary>
-        public String Id { get; }
+    }
 
-        /// <summary>
-        /// id юзера которому принадлежит токен
-        /// </summary>
-        public Guid UserId { get; }
+    public RefreshToken(String id, Guid userId, String ip, DateTime expireDate)
+    {
+        Id = id;
+        IpAddress = ip;
+        UserId = userId;
+        ExpireDate = expireDate;
+    }
 
-        /// <summary>
-        /// Ip которому был выдан токен
-        /// </summary>
-        public String IpAddress { get; }
+    /// <summary>
+    ///     id токена обновления сессии
+    /// </summary>
+    public String Id { get; }
 
-        /// <summary>
-        /// Дата стухания
-        /// </summary>
-        public DateTime ExpireDate { get; private set; }
+    /// <summary>
+    ///     id юзера которому принадлежит токен
+    /// </summary>
+    public Guid UserId { get; }
 
-        protected RefreshToken(){}
-        public RefreshToken(String id, Guid userId, String ip, DateTime expireDate)
-        {
-            Id = id;
-            IpAddress = ip;
-            UserId = userId;
-            ExpireDate = expireDate;
-        }
+    /// <summary>
+    ///     Ip которому был выдан токен
+    /// </summary>
+    public String IpAddress { get; }
 
-        public void Terminate()
-        {
-            ExpireDate = DateTime.UtcNow.AddSeconds(15);// дадим 10 секунд на просраться, запросам с фронт систем.
-        }
+    /// <summary>
+    ///     Дата стухания
+    /// </summary>
+    public DateTime ExpireDate { get; private set; }
+
+    public void Terminate()
+    {
+        ExpireDate = DateTime.UtcNow.AddSeconds(15); // дадим 10 секунд на просраться, запросам с фронт систем.
     }
 }

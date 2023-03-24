@@ -1,9 +1,8 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum ContactType
 {
-    public enum ContactType
-    {
-        Phone,
-        Email,
-        Instagram
-    }
+    Phone,
+    Email,
+    Instagram
 }

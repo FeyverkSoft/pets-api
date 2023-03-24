@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 #if NETSTANDARD2_0 || NETSTANDARD2_1 || NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP2_2 || NETCOREAPP3_0 || NETCOREAPP3_1
-
 using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
