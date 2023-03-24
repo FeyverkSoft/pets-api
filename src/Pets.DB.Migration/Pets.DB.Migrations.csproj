@@ -3,29 +3,28 @@
     <PropertyGroup>
         <LangVersion>default</LangVersion>
         <Nullable>enable</Nullable>
-        <ApplicationIcon/>
+        <ApplicationIcon />
         <OutputType>Library</OutputType>
-        <StartupObject/>
+        <StartupObject />
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
         <!--<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.18" />-->
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.15">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Pets.Types\Pets.Types.csproj"/>
+        <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
     </ItemGroup>
 
 </Project>

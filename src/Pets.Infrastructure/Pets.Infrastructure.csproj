@@ -11,19 +11,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8"/>
-        <PackageReference Include="FeyverkSoft.Rabbita.Entity" Version="0.0.8"/>
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.5"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5"/>
-        <PackageReference Include="MongoDB.Driver.GridFS" Version="2.15.1"/>
-        <PackageReference Include="MarkdownSharp" Version="2.0.5"/>
+        <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
+        <PackageReference Include="FeyverkSoft.Rabbita.Entity" Version="0.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.15" />
+        <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.0" />
+        <PackageReference Include="MarkdownSharp" Version="2.0.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Pets.Domain\Pets.Domain.csproj"/>
-        <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj"/>
+        <ProjectReference Include="..\Pets.Domain\Pets.Domain.csproj" />
+        <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj" />
     </ItemGroup>
 
 </Project>
