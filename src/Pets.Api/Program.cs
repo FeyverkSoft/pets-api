@@ -34,7 +34,7 @@ static void ConfigWebHost(WebApplicationBuilder builder)
         .AddEnvironmentVariables();
 
     builder.WebHost.ConfigureKestrel((context, options) => { options.AddServerHeader = false; })
-        .UseUrls(builder.Configuration["server.urls"] ?? "http://*:80");
+        .UseUrls(builder.Configuration["server:urls"] ?? "http://*:80");
 }
 
 static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

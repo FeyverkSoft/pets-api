@@ -1,8 +1,13 @@
 ﻿namespace Pets.Queries.Pets;
 
+using Core.Mediatr;
+
 /// <summary>
 ///     Запрос на получение списка петомцев
 /// </summary>
+[MediatRDedublicateExecution(
+    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(PetId)},
+    ThrottlingTimeMs = 2000)]
 public sealed class GetPetQuery : IRequest<PetView?>
 {
     public GetPetQuery(Guid organisationId, Guid petId)

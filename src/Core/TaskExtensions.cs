@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
 
     /// <summary>
     ///     Расширение для работы со задачами

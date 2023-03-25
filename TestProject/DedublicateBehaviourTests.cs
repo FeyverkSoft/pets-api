@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Core.Mediatr;
+
 using FluentAssertions;
 
 using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
-
-using Pets.Infrastructure.Mediatr;
 
 using Xunit;
 

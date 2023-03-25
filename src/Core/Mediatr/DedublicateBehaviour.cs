@@ -1,16 +1,12 @@
-﻿namespace Pets.Infrastructure.Mediatr;
-
-using System.Reflection;
-using System.Text;
-using System.Threading;
+﻿namespace Core.Mediatr;
 
 using MediatR;
 
-public sealed class CommandDedublicateBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public sealed class MediatRDedublicateBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
     private readonly IMediatorThrottlingService _mediatorThrottlingService;
 
-    public CommandDedublicateBehaviour(IMediatorThrottlingService mediatorThrottlingService)
+    public MediatRDedublicateBehaviour(IMediatorThrottlingService mediatorThrottlingService)
     {
         _mediatorThrottlingService = mediatorThrottlingService;
     }
@@ -20,7 +16,8 @@ public sealed class CommandDedublicateBehaviour<TRequest, TResponse> : IPipeline
         var type = typeof(TRequest);
         var attr = type.GetCustomAttribute<MediatRDedublicateExecutionAttribute>();
 
-        if (attr is null) return await next();
+        if (attr is null) 
+            return await next();
 
         var sb = new StringBuilder(type.FullName);
         if (!String.IsNullOrEmpty(attr.KeyPropertyName))
@@ -34,7 +31,8 @@ public sealed class CommandDedublicateBehaviour<TRequest, TResponse> : IPipeline
                     sb.Append(GetValue(type, propertyName, request));
         }
 
-        if (_mediatorThrottlingService.ReleaseLock(sb.ToString(), next, out var task, TimeSpan.FromMilliseconds(attr.ThrottlingTimeMs))) return await task;
+        if (_mediatorThrottlingService.ReleaseLock(sb.ToString(), next, out var task, TimeSpan.FromMilliseconds(attr.ThrottlingTimeMs))) 
+            return await task;
 
         return await task;
     }

@@ -19,11 +19,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Pets.Types\Pets.Types.csproj"/>
+        <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MediatR" Version="12.0.1"/>
+        <PackageReference Include="MediatR" Version="12.0.1" />
     </ItemGroup>
 
 </Project>

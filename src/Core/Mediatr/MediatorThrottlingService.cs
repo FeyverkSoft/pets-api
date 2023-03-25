@@ -1,4 +1,4 @@
-﻿namespace Pets.Infrastructure.Mediatr;
+﻿namespace Core.Mediatr;
 
 using MediatR;
 

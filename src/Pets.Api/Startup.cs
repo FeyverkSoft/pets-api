@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Authorization;
 
 using Core;
+using Core.Mediatr;
 
 using DB.Migrations;
 
@@ -21,7 +22,6 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Authentication;
 using Infrastructure.FileStoreService;
 using Infrastructure.Markdown;
-using Infrastructure.Mediatr;
 using Infrastructure.Pet;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;

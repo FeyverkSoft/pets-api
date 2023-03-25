@@ -1,8 +1,4 @@
-﻿namespace Pets.Infrastructure.Mediatr;
-
-using System.Threading;
-
-using MediatR;
+﻿namespace Core.Mediatr;
 
 /*
 public class OpenTracingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

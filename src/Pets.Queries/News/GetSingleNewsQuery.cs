@@ -1,8 +1,13 @@
 ﻿namespace Pets.Queries.News;
 
+using Core.Mediatr;
+
 /// <summary>
 ///     Получить единственную новость
 /// </summary>
+[MediatRDedublicateExecution(
+    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(NewsId) },
+    ThrottlingTimeMs = 2000)]
 public sealed class GetSingleNewsQuery : IRequest<NewsView?>
 {
     public GetSingleNewsQuery(Guid organisationId, Guid newsId)

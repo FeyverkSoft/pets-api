@@ -1,4 +1,4 @@
-﻿namespace Pets.Infrastructure.Mediatr;
+﻿namespace Core.Mediatr;
 
 using MediatR;
 
@@ -10,7 +10,7 @@ public static class DiExtensions
     public static IServiceCollection AddMediatorCommandDedublicateBehaviour(this IServiceCollection services)
     {
         services.TryAddSingleton<IMediatorThrottlingService, MediatorThrottlingService>();
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandDedublicateBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MediatRDedublicateBehaviour<,>));
         return services;
     }
 }

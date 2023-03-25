@@ -1,4 +1,4 @@
-﻿namespace Pets.Infrastructure.Mediatr;
+﻿namespace Core.Mediatr;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public sealed class MediatRDedublicateExecutionAttribute : Attribute
@@ -17,5 +17,5 @@ public sealed class MediatRDedublicateExecutionAttribute : Attribute
     ///     Название ключей
     ///     если задан KeyPropertyName, то это свойство игнорируется
     /// </summary>
-    public String[]? KeyPropertyNames { get; init; }
+    public  String[]? KeyPropertyNames { get; init; }
 }

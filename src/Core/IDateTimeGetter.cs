@@ -1,7 +1,5 @@
 ﻿namespace Core
 {
-    using System;
-
     /// <summary>
     ///     Обёртка над датой и временем для удобства покрытия тестами
     /// </summary>
