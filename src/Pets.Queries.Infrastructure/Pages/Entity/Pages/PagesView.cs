@@ -1,10 +1,10 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.Pages.Entity.Pages;
 
-namespace Pets.Queries.Infrastructure.Pages.Entity.Pages
+using System;
+
+internal sealed class PageView
 {
-    internal sealed class PageView
-    {
-        internal static readonly String Sql = @"
+    internal static readonly String Sql = @"
 select 
     p.Id,
     p.OrganisationId, 
@@ -17,23 +17,22 @@ and OrganisationId = @OrganisationId
 and Id = @PageId
 ";
 
-        public String Id { get; }
+    public String Id { get; }
 
-        /// <summary>
-        /// Id организации
-        /// </summary>
-        public Guid OrganisationId { get; }
+    /// <summary>
+    ///     Id организации
+    /// </summary>
+    public Guid OrganisationId { get; }
 
-        /// <summary>
-        /// Ссылка на фотку до
-        /// </summary>
-        public String ImgLink { get; }
+    /// <summary>
+    ///     Ссылка на фотку до
+    /// </summary>
+    public String ImgLink { get; }
 
-        /// <summary>
-        /// Тело в markdown
-        /// </summary>
-        public String? MdBody { get; }
+    /// <summary>
+    ///     Тело в markdown
+    /// </summary>
+    public String? MdBody { get; }
 
-        public DateTime UpdateDate { get; }
-    }
+    public DateTime UpdateDate { get; }
 }

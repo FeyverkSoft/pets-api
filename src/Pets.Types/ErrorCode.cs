@@ -1,12 +1,11 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum O2AuthErrorCode
 {
-    public enum O2AuthErrorCode
-    {
-        InvalidRequest,
-        InvalidClient,
-        InvalidGrant,
-        UnauthorizedClient,
-        UnsupportedGrantType,
-        InvalidScope
-    }
+    InvalidRequest,
+    InvalidClient,
+    InvalidGrant,
+    UnauthorizedClient,
+    UnsupportedGrantType,
+    InvalidScope
 }

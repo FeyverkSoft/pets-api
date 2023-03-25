@@ -1,9 +1,8 @@
-﻿using Pets.Types;
+﻿namespace Pets.Api.Models.Admin.Pets;
 
-namespace Pets.Api.Models.Admin.Pets
+using Types;
+
+public class UpdateStatusPetBinding
 {
-    public class UpdateStatusPetBinding
-    {
-        public PetState State { get; set; }
-    }
+    public PetState State { get; set; }
 }

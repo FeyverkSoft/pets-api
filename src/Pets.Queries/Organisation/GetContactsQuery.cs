@@ -1,22 +1,20 @@
-﻿using System;
+﻿namespace Pets.Queries.Organisation;
+
 using System.Collections.Generic;
 
-using Query.Core;
-
-namespace Pets.Queries.Organisation
+/// <summary>
+///     Запрос на получение списка контактной информации
+/// </summary>
+public sealed class GetContactsQuery : IRequest<IEnumerable<ContactView>>
 {
-    /// <summary>
-    /// Запрос на получение списка контактной информации
-    /// </summary>
-    public sealed class GetContactsQuery : IQuery<IEnumerable<ContactView>>
+    public GetContactsQuery(Guid organisationId)
     {
-        /// <summary>
-        /// Организация которой принадлежат реквезиты
-        /// </summary>
-        public Guid OrganisationId { get; }
-
-        public GetContactsQuery(Guid organisationId)
-            => (OrganisationId)
-                = (organisationId);
+        OrganisationId
+            = organisationId;
     }
+
+    /// <summary>
+    ///     Организация которой принадлежат реквезиты
+    /// </summary>
+    public Guid OrganisationId { get; }
 }

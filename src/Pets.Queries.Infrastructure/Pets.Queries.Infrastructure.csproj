@@ -1,28 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <LangVersion>9</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <PackageVersion>1.2.25</PackageVersion>
-    <AssemblyVersion>1.2.25</AssemblyVersion>
-    <FileVersion>1.2.25</FileVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageVersion>1.2.25</PackageVersion>
+        <AssemblyVersion>1.2.25</AssemblyVersion>
+        <FileVersion>1.2.25</FileVersion>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.78" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.4" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.4" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Dapper" Version="2.0.123" />
+        <PackageReference Include="MediatR" Version="12.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.15" />
+        <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
+        <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\lib\Query.Core\Query.Core.csproj" />
-    <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj" />
-    <ProjectReference Include="..\Pets.Queries\Pets.Queries.csproj" />
-    <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Pets.Helpers\Pets.Helpers.csproj" />
+        <ProjectReference Include="..\Pets.Queries\Pets.Queries.csproj" />
+        <ProjectReference Include="..\Pets.Types\Pets.Types.csproj" />
+    </ItemGroup>
 
 </Project>

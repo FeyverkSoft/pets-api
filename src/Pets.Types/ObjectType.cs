@@ -1,18 +1,19 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum SearchObjectType
 {
-    public enum SearchObjectType
-    {
-        /// <summary>
-        /// Страница о животном
-        /// </summary>
-        Pet,
-        /// <summary>
-        /// Новость
-        /// </summary>
-        News,
-        /// <summary>
-        /// Контентная страница
-        /// </summary>
-        Page,
-    }
+    /// <summary>
+    ///     Страница о животном
+    /// </summary>
+    Pet,
+
+    /// <summary>
+    ///     Новость
+    /// </summary>
+    News,
+
+    /// <summary>
+    ///     Контентная страница
+    /// </summary>
+    Page
 }

@@ -1,21 +1,18 @@
-﻿using Query.Core;
+﻿namespace Pets.Queries.Documents;
 
-using System;
-
-namespace Pets.Queries.Documents
+/// <summary>
+///     Запрос на получение картинки по id картинки
+/// </summary>
+public sealed class GetImgQuery : IRequest<DocumentInfo?>
 {
-    /// <summary>
-    /// Запрос на получение картинки по id картинки
-    /// </summary>
-    public sealed class GetImgQuery : IQuery<DocumentInfo?>
+    public GetImgQuery(Guid imageId)
     {
-        /// <summary>
-        /// Картинка
-        /// </summary>
-        public Guid ImageId { get; }
-
-        public GetImgQuery(Guid imageId)
-            => (ImageId)
-                = (imageId);
+        ImageId
+            = imageId;
     }
+
+    /// <summary>
+    ///     Картинка
+    /// </summary>
+    public Guid ImageId { get; }
 }

@@ -1,48 +1,48 @@
-﻿using System;
+﻿namespace Pets.DB.Migrations.Entities;
 
-namespace Pets.DB.Migrations.Entities
+using System;
+
+/// <summary>
+///     пользователь системы
+/// </summary>
+internal sealed class User
 {
     /// <summary>
-    /// пользователь системы
+    ///     идентификатор пользователя
     /// </summary>
-    sealed class User
-    {
-        /// <summary>
-        /// идентификатор пользователя
-        /// </summary>
-        public Guid Id { get; }
-        
-        /// <summary>
-        /// Идентификатор организации которой принадлежит сотрудник
-        /// </summary>
-        public Guid OrganisationId { get; }
-        public Organisation Organisation { get; }
+    public Guid Id { get; }
 
-        /// <summary>
-        /// login пользователя
-        /// </summary>
-        public String Login { get; }
+    /// <summary>
+    ///     Идентификатор организации которой принадлежит сотрудник
+    /// </summary>
+    public Guid OrganisationId { get; }
 
-        /// <summary>
-        /// имя пользователя
-        /// </summary>
-        public String Name { get; }
+    public Organisation Organisation { get; }
 
-        /// <summary>
-        /// хеш пароля пользователя
-        /// </summary>
-        public String PasswordHash { get; }
+    /// <summary>
+    ///     login пользователя
+    /// </summary>
+    public String Login { get; }
 
-        /// <summary>
-        /// JSON с правами доступа юзера
-        /// </summary>
-        public String Permissions { get; }
+    /// <summary>
+    ///     имя пользователя
+    /// </summary>
+    public String Name { get; }
 
-        /// <summary>
-        /// Состояние юзера, активен/забанен/требуется подтверждение мыла
-        /// </summary>
-        public String State { get; }
+    /// <summary>
+    ///     хеш пароля пользователя
+    /// </summary>
+    public String PasswordHash { get; }
 
-        public Guid ConcurrencyToken { get; }
-    }
+    /// <summary>
+    ///     JSON с правами доступа юзера
+    /// </summary>
+    public String Permissions { get; }
+
+    /// <summary>
+    ///     Состояние юзера, активен/забанен/требуется подтверждение мыла
+    /// </summary>
+    public String State { get; }
+
+    public Guid ConcurrencyToken { get; }
 }

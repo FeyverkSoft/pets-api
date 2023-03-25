@@ -1,8 +1,7 @@
-﻿namespace Pets.Types
+﻿namespace Pets.Types;
+
+public enum NeedState
 {
-    public enum NeedState
-    {
-        Active,
-        Delete
-    }
+    Active,
+    Delete
 }

@@ -22,6 +22,9 @@ namespace Pets.DB.Migrations.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
+                    b.Property<Guid>("ConcurrencyToken")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("ConcurrencyTokens")
                         .IsConcurrencyToken()
                         .HasColumnType("char(36)");

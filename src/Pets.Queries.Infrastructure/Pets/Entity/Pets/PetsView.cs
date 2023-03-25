@@ -1,12 +1,12 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.Pets.Entity.Pets;
 
-using Pets.Types;
+using System;
 
-namespace Pets.Queries.Infrastructure.Pets.Entity.Pets
+using Types;
+
+internal sealed class PetsView
 {
-    internal sealed class PetsView
-    {
-        internal static readonly String Sql = @"
+    internal static readonly String Sql = @"
 select 
     count(p.Id)   
 from `Pet` p
@@ -40,55 +40,54 @@ order by p.UpdateDate desc
 limit @Limit offset @Offset
 ";
 
-        public Guid Id { get; }
-        
-        /// <summary>
-        /// Идентификтор чипа пета
-        /// </summary>
-        public Decimal? AnimalId { get; }
+    public Guid Id { get; }
 
-        /// <summary>
-        /// Имя животного
-        /// </summary>
-        public String Name { get; }
+    /// <summary>
+    ///     Идентификтор чипа пета
+    /// </summary>
+    public Decimal? AnimalId { get; }
 
-        /// <summary>
-        /// Ссфлка на фотку до
-        /// </summary>
-        public String BeforePhotoLink { get; }
+    /// <summary>
+    ///     Имя животного
+    /// </summary>
+    public String Name { get; }
 
-        /// <summary>
-        /// Ссылка на фотку после
-        /// </summary>
-        public String? AfterPhotoLink { get; }
+    /// <summary>
+    ///     Ссфлка на фотку до
+    /// </summary>
+    public String BeforePhotoLink { get; }
 
-        /// <summary>
-        /// Состояние животного
-        /// </summary>
-        public PetState PetState { get; }
+    /// <summary>
+    ///     Ссылка на фотку после
+    /// </summary>
+    public String? AfterPhotoLink { get; }
 
-        /// <summary>
-        /// Тело в markdown
-        /// </summary>
-        public String MdShortBody { get; }
-        
-        /// <summary>
-        /// Тело в markdown
-        /// </summary>
-        public String? MdBody { get; }
+    /// <summary>
+    ///     Состояние животного
+    /// </summary>
+    public PetState PetState { get; }
 
-        /// <summary>
-        /// Pet type
-        /// Собака/кот/енот/чупакабра
-        /// </summary>
-        public PetType Type { get; }
-        
-        /// <summary>
-        /// Pet type
-        /// Мальчик/Девочка/Неизвестно
-        /// </summary>
-        public PetGender Gender { get; }
+    /// <summary>
+    ///     Тело в markdown
+    /// </summary>
+    public String MdShortBody { get; }
 
-        public DateTime UpdateDate { get; }
-    }
+    /// <summary>
+    ///     Тело в markdown
+    /// </summary>
+    public String? MdBody { get; }
+
+    /// <summary>
+    ///     Pet type
+    ///     Собака/кот/енот/чупакабра
+    /// </summary>
+    public PetType Type { get; }
+
+    /// <summary>
+    ///     Pet type
+    ///     Мальчик/Девочка/Неизвестно
+    /// </summary>
+    public PetGender Gender { get; }
+
+    public DateTime UpdateDate { get; }
 }

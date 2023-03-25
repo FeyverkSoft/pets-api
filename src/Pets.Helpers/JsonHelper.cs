@@ -1,60 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-
-namespace Pets.Helpers
+﻿namespace Pets.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
+
     public static class JsonHelper
     {
         public static String ToJson(this Object obj)
         {
-            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            return JsonSerializer.Serialize(obj, new JsonSerializerOptions
             {
-                Converters = new List<JsonConverter>()
-            });
-        }
-
-        public static String ToJson(this Object obj, NullValueHandling nullValueHandling)
-        {
-            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
-            {
-                Converters = new List<JsonConverter>(),
-                NullValueHandling = nullValueHandling
+                Converters = { new JsonStringEnumConverter() },
             });
         }
 
         /// <summary>
-        /// Преобразовать строку сожержащую JSON в объект
+        ///     Преобразовать строку сожержащую JSON в объект
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static Object ParseJson(this String json, Type type)
+        public static Object? ParseJson(this String json, Type type)
         {
-            var serializer = new JsonSerializer
+            return JsonSerializer.Deserialize(json, type, new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore
-            };
-            return serializer.Deserialize(new StringReader(json), type);
+                Converters = { new JsonStringEnumConverter() },
+            });
         }
 
         /// <summary>
-        /// Преобразовать строку сожержащую JSON в объект
+        ///     Преобразовать строку сожержащую JSON в объект
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static T ParseJson<T>(this String json)
+        public static T? ParseJson<T>(this String json)
         {
-            if (string.IsNullOrEmpty(json))
+            if (String.IsNullOrEmpty(json))
                 return default;
-            var serializer = new JsonSerializer
+            return JsonSerializer.Deserialize<T?>(json, new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore
-            };
-            return serializer.Deserialize<T>(new JsonTextReader(new StringReader(json)));
+                Converters = { new JsonStringEnumConverter() },
+            });
         }
 
-        public static T TryParseJson<T>(this String json)
+        public static T? TryParseJson<T>(this String json)
         {
             try
             {
@@ -66,7 +57,7 @@ namespace Pets.Helpers
             }
         }
 
-        public static Object TryParseJson(this String json, Type type)
+        public static Object? TryParseJson(this String json, Type type)
         {
             try
             {
@@ -78,5 +69,4 @@ namespace Pets.Helpers
             }
         }
     }
-
 }

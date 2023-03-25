@@ -1,35 +1,35 @@
-﻿using System;
+﻿namespace Pets.DB.Migrations.Entities;
 
-using Pets.Types;
+using System;
 
-namespace Pets.DB.Migrations.Entities
+using Types;
+
+internal sealed class OrganisationContact
 {
-    sealed class OrganisationContact
-    {
-        public Guid Id { get; }
+    public Guid Id { get; }
 
-        /// <summary>
-        /// Идентификатор организации которой принадлежит контакт
-        /// </summary>
-        public Guid OrganisationId { get; }
-        public Organisation Organisation { get; }
+    /// <summary>
+    ///     Идентификатор организации которой принадлежит контакт
+    /// </summary>
+    public Guid OrganisationId { get; }
 
-        /// <summary>
-        /// Тип контакта
-        /// email/phone/etc
-        /// </summary>
-        public ContactType Type { get; }
+    public Organisation Organisation { get; }
 
-        /// <summary>
-        /// Ссылка на картинку
-        /// </summary>
-        public String? ImgLink { get; }
+    /// <summary>
+    ///     Тип контакта
+    ///     email/phone/etc
+    /// </summary>
+    public ContactType Type { get; }
 
-        /// <summary>
-        /// Markdown текст описание
-        /// </summary>
-        public String MdBody { get; }
+    /// <summary>
+    ///     Ссылка на картинку
+    /// </summary>
+    public String? ImgLink { get; }
 
-        public Guid ConcurrencyTokens { get; }
-    }
+    /// <summary>
+    ///     Markdown текст описание
+    /// </summary>
+    public String MdBody { get; }
+
+    public Guid ConcurrencyTokens { get; }
 }

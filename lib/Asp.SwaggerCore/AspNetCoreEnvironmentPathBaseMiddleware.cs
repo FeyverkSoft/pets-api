@@ -1,13 +1,14 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
 namespace Asp.Core
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Http;
+
     internal sealed class AspNetCoreEnvironmentPathBaseMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly String _basePath;
+        private readonly RequestDelegate _next;
 
         public AspNetCoreEnvironmentPathBaseMiddleware(RequestDelegate next, String basePath)
         {

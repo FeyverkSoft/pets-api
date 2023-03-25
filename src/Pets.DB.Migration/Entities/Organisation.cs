@@ -1,12 +1,11 @@
-﻿using System;
+﻿namespace Pets.DB.Migrations.Entities;
 
-namespace Pets.DB.Migrations.Entities
+using System;
+
+internal sealed class Organisation
 {
-    sealed class Organisation
-    {
-        /// <summary>
-        /// Идентификатор организации которой принадлежит животное
-        /// </summary>
-        public Guid Id { get; }
-    }
+    /// <summary>
+    ///     Идентификатор организации которой принадлежит животное
+    /// </summary>
+    public Guid Id { get; }
 }

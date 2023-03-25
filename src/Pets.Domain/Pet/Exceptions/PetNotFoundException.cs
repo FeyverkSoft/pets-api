@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Pets.Domain.Pet.Exceptions;
 
-using Pets.Types.Exceptions;
+using Types.Exceptions;
 
-namespace Pets.Domain.Pet.Exceptions
+/// <summary>
+///     Питомец с указанным идентификатором не был найден у данной организации
+/// </summary>
+public sealed class PetNotFoundException : NotFoundException
 {
-    /// <summary>
-    /// Питомец с указанным идентификатором не был найден у данной организации
-    /// </summary>
-    public sealed class PetNotFoundException : NotFoundException
+    public PetNotFoundException(Guid petId, Guid organisationId) : base($"Pet with id: {petId} and organisation id: {organisationId} not found;")
     {
-        public PetNotFoundException(Guid petId, Guid organisationId) : base($"Pet with id: {petId} and organisation id: {organisationId} not found;")
-        {
-        }
     }
 }

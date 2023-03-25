@@ -1,103 +1,99 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.Pets;
+
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-using Dapper;
+using Entity.Pets;
 
-using Pets.Queries.Pets;
-using Pets.Types;
+using Queries.Pets;
 
-using Query.Core;
+using Types;
 
-namespace Pets.Queries.Infrastructure.Pets
+using PetView = global::Pets.Queries.Pets.PetView;
+
+public sealed class PetsQueryHandler :
+    IRequestHandler<GetPetsQuery, Page<PetView>>,
+    IRequestHandler<GetPetQuery, PetView?>
 {
-    public sealed class PetsQueryHandler :
-        IQueryHandler<GetPetsQuery, Page<PetView>>,
-        IQueryHandler<GetPetQuery, PetView?>
+    private static readonly List<PetState> DefaultPetStatuses = Enum.GetNames(typeof(PetState)).Select(Enum.Parse<PetState>).ToList();
+    private static readonly List<PetGender> DefaultPetGenders = Enum.GetNames(typeof(PetGender)).Select(Enum.Parse<PetGender>).ToList();
+
+    private readonly IDbConnection _db;
+
+    public PetsQueryHandler(IDbConnection db)
     {
-        private static readonly List<PetState> DefaultPetStatuses = Enum.GetNames(typeof(PetState)).Select(Enum.Parse<PetState>).ToList();
-        private static readonly List<PetGender> DefaultPetGenders = Enum.GetNames(typeof(PetGender)).Select(Enum.Parse<PetGender>).ToList();
+        _db = db;
+    }
 
-        private readonly IDbConnection _db;
+    public async Task<PetView?> Handle(GetPetQuery query, CancellationToken cancellationToken)
+    {
+        var pet = await _db.QuerySingleOrDefaultAsync<Entity.Pets.PetView>(
+            new CommandDefinition(
+                Entity.Pets.PetView.Sql,
+                new
+                {
+                    query.OrganisationId, query.PetId
+                },
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
 
-        public PetsQueryHandler(IDbConnection db)
+        if (pet is null)
+            return null;
+
+        return new PetView(
+            pet.Id,
+            pet.Name,
+            pet.BeforePhotoLink,
+            pet.AfterPhotoLink,
+            pet.PetState,
+            pet.MdShortBody,
+            pet.MdBody,
+            pet.Type,
+            pet.Gender,
+            pet.UpdateDate,
+            pet.AnimalId
+        );
+    }
+
+    async Task<Page<PetView>> IRequestHandler<GetPetsQuery, Page<PetView>>.Handle(GetPetsQuery query,
+        CancellationToken cancellationToken)
+    {
+        var pets = await _db.QueryMultipleAsync(
+            new CommandDefinition(
+                PetsView.Sql,
+                new
+                {
+                    query.Limit,
+                    query.Offset,
+                    query.OrganisationId,
+                    query.PetId,
+                    Status = (query.PetStatuses.Any() ? query.PetStatuses : DefaultPetStatuses).Select(_ => _.ToString()),
+                    Genders = (query.Genders.Any() ? query.Genders : DefaultPetGenders).Select(_ => _.ToString()),
+                    Filter = query.Filter == null ? null : $"%{query.Filter}%"
+                },
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
+        return new Page<PetView>
         {
-            _db = db;
-        }
-
-        async Task<Page<PetView>> IQueryHandler<GetPetsQuery, Page<PetView>>.Handle(GetPetsQuery query,
-            CancellationToken cancellationToken)
-        {
-            var pets = await _db.QueryMultipleAsync(
-                new CommandDefinition(
-                    commandText: Entity.Pets.PetsView.Sql,
-                    parameters: new
-                    {
-                        Limit = query.Limit,
-                        Offset = query.Offset,
-                        OrganisationId = query.OrganisationId,
-                        PetId = query.PetId,
-                        Status = (query.PetStatuses.Any() ? query.PetStatuses : DefaultPetStatuses).Select(_ => _.ToString()),
-                        Genders = (query.Genders.Any() ? query.Genders : DefaultPetGenders).Select(_ => _.ToString()),
-                        Filter = query.Filter == null ? null : $"%{query.Filter}%",
-                    },
-                    commandType: CommandType.Text,
-                    cancellationToken: cancellationToken
-                ));
-            return new Page<PetView>
-            {
-                Limit = query.Limit,
-                Offset = query.Offset,
-                Total = await pets.ReadSingleAsync<Int64>(),
-                Items = (await pets.ReadAsync<Entity.Pets.PetsView>()).Select(_ => new PetView(
-                    id: _.Id,
-                    name: _.Name,
-                    beforePhotoLink: _.BeforePhotoLink,
-                    afterPhotoLink: _.AfterPhotoLink,
-                    petState: _.PetState,
-                    mdShortBody: _.MdShortBody,
-                    mdBody: _.MdBody,
-                    type: _.Type,
-                    gender: _.Gender,
-                    updateDate: _.UpdateDate,
-                    animalId: _.AnimalId
-                ))
-            };
-        }
-
-        public async Task<PetView?> Handle(GetPetQuery query, CancellationToken cancellationToken)
-        {
-            var pet = await _db.QuerySingleOrDefaultAsync<Entity.Pets.PetView>(
-                new CommandDefinition(
-                    commandText: Entity.Pets.PetView.Sql,
-                    parameters: new
-                    {
-                        OrganisationId = query.OrganisationId,
-                        PetId = query.PetId,
-                    },
-                    commandType: CommandType.Text,
-                    cancellationToken: cancellationToken
-                ));
-
-            if (pet is null)
-                return null;
-
-            return new PetView(
-                id: pet.Id,
-                name: pet.Name,
-                beforePhotoLink: pet.BeforePhotoLink,
-                afterPhotoLink: pet.AfterPhotoLink,
-                petState: pet.PetState,
-                mdShortBody: pet.MdShortBody,
-                mdBody: pet.MdBody,
-                type: pet.Type,
-                gender: pet.Gender,
-                updateDate: pet.UpdateDate,
-                animalId: pet.AnimalId
-            );
-        }
+            Limit = query.Limit,
+            Offset = query.Offset,
+            Total = await pets.ReadSingleAsync<Int64>(),
+            Items = (await pets.ReadAsync<PetsView>()).Select(_ => new PetView(
+                _.Id,
+                _.Name,
+                _.BeforePhotoLink,
+                _.AfterPhotoLink,
+                _.PetState,
+                _.MdShortBody,
+                _.MdBody,
+                _.Type,
+                _.Gender,
+                _.UpdateDate,
+                _.AnimalId
+            ))
+        };
     }
 }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.Search.Entity.Search;
 
-using Pets.Types;
+using System;
 
-namespace Pets.Queries.Infrastructure.Search.Entity.Search
+using Types;
+
+internal record SearchDto
 {
-    internal record SearchDto
-    {
-        internal static readonly String SqlCounts = @"
+    internal static readonly String SqlCounts = @"
 select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCount) as PageCount from (
   select 
       count(p.Id) as PetCount, 0 as NewsCount, 0 as PageCount
@@ -31,7 +31,7 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
 ) t
 ";
 
-        internal static readonly String SqlPets = @"
+    internal static readonly String SqlPets = @"
   select 
       CAST(p.Id as CHAR(36)) as Id,
       'Pet' as Type,
@@ -44,7 +44,8 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
     and (@Filter is null or p.`Name` like @Filter or p.`MdShortBody` like @Filter or p.`MdBody` like @Filter)
   limit @Limit offset @Offset
 ";
-        internal static readonly String  SqlNews= @"
+
+    internal static readonly String SqlNews = @"
   select 
       CAST(n.Id as CHAR(36)) as Id,
       'News' as Type,
@@ -56,8 +57,8 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
     and n.OrganisationId = @OrganisationId
     and (@Filter is null or n.`MdShortBody` like @Filter or n.`MdBody` like @Filter)
   limit @Limit offset @Offset";
-        
-        internal static readonly String  SqlPages= @"  
+
+    internal static readonly String SqlPages = @"  
   select 
       p.Id as Id, 
       'Page' as Type,
@@ -69,30 +70,29 @@ select sum(t.PetCount) as PetCount, sum(t.NewsCount) as NewsCount, sum(t.PageCou
     and p.OrganisationId = @OrganisationId
     and (@Filter is null or p.`MdBody` like @Filter)
   limit @Limit offset @Offset";
-        
-        /// <summary>
-        /// идентификатор найденного объекта
-        /// </summary>
-        public String Id { get; set; }
 
-        /// <summary>
-        /// Картинка превью к объекту
-        /// </summary>
-        public String Img { get; set;  }
+    /// <summary>
+    ///     идентификатор найденного объекта
+    /// </summary>
+    public String Id { get; set; }
 
-        /// <summary>
-        /// Заголовок
-        /// </summary>
-        public String Title { get; set;  }
+    /// <summary>
+    ///     Картинка превью к объекту
+    /// </summary>
+    public String Img { get; set; }
 
-        /// <summary>
-        /// Краткое описание
-        /// </summary>
-        public String ShortText { get; set;  }
+    /// <summary>
+    ///     Заголовок
+    /// </summary>
+    public String Title { get; set; }
 
-        /// <summary>
-        /// Тип записи
-        /// </summary>
-        public SearchObjectType Type { get; }
-    }
+    /// <summary>
+    ///     Краткое описание
+    /// </summary>
+    public String ShortText { get; set; }
+
+    /// <summary>
+    ///     Тип записи
+    /// </summary>
+    public SearchObjectType Type { get; }
 }

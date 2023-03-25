@@ -1,27 +1,31 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-
-namespace Core
+﻿namespace Core
 {
-    class ParameterRebinder : ExpressionVisitor
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
+    internal class ParameterRebinder : ExpressionVisitor
     {
         private readonly Dictionary<ParameterExpression, ParameterExpression> _map;
 
-        ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
-            => (_map)
-                = (map);
+        private ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
+        {
+            _map
+                = map;
+        }
 
         public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
-            => new ParameterRebinder(map).Visit(exp);
-
-        protected override Expression VisitParameter(ParameterExpression p)
         {
-            if (_map.TryGetValue(p, out ParameterExpression replacement))
-            {
-                p = replacement;
-            }
+            return new ParameterRebinder(map).Visit(exp);
+        }
 
-            return base.VisitParameter(p);
+        /// <summary>Visits the <see cref="T:System.Linq.Expressions.ParameterExpression" />.</summary>
+        /// <param name="node">The expression to visit.</param>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            if (_map.TryGetValue(node, out var replacement)) node = replacement;
+
+            return base.VisitParameter(node);
         }
     }
 }

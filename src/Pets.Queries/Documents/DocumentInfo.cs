@@ -1,24 +1,24 @@
-﻿using System;
+﻿namespace Pets.Queries.Documents;
+
 using System.IO;
 
-namespace Pets.Queries.Documents
+public sealed class DocumentInfo
 {
-    public sealed class DocumentInfo
+    public DocumentInfo(Guid id, String contentType, Int64 length, String fileName, String nonUniqueExtId, MemoryStream memoryStream)
     {
-        public Guid Id { get; }
-
-        public String Filename { get; }
-
-        public String ContentType { get; }
-
-        public Int64 Size { get; }
-
-        public String NonUniqueExtId { get; }
-
-        public MemoryStream Stream { get; }
-
-        public DocumentInfo(Guid id, string contentType, long length, string fileName, string nonUniqueExtId, MemoryStream memoryStream)
-        => (Id, Filename, ContentType, Size, NonUniqueExtId, Stream)
+        (Id, Filename, ContentType, Size, NonUniqueExtId, Stream)
             = (id, fileName, contentType, length, nonUniqueExtId, memoryStream);
     }
+
+    public Guid Id { get; }
+
+    public String Filename { get; }
+
+    public String ContentType { get; }
+
+    public Int64 Size { get; }
+
+    public String NonUniqueExtId { get; }
+
+    public MemoryStream Stream { get; }
 }

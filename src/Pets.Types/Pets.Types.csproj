@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <LangVersion>9</LangVersion>
-    <Nullable>enable</Nullable>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <PackageVersion>1.2.25</PackageVersion>
-    <AssemblyVersion>1.2.25</AssemblyVersion>
-    <FileVersion>1.2.25</FileVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageVersion>1.2.25</PackageVersion>
+        <AssemblyVersion>1.2.25</AssemblyVersion>
+        <FileVersion>1.2.25</FileVersion>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Api_V2\src\Pets.Types\Pets.Types.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>Api_V2\src\Pets.Types\Pets.Types.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>Api_V2\src\Pets.Types\Pets.Types.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>Api_V2\src\Pets.Types\Pets.Types.xml</DocumentationFile>
+    </PropertyGroup>
 
 </Project>

@@ -1,12 +1,12 @@
-﻿using System;
+﻿namespace Pets.Queries.Infrastructure.Organisation.Entity;
 
-using Pets.Types;
+using System;
 
-namespace Pets.Queries.Infrastructure.Organisation.Entity
+using Types;
+
+internal sealed class ResourceView
 {
-    internal sealed class ResourceView
-    {
-        internal static readonly String Sql = @"
+    internal static readonly String Sql = @"
 select 
     p.OrganisationId, 
     p.ImgLink,
@@ -18,26 +18,25 @@ where 1 = 1
 and OrganisationId = @OrganisationId
 ";
 
-        /// <summary>
-        /// Id организации
-        /// </summary>
-        public Guid OrganisationId { get; }
+    /// <summary>
+    ///     Id организации
+    /// </summary>
+    public Guid OrganisationId { get; }
 
-        /// <summary>
-        /// Ссылка на значёк
-        /// </summary>
-        public String? ImgLink { get; }
+    /// <summary>
+    ///     Ссылка на значёк
+    /// </summary>
+    public String? ImgLink { get; }
 
-        /// <summary>
-        /// Тело в markdown
-        /// </summary>
-        public String? MdBody { get; }
+    /// <summary>
+    ///     Тело в markdown
+    /// </summary>
+    public String? MdBody { get; }
 
-        /// <summary>
-        /// Заголовок в markdown
-        /// </summary>
-        public String? Title { get; }
+    /// <summary>
+    ///     Заголовок в markdown
+    /// </summary>
+    public String? Title { get; }
 
-        public ResourceState State { get; }
-    }
+    public ResourceState State { get; }
 }

@@ -1,9 +1,8 @@
-﻿using Pets.Types;
+﻿namespace Pets.Api.Models.Admin.Pets;
 
-namespace Pets.Api.Models.Admin.Pets
+using Types;
+
+public class UpdateGenderPetBinding
 {
-    public class UpdateGenderPetBinding
-    {
-        public PetGender Gender { get; set; }
-    }
+    public PetGender Gender { get; set; }
 }
