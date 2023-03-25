@@ -21,6 +21,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Authentication;
 using Infrastructure.FileStoreService;
 using Infrastructure.Markdown;
+using Infrastructure.Mediatr;
 using Infrastructure.Pet;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -155,6 +156,7 @@ public static class Startup
         #endregion
 
         services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(configuration.GetConnectionString("Pets")));
+        services.AddMediatorCommandDedublicateBehaviour();
         services.AddQueries();
 
         services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
