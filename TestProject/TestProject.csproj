@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.10.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
         <PackageReference Include="ServiceStack.OrmLite" Version="6.1.0" />
         <PackageReference Include="ServiceStack.OrmLite.MySql" Version="6.1.0" />
@@ -24,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\src\Pets.Infrastructure\Pets.Infrastructure.csproj" />
         <ProjectReference Include="..\src\Pets.Queries.Infrastructure\Pets.Queries.Infrastructure.csproj" />
         <ProjectReference Include="..\src\Pets.Types\Pets.Types.csproj" />
     </ItemGroup>
