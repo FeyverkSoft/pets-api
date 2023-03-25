@@ -2,9 +2,8 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>netstandard2.1</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
