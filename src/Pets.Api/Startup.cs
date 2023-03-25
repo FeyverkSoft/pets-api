@@ -1,11 +1,8 @@
 namespace Pets.Api;
 
 using System.Data;
-using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
-
-using Asp.Core.FluentExtensions;
 
 using Authorization;
 
@@ -28,13 +25,9 @@ using Infrastructure.Pet;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 using Middlewares;
@@ -50,17 +43,9 @@ using Rabbita.Core.DafaultHandlers;
 using Rabbita.Core.FluentExtensions;
 using Rabbita.InProc.FluentExtensions;
 
-public class Startup
+public static class Startup
 {
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
+    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMemoryCache();
         services.AddLogging();
@@ -77,7 +62,7 @@ public class Startup
             })
             .AddFluentValidation(cfg =>
             {
-                cfg.RegisterValidatorsFromAssemblyContaining<Startup>();
+                cfg.RegisterValidatorsFromAssemblyContaining<Program>();
                 cfg.LocalizationEnabled = false;
             })
             .AddJsonOptions(options =>
@@ -101,11 +86,11 @@ public class Startup
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+                ValidIssuer = configuration["Auth:Jwt:Issuer"],
                 ValidateAudience = true,
-                ValidAudience = Configuration["Auth:Jwt:Audience"],
+                ValidAudience = configuration["Auth:Jwt:Audience"],
                 ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:SecretKey"])),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Auth:Jwt:SecretKey"])),
                 ValidateIssuerSigningKey = true
             };
         });
@@ -126,10 +111,10 @@ public class Startup
 
         services.AddDbContextPool<AuthenticationDbContext>(options =>
         {
-            options.UseMySql(Configuration.GetConnectionString("Pets"),
+            options.UseMySql(configuration.GetConnectionString("Pets"),
                 new MariaDbServerVersion(new Version(10, 5, 8)));
         });
-        services.Configure<JwtAuthOptions>(Configuration.GetSection("Auth:Jwt"));
+        services.Configure<JwtAuthOptions>(configuration.GetSection("Auth:Jwt"));
         services.AddScoped<IAccessTokenFactory, JwtAccessTokenFactory>();
         services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -145,7 +130,7 @@ public class Startup
         services.AddScoped<IPetRepository, PetRepository>();
         services.AddDbContextPool<PetDbContext>(options =>
         {
-            options.UseMySql(Configuration.GetConnectionString("Pets"),
+            options.UseMySql(configuration.GetConnectionString("Pets"),
                 new MariaDbServerVersion(new Version(10, 5, 8)));
         });
 
@@ -153,7 +138,7 @@ public class Startup
 
         services.AddScoped<IGridFSBucket>(_ =>
         {
-            var connectionString = Configuration.GetConnectionString("MongoDb");
+            var connectionString = configuration.GetConnectionString("MongoDb");
             var database = new MongoClient(connectionString).GetDatabase(MongoUrl.Create(connectionString).DatabaseName);
             return new GridFSBucket(database);
         });
@@ -163,13 +148,13 @@ public class Startup
 
         services.AddDbContextPool<MigrateDbContext>(options =>
         {
-            options.UseMySql(Configuration.GetConnectionString("Pets"),
+            options.UseMySql(configuration.GetConnectionString("Pets"),
                 new MariaDbServerVersion(new Version(10, 5, 8)));
         });
 
         #endregion
 
-        services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Pets")));
+        services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(configuration.GetConnectionString("Pets")));
         services.AddQueries();
 
         services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
@@ -192,34 +177,6 @@ public class Startup
          });  */
         services.AddEventBus();
         services.AddEventProcessor(registry => { });
-    }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
-        app.UseCors(builder =>
-        {
-            builder.AllowAnyOrigin();
-            builder.AllowAnyMethod();
-            builder.AllowAnyHeader();
-        });
-
-        app.UseMiddleware<ErrorHandlingMiddleware>();
-
-        app.UseHttpsRedirection();
-        app.UseAspNetCorePathBase();
-
-        app.UseRouting();
-
-        app.UseAuthorization();
-
-
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
-        app.UseSwagger();
-        app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Pets Api"); });
-        app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
+        return services;
     }
 }
