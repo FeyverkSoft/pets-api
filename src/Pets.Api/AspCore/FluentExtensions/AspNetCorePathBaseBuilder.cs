@@ -1,6 +1,8 @@
-namespace Asp.Core.FluentExtensions
+namespace Pets.Api.AspCore.FluentExtensions
 {
     using System;
+
+    using Impl;
 
     using Microsoft.AspNetCore.Builder;
 

@@ -1,4 +1,4 @@
-namespace Asp.Core
+namespace Pets.Api.AspCore.Impl
 {
     using System;
     using System.Threading.Tasks;

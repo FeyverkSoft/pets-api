@@ -1,7 +1,5 @@
 using System.Net;
 
-using Asp.Core.FluentExtensions;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
@@ -9,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 using Pets.Api;
+using Pets.Api.AspCore.FluentExtensions;
 using Pets.Api.Middlewares;
 using Pets.DB.Migrations;
 
