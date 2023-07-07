@@ -1,8 +1,8 @@
-﻿namespace Pets.Queries.Infrastructure.Pages.Entity.Pages;
+﻿namespace Pets.Queries.Infrastructure.Pages.Entity.Pages.Admin;
 
 using System;
 
-internal sealed class PageDto
+internal sealed class AdminPageDto
 {
     internal static readonly String Sql = @"
 select 
@@ -14,7 +14,27 @@ select
 from `Page` p
 where 1 = 1
 and OrganisationId = @OrganisationId
-and Id = @PageId
+";
+
+    internal static readonly String SearchSql = @"
+select 
+    count(p.Id)
+from `Page` p
+where 1 = 1
+and OrganisationId = @OrganisationId;
+
+select 
+    p.Id,
+    p.OrganisationId, 
+    p.ImgLink,
+    p.MdBody,
+    p.UpdateDate
+from `Page` p
+where 1 = 1
+and OrganisationId = @OrganisationId
+order by
+    p.CreateDate desc
+limit @Limit offset @Offset
 ";
 
     public String Id { get; }

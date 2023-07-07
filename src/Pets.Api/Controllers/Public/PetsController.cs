@@ -34,13 +34,13 @@ public sealed class PetsController : ControllerBase
     {
         return Ok(await processor.Send(new GetPetsQuery(
             binding.OrganisationId,
-            offset: binding.Offset,
-            limit: binding.Limit,
-            filter: binding.Text,
-            genders: binding.Genders.Any()
+            Offset: binding.Offset,
+            Limit: binding.Limit,
+            Filter: binding.Text,
+            Genders: binding.Genders.Any()
                 ? binding.Genders
                 : new List<PetGender>(),
-            petStatuses: binding.PetStatuses.Any()
+            PetStatuses: binding.PetStatuses.Any()
                 ? binding.PetStatuses
                 : new List<PetState>
                 {

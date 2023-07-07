@@ -4,26 +4,10 @@ using System.Collections.Generic;
 
 using Types;
 
-public sealed class NeedView
-{
-    public NeedView(IEnumerable<String?> imgsLink, String? mdBody, NeedState state)
-    {
-        (ImgsLink, MdBody, State)
-            = (imgsLink, mdBody, state);
-    }
-
-    /// <summary>
-    ///     Ссылка на фотографию материала
-    /// </summary>
-    public IEnumerable<String?> ImgsLink { get; }
-
-    /// <summary>
-    ///     Тело в markdown
-    /// </summary>
-    public String? MdBody { get; }
-
-    /// <summary>
-    ///     Видимость заказа
-    /// </summary>
-    public NeedState State { get; }
-}
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="ImgsLink"> Ссылка на фотографию материала</param>
+   /// <param name="MdBody">Тело в markdown</param>
+   /// <param name="State"> Видимость заказа</param>
+public sealed record NeedView(IEnumerable<String?> ImgsLink, String? MdBody, NeedState State);

@@ -27,7 +27,7 @@ public sealed class OrganisationController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await processor.Send(new GetContactsQuery(
-            organisationId
+            OrganisationId: organisationId
         ), cancellationToken);
         return Ok(result);
     }
@@ -46,7 +46,7 @@ public sealed class OrganisationController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await processor.Send(new GetBuildingQuery(
-            organisationId
+            OrganisationId: organisationId
         ), cancellationToken);
         return Ok(result);
     }
@@ -65,7 +65,7 @@ public sealed class OrganisationController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await processor.Send(new GetNeedQuery(
-            organisationId
+            OrganisationId: organisationId
         ), cancellationToken);
         return Ok(result);
     }

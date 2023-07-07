@@ -2,49 +2,16 @@
 
 using System.Collections.Generic;
 
-public sealed class NewsView
-{
-    public NewsView(Guid id, String title, String imgLink, String mdShortBody, String mdBody, DateTime createDate, ICollection<LinkedPetsView> linkedPets,
-        ICollection<String> tags)
-    {
-        (Id, Title, ImgLink, MdShortBody, MdBody, CreateDate, LinkedPets, Tags)
-            = (id, title, imgLink, mdShortBody, mdBody, createDate, linkedPets, tags);
-    }
-
-    /// <summary>
-    ///     Идентификатор новости
-    /// </summary>
-    public Guid Id { get; }
-
-    /// <summary>
-    ///     Заголовок новости
-    /// </summary>
-    public String Title { get; }
-
-    /// <summary>
-    ///     Теги новости
-    /// </summary>
-    public ICollection<String> Tags { get; }
-
-    /// <summary>
-    ///     Ссылка на картинку шапки
-    /// </summary>
-    public String ImgLink { get; }
-
-    /// <summary>
-    ///     Предпросмотр новости в markdown
-    /// </summary>
-    public String MdShortBody { get; }
-
-    /// <summary>
-    ///     Тело в markdown
-    /// </summary>
-    public String MdBody { get; }
-
-    /// <summary>
-    ///     Дата публикации новости
-    /// </summary>
-    public DateTime CreateDate { get; }
-
-    public ICollection<LinkedPetsView> LinkedPets { get; }
-}
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Id">Идентификатор новости</param>
+/// <param name="Title">Заголовок новости</param>
+/// <param name="ImgLink">Ссылка на картинку шапки</param>
+/// <param name="MdShortBody">Предпросмотр новости в markdown</param>
+/// <param name="MdBody">Тело в markdown</param>
+/// <param name="CreateDate">Дата публикации новости</param>
+/// <param name="LinkedPets"></param>
+/// <param name="Tags">Теги новости</param>
+public sealed record NewsView(Guid Id, String Title, String ImgLink, String MdShortBody, String MdBody, DateTime CreateDate, ICollection<LinkedPetsView> LinkedPets,
+    ICollection<String> Tags);

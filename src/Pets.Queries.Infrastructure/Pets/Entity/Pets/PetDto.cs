@@ -4,7 +4,7 @@ using System;
 
 using Types;
 
-internal sealed record PetView
+internal sealed record PetDto
 {
     internal static readonly String Sql = @"
 select 

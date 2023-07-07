@@ -1,31 +1,13 @@
 ﻿namespace Pets.Queries.News;
 
-public sealed class GetNewsQuery : PageQuery<NewsView>
-{
-    public GetNewsQuery(Guid organisationId, Int32 offset = 0, Int32 limit = 8, Guid? petId = null, String? tag = null, Guid? newsId = null)
-        : base(offset, limit)
-    {
-        (OrganisationId, PetId, Tag, NewsId)
-            = (organisationId, petId, tag, newsId);
-    }
-
-    /// <summary>
-    ///     Организация к которой относятся новости
-    /// </summary>
-    public Guid OrganisationId { get; }
-
-    /// <summary>
-    ///     Идентификатор животного по которому выбираются новости
-    /// </summary>
-    public Guid? PetId { get; }
-
-    /// <summary>
-    ///     Тег для которого выбирается новость
-    /// </summary>
-    public String? Tag { get; }
-
-    /// <summary>
-    ///     идентификатор конкретной новости
-    /// </summary>
-    public Guid? NewsId { get; }
-}
+/// <summary>
+/// 
+/// </summary>
+/// <param name="OrganisationId">Организация к которой относятся новости</param>
+/// <param name="Offset"></param>
+/// <param name="Limit"></param>
+/// <param name="PetId">Идентификатор животного по которому выбираются новости</param>
+/// <param name="Tag">Тег для которого выбирается новость</param>
+/// <param name="NewsId">идентификатор конкретной новости</param>
+public sealed record GetNewsQuery
+    (Guid OrganisationId, Guid? PetId = null, String? Tag = null, Guid? NewsId = null, Int32 Limit = 8, Int32 Offset = 0) : PageQuery<NewsView>(Limit: Limit, Offset: Offset);

@@ -52,15 +52,15 @@ public sealed class PetsQueryHandler :
             Offset = query.Offset,
             Total = await result.ReadSingleAsync<Int64>(),
             Items = (await result.ReadAsync<NewsDto>()).Select(_ => new NewsView(
-                _.Id,
-                _.Title,
-                _.ImgLink,
-                _.MdShortBody,
-                _.MdBody,
-                _.CreateDate,
-                _.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
+                Id: _.Id,
+                Title: _.Title,
+                ImgLink: _.ImgLink,
+                MdShortBody: _.MdShortBody,
+                MdBody: _.MdBody,
+                CreateDate: _.CreateDate,
+                LinkedPets: _.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
                     .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
-                _.Tags?.TryParseJson<List<String>>() ?? new List<String>()
+                Tags: _.Tags?.TryParseJson<List<String>>() ?? new List<String>()
             ))
         };
     }
@@ -81,15 +81,15 @@ public sealed class PetsQueryHandler :
             return null;
 
         return new NewsView(
-            result.Id,
-            result.Title,
-            result.ImgLink,
-            result.MdShortBody,
-            result.MdBody,
-            result.CreateDate,
-            result.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
+            Id: result.Id,
+            Title: result.Title,
+            ImgLink: result.ImgLink,
+            MdShortBody: result.MdShortBody,
+            MdBody: result.MdBody,
+            CreateDate: result.CreateDate,
+            LinkedPets: result.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
                 .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
-            result.Tags?.TryParseJson<List<String>>() ?? new List<String>()
+            Tags: result.Tags?.TryParseJson<List<String>>() ?? new List<String>()
         );
     }
 }

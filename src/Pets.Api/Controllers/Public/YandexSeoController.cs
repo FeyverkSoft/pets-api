@@ -32,11 +32,11 @@ public sealed class YandexSeoController : ControllerBase
     {
         var result = await processor.Send(new GetPetsQuery(
             organisationId,
-            petId: petId,
-            offset: 0,
-            limit: 100,
-            genders: new List<PetGender>(),
-            petStatuses: new List<PetState>()
+            PetId: petId,
+            Offset: 0,
+            Limit: 100,
+            Genders: new List<PetGender>(),
+            PetStatuses: new List<PetState>()
         ), cancellationToken);
         if (result.Total == 0)
             return NotFound();

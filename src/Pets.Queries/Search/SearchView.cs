@@ -5,36 +5,9 @@ using Types;
 /// <summary>
 ///     Сводка о найденном объекте
 /// </summary>
-public sealed class SearchView
-{
-    public SearchView(String id, SearchObjectType type, String img, String title, String shortText)
-    {
-        (Id, Type, Img, Title, ShortText)
-            = (id, type, img, title, shortText);
-    }
-
-    /// <summary>
-    ///     идентификатор найденного объекта
-    /// </summary>
-    public String Id { get; }
-
-    /// <summary>
-    ///     Тип найденного объекта.
-    /// </summary>
-    public SearchObjectType Type { get; }
-
-    /// <summary>
-    ///     Картинка превью к объекту
-    /// </summary>
-    public String Img { get; }
-
-    /// <summary>
-    ///     Заголовок
-    /// </summary>
-    public String Title { get; }
-
-    /// <summary>
-    ///     Краткое описание
-    /// </summary>
-    public String ShortText { get; }
-}
+/// <param name="Id">идентификатор найденного объекта</param>
+/// <param name="Type">Тип найденного объекта.</param>
+/// <param name="Img">Картинка превью к объекту</param>
+/// <param name="Title">Заголовок</param>
+/// <param name="ShortText">Краткое описание</param>
+public sealed record SearchView(String Id, SearchObjectType Type, String Img, String Title, String ShortText);

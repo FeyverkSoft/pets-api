@@ -36,10 +36,10 @@ public sealed class DocumentsQueryHandler :
                 cancellationToken: cancellationToken
             ));
         return result.Select(_ => new ResourceView(
-            _.ImgLink,
-            mdBody: _.MdBody,
-            title: _.Title,
-            state: _.State
+            ImgLink: _.ImgLink,
+            MdBody: _.MdBody,
+            Title: _.Title,
+            State: _.State
         ));
     }
 
@@ -57,9 +57,9 @@ public sealed class DocumentsQueryHandler :
                 cancellationToken: cancellationToken
             ));
         return result.Select(_ => new ContactView(
-            _.ImgLink,
-            _.MdBody,
-            _.Type
+            ImgLink: _.ImgLink,
+            MdBody: _.MdBody,
+            ContactType: _.Type
         ));
     }
 
@@ -78,9 +78,9 @@ public sealed class DocumentsQueryHandler :
                 cancellationToken: cancellationToken
             ));
         return result.Select(_ => new NeedView(
-            _.ImgLinks?.ParseJson<IEnumerable<String?>>() ?? new String[] { },
-            _.MdBody,
-            _.State
+            ImgsLink: _.ImgLinks?.ParseJson<IEnumerable<String?>>() ?? new String[] { },
+            MdBody: _.MdBody,
+            State: _.State
         ));
     }
 }

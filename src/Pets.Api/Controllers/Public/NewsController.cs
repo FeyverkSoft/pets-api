@@ -29,11 +29,11 @@ public sealed class NewsController : ControllerBase
         CancellationToken cancellationToken)
     {
         return Ok(await processor.Send(new GetNewsQuery(
-            binding.OrganisationId,
-            binding.Offset,
-            binding.Limit,
-            tag: binding.Tag,
-            petId: binding.PetId
+            OrganisationId: binding.OrganisationId,
+            Offset: binding.Offset,
+            Limit: binding.Limit,
+            Tag: binding.Tag,
+            PetId: binding.PetId
         ), cancellationToken));
     }
 

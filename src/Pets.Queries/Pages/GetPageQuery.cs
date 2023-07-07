@@ -5,24 +5,9 @@ using Core.Mediatr;
 /// <summary>
 ///     Запрос на получение страницы
 /// </summary>
+/// <param name="OrganisationId">Организация которой принадлежат петомцы</param>
+/// <param name="Page">Идентификатор страницы</param>
 [MediatRDedublicateExecution(
-    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(Page)},
+    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(Page) },
     ThrottlingTimeMs = 2000)]
-public sealed class GetPageQuery : IRequest<PageView?>
-{
-    public GetPageQuery(Guid organisationId, String page)
-    {
-        (OrganisationId, Page)
-            = (organisationId, page);
-    }
-
-    /// <summary>
-    ///     Организация которой принадлежат петомцы
-    /// </summary>
-    public Guid OrganisationId { get; }
-
-    /// <summary>
-    ///     Идентификатор страницы
-    /// </summary>
-    public String Page { get; }
-}
+public sealed record GetPageQuery(Guid OrganisationId, String Page) : IRequest<PageView?>;

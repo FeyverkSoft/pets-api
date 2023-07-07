@@ -5,63 +5,16 @@ using Types;
 /// <summary>
 ///     Инфа о петомце
 /// </summary>
-public class PetView
-{
-    public PetView(Guid id, String name, String? beforePhotoLink, String? afterPhotoLink, PetState petState, String mdShortBody, String? mdBody,
-        PetType type, PetGender gender, DateTime updateDate, Decimal? animalId)
-    {
-        (Id, Name, BeforePhotoLink, AfterPhotoLink, PetState, MdShortBody, MdBody, Type, Gender, UpdateDate, AnimalId)
-            = (id, name, beforePhotoLink, afterPhotoLink, petState, mdShortBody, mdBody, type, gender, updateDate, animalId);
-    }
-
-    public Guid Id { get; }
-
-    /// <summary>
-    ///     Имя животного
-    /// </summary>
-    public String Name { get; }
-
-    /// <summary>
-    ///     Ссфлка на фотку до
-    /// </summary>
-    public String? BeforePhotoLink { get; }
-
-    /// <summary>
-    ///     Ссылка на фотку после
-    /// </summary>
-    public String? AfterPhotoLink { get; }
-
-    /// <summary>
-    ///     Состояние животного
-    /// </summary>
-    public PetState PetState { get; }
-
-    /// <summary>
-    ///     Краткое описание в markdown
-    /// </summary>
-    public String MdShortBody { get; }
-
-    /// <summary>
-    ///     Тело в markdown
-    /// </summary>
-    public String? MdBody { get; }
-
-    /// <summary>
-    ///     Pet type
-    ///     Собака/кот/енот/чупакабра
-    /// </summary>
-    public PetType Type { get; }
-
-    /// <summary>
-    ///     Pet type
-    ///     Мальчик/Девочка/Неизвестно
-    /// </summary>
-    public PetGender Gender { get; }
-
-    public DateTime UpdateDate { get; }
-
-    /// <summary>
-    ///     Идентификтор чипа пета
-    /// </summary>
-    public Decimal? AnimalId { get; }
-}
+/// <param name="Id"></param>
+/// <param name="Name">Имя животного</param>
+/// <param name="BeforePhotoLink">Ссылка на фотку до</param>
+/// <param name="AfterPhotoLink">Ссылка на фотку после</param>
+/// <param name="PetState">Состояние животного</param>
+/// <param name="MdShortBody">Краткое описание в markdown</param>
+/// <param name="MdBody">Тело в markdown</param>
+/// <param name="Type">Pet type  Собака/кот/енот/чупакабра</param>
+/// <param name="Gender">Pet type   Мальчик/Девочка/Неизвестно</param>
+/// <param name="UpdateDate"></param>
+/// <param name="AnimalId">Идентификтор чипа пета</param>
+public sealed record PetView(Guid Id, String Name, String? BeforePhotoLink, String? AfterPhotoLink, PetState PetState, String MdShortBody, String? MdBody,
+    PetType Type, PetGender Gender, DateTime UpdateDate, Decimal? AnimalId);

@@ -2,25 +2,13 @@
 
 using Core.Mediatr;
 
+/// <summary>
+/// </summary>
+/// <param name="OrganisationId">Организация в которой выполняется поиск</param>
+/// <param name="Query">Поисковый запрос</param>
+/// <param name="Offset"></param>
+/// <param name="Limit"></param>
 [MediatRDedublicateExecution(
-    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(Query), nameof(Offset), nameof(Limit)},
+    KeyPropertyNames = new[] { nameof(OrganisationId), nameof(Query), nameof(Offset), nameof(Limit) },
     ThrottlingTimeMs = 2000)]
-public sealed class SearchQuery : PageQuery<SearchView>
-{
-    public SearchQuery(Guid organisationId, String query, Int32 offset = 0, Int32 limit = 8)
-        : base(offset, limit)
-    {
-        (OrganisationId, Query)
-            = (organisationId, query);
-    }
-
-    /// <summary>
-    ///     Организация в которой выполняется поиск
-    /// </summary>
-    public Guid OrganisationId { get; }
-
-    /// <summary>
-    ///     Поисковый запрос
-    /// </summary>
-    public String Query { get; }
-}
+public sealed record SearchQuery(Guid OrganisationId, String Query, Int32 Offset = 0, Int32 Limit = 8) : PageQuery<SearchView>(Limit: Limit, Offset: Offset);

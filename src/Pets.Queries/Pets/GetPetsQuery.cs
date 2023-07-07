@@ -2,44 +2,23 @@
 
 using System.Collections.Generic;
 
+using Core.Mediatr;
+
 using Types;
 
 /// <summary>
 ///     Запрос на получение списка петомцев
 /// </summary>
-public sealed class GetPetsQuery : PageQuery<PetView>
-{
-    public GetPetsQuery(Guid organisationId, List<PetState> petStatuses, List<PetGender> genders, String? filter = null,
-        Int32 offset = 0, Int32 limit = 8, Guid? petId = null)
-        : base(offset, limit)
-    {
-        (OrganisationId, PetStatuses, PetId, Filter, Genders)
-            = (organisationId, petStatuses, petId, filter, genders);
-    }
-
-    /// <summary>
-    ///     Организация которой принадлежат петомцы
-    /// </summary>
-    public Guid OrganisationId { get; }
-
-    /// <summary>
-    ///     фильтр животных по статусам
-    /// </summary>
-    public List<PetState> PetStatuses { get; }
-
-    /// <summary>
-    ///     Идентификатор конкретного животного
-    /// </summary>
-    public Guid? PetId { get; }
-
-    /// <summary>
-    ///     Фильтр по полу
-    /// </summary>
-    public List<PetGender> Genders { get; }
-
-    /// <summary>
-    ///     Текстовый фильтр
-    ///     Пока что по имени и краткому описанию
-    /// </summary>
-    public String? Filter { get; }
-}
+/// <param name="OrganisationId">Организация которой принадлежат петомцы</param>
+/// <param name="PetStatuses">фильтр животных по статусам</param>
+/// <param name="Genders">Фильтр по полу</param>
+/// <param name="Filter">Текстовый фильтр Пока что по имени и краткому описанию</param>
+/// <param name="Offset"></param>
+/// <param name="Limit"></param>
+/// <param name="PetId">Идентификатор конкретного животного</param>
+[MediatRDedublicateExecution(
+    KeyPropertyNames = new[]
+        { nameof(OrganisationId), nameof(PetStatuses), nameof(Genders), nameof(Filter), nameof(PetId), nameof(Offset), nameof(Limit) },
+    ThrottlingTimeMs = 2000)]
+public sealed record GetPetsQuery(Guid OrganisationId, List<PetState> PetStatuses, List<PetGender> Genders, String? Filter = null,
+    Int32 Offset = 0, Int32 Limit = 8, Guid? PetId = null) : PageQuery<PetView>(Limit: Limit, Offset: Offset);

@@ -28,12 +28,12 @@ public sealed class DocumentsQueryHandler :
         await _gridFs.DownloadToStreamAsync(fileInfo.Id, memstream, cancellationToken: cancellationToken);
 
         return new DocumentInfo(
-            query.ImageId,
-            memoryStream: memstream,
-            contentType: fileInfo.Metadata["ContentType"].ToString(),
-            length: fileInfo.Length,
-            fileName: fileInfo.Metadata.Contains("FileName") ? fileInfo.Metadata["FileName"].ToString() : "",
-            nonUniqueExtId: fileInfo.Metadata.Contains("NonUniqueExtId") ? fileInfo.Metadata["NonUniqueExtId"].ToString() : ""
+            Id: query.ImageId,
+            MemoryStream: memstream,
+            ContentType: fileInfo.Metadata["ContentType"].ToString(),
+            Length: fileInfo.Length,
+            FileName: fileInfo.Metadata.Contains("FileName") ? fileInfo.Metadata["FileName"].ToString() : "",
+            NonUniqueExtId: fileInfo.Metadata.Contains("NonUniqueExtId") ? fileInfo.Metadata["NonUniqueExtId"].ToString() : ""
         );
     }
 }

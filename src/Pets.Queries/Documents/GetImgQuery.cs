@@ -3,16 +3,5 @@
 /// <summary>
 ///     Запрос на получение картинки по id картинки
 /// </summary>
-public sealed class GetImgQuery : IRequest<DocumentInfo?>
-{
-    public GetImgQuery(Guid imageId)
-    {
-        ImageId
-            = imageId;
-    }
-
-    /// <summary>
-    ///     Картинка
-    /// </summary>
-    public Guid ImageId { get; }
-}
+/// <param name="ImageId">Картинка</param>
+public sealed record GetImgQuery(Guid ImageId) : IRequest<DocumentInfo?>;

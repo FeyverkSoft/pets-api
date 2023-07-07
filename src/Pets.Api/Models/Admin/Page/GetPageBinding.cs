@@ -1,4 +1,4 @@
-﻿namespace Pets.Api.Models.Public.Page;
+﻿namespace Pets.Api.Models.Admin.Page;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +13,6 @@ public sealed class GetPageBinding
     /// <summary>
     ///     Наименование страницы
     /// </summary>
-    [Required]
     public String Page { get; set; }
 
     public sealed class GetPageBindingValidator : AbstractValidator<GetPageBinding>

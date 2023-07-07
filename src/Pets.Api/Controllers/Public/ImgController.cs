@@ -33,8 +33,8 @@ public sealed class ImgController : ControllerBase
         ), cancellationToken);
         if (result == null)
             return NotFound();
-        result.Stream.Position = 0;
+        result.MemoryStream.Position = 0;
         Response.Headers.Add("Cache-Control", "public,max-age=864000");
-        return File(result.Stream, result.ContentType);
+        return File(result.MemoryStream, result.ContentType);
     }
 }

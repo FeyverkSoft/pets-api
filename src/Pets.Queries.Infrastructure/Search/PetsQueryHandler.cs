@@ -89,7 +89,12 @@ public sealed class SearchQueryHandler : IRequestHandler<SearchQuery, Page<Searc
             Limit = query.Limit,
             Offset = query.Offset,
             Total = counts.NewsCount + counts.PageCount + counts.PetCount,
-            Items = items.Select(_ => new SearchView(_.Id, _.Type, _.Img, _.Title, _.ShortText))
+            Items = items.Select(_ => new SearchView(
+                Id: _.Id,
+                Type: _.Type,
+                Img: _.Img,
+                Title: _.Title,
+                ShortText: _.ShortText))
         };
     }
 }

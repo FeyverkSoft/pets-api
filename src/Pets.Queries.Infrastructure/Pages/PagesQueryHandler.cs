@@ -14,9 +14,9 @@ public sealed class PagesQueryHandler : IRequestHandler<GetPageQuery, PageView?>
     async Task<PageView?> IRequestHandler<GetPageQuery, PageView?>.Handle(GetPageQuery query,
         CancellationToken cancellationToken)
     {
-        var result = await _db.QuerySingleOrDefaultAsync<Entity.Pages.PageView>(
+        var result = await _db.QuerySingleOrDefaultAsync<Entity.Pages.PageDto>(
             new CommandDefinition(
-                Entity.Pages.PageView.Sql,
+                Entity.Pages.PageDto.Sql,
                 new
                 {
                     query.OrganisationId,
@@ -28,11 +28,11 @@ public sealed class PagesQueryHandler : IRequestHandler<GetPageQuery, PageView?>
         if (result == null)
             return null;
         return new PageView(
-            result.Id,
-            result.OrganisationId,
-            result.ImgLink,
-            result.MdBody,
-            result.UpdateDate
+            Id: result.Id,
+            OrganisationId: result.OrganisationId,
+            ImgLink: result.ImgLink,
+            MdBody: result.MdBody,
+            UpdateDate: result.UpdateDate
         );
     }
 }

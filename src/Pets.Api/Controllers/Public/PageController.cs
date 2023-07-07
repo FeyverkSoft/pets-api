@@ -29,8 +29,8 @@ public sealed class PageController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await processor.Send(new GetPageQuery(
-            binding.OrganisationId,
-            binding.Page
+            OrganisationId: binding.OrganisationId,
+            Page: binding.Page
         ), cancellationToken);
         if (result == null)
             return NotFound(new ProblemDetails

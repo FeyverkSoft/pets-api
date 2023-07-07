@@ -3,21 +3,6 @@
 /// <summary>
 ///     Список связанных с новостью животных
 /// </summary>
-public sealed class LinkedPetsView
-{
-    public LinkedPetsView(Guid id, String name)
-    {
-        (Id, Name)
-            = (id, name);
-    }
-
-    /// <summary>
-    ///     Идентификатор животного
-    /// </summary>
-    public Guid Id { get; }
-
-    /// <summary>
-    ///     Имя животного
-    /// </summary>
-    public String Name { get; }
-}
+/// <param name="Id">Идентификатор животного</param>
+/// <param name="Name">Имя животного</param>
+public sealed record LinkedPetsView(Guid Id, String Name);

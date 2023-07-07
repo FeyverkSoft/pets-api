@@ -27,10 +27,10 @@ public sealed class SearchController : ControllerBase
         CancellationToken cancellationToken)
     {
         return Ok(await processor.Send(new SearchQuery(
-            binding.OrganisationId,
-            binding.Query,
-            limit: binding.Limit,
-            offset: binding.Offset
+            OrganisationId: binding.OrganisationId,
+            Query: binding.Query,
+            Limit: binding.Limit,
+            Offset: binding.Offset
         ), cancellationToken));
     }
 }

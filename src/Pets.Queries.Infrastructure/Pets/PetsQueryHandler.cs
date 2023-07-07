@@ -28,9 +28,9 @@ public sealed class PetsQueryHandler :
 
     public async Task<PetView?> Handle(GetPetQuery query, CancellationToken cancellationToken)
     {
-        var pet = await _db.QuerySingleOrDefaultAsync<Entity.Pets.PetView>(
+        var pet = await _db.QuerySingleOrDefaultAsync<Entity.Pets.PetDto>(
             new CommandDefinition(
-                Entity.Pets.PetView.Sql,
+                Entity.Pets.PetDto.Sql,
                 new
                 {
                     query.OrganisationId, query.PetId
@@ -43,17 +43,17 @@ public sealed class PetsQueryHandler :
             return null;
 
         return new PetView(
-            pet.Id,
-            pet.Name,
-            pet.BeforePhotoLink,
-            pet.AfterPhotoLink,
-            pet.PetState,
-            pet.MdShortBody,
-            pet.MdBody,
-            pet.Type,
-            pet.Gender,
-            pet.UpdateDate,
-            pet.AnimalId
+            Id: pet.Id,
+            Name: pet.Name,
+            BeforePhotoLink: pet.BeforePhotoLink,
+            AfterPhotoLink: pet.AfterPhotoLink,
+            PetState: pet.PetState,
+            MdShortBody: pet.MdShortBody,
+            MdBody: pet.MdBody,
+            Type: pet.Type,
+            Gender: pet.Gender,
+            UpdateDate: pet.UpdateDate,
+            AnimalId: pet.AnimalId
         );
     }
 
@@ -62,7 +62,7 @@ public sealed class PetsQueryHandler :
     {
         var pets = await _db.QueryMultipleAsync(
             new CommandDefinition(
-                PetsView.Sql,
+                PetsDto.Sql,
                 new
                 {
                     query.Limit,
@@ -81,18 +81,18 @@ public sealed class PetsQueryHandler :
             Limit = query.Limit,
             Offset = query.Offset,
             Total = await pets.ReadSingleAsync<Int64>(),
-            Items = (await pets.ReadAsync<PetsView>()).Select(_ => new PetView(
-                _.Id,
-                _.Name,
-                _.BeforePhotoLink,
-                _.AfterPhotoLink,
-                _.PetState,
-                _.MdShortBody,
-                _.MdBody,
-                _.Type,
-                _.Gender,
-                _.UpdateDate,
-                _.AnimalId
+            Items = (await pets.ReadAsync<PetsDto>()).Select(_ => new PetView(
+                Id: _.Id,
+                Name: _.Name,
+                BeforePhotoLink: _.BeforePhotoLink,
+                AfterPhotoLink: _.AfterPhotoLink,
+                PetState: _.PetState,
+                MdShortBody: _.MdShortBody,
+                MdBody: _.MdBody,
+                Type: _.Type,
+                Gender: _.Gender,
+                UpdateDate: _.UpdateDate,
+                AnimalId: _.AnimalId
             ))
         };
     }
