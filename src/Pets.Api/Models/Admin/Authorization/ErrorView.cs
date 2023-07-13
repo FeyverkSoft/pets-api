@@ -1,6 +1,6 @@
 ﻿namespace Pets.Api.Models.Admin.Authorization;
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 using Types;
 
@@ -9,13 +9,13 @@ public sealed class ErrorView
     /// <summary>
     ///     Error code https://tools.ietf.org/html/rfc6749#section-5.2
     /// </summary>
-    [JsonProperty("error")]
+    [JsonPropertyName("error")]
     public String Error { get; set; }
 
     /// <summary>
     ///     Human-readable text providing additional information
     /// </summary>
-    [JsonProperty("error_description")]
+    [JsonPropertyName("error_description")]
     public String ErrorDescription { get; set; }
 
     public static ErrorView Build(O2AuthErrorCode code, String description = null)

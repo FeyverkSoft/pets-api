@@ -1,6 +1,6 @@
 ﻿namespace Pets.Domain.Pet.Events;
 
-using Rabbita.Core;
+using Rabbita.Core.Event;
 
 /// <summary>
 ///     Уведомление об изменении имени питомца

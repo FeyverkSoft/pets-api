@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using Events;
 
-using Rabbita.Core;
+using Rabbita.Core.Event;
 
 using Types;
 

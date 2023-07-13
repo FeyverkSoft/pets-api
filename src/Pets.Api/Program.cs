@@ -11,14 +11,15 @@ using Pets.Api.AspCore.FluentExtensions;
 using Pets.Api.Middlewares;
 using Pets.DB.Migrations;
 
+using Rabbita.Entity.Migration;
+
 var builder = WebApplication.CreateBuilder();
 ConfigWebHost(builder);
 builder.Services.ConfigureServices(builder.Configuration);
 var app = builder.Build();
 Configure(app, builder.Environment);
 app.RunDatabaseMigrations()
-//.MessagingDbInitialize()
-    ;
+.MessagingDbInitialize();
 
 
 app.Run();

@@ -1,5 +1,6 @@
 namespace Pets.Api;
 
+using System.Configuration;
 using System.Data;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -40,9 +41,12 @@ using MySqlConnector;
 
 using Queries.Infrastructure;
 
-using Rabbita.Core.DafaultHandlers;
+using Rabbita.Core.DefaultHandlers;
 using Rabbita.Core.FluentExtensions;
+using Rabbita.Entity.FluentExtensions;
+using Rabbita.Entity.MariaDbTarget;
 using Rabbita.InProc.FluentExtensions;
+using Rabbita.InProc.FluentExtensions.Event;
 
 public static class Startup
 {
@@ -159,24 +163,22 @@ public static class Startup
         services.AddMediatorCommandDedublicateBehaviour();
         services.AddQueries();
 
-        services.AddExceptionProcessor(registry => { registry.Register<ExceptionHandler>(); });
-
         services
-            .AddRabbitaSerializer()
-            /* .AddRabbitaPersistent(
+            .AddRabbitaDefaultSerializer()
+            .AddRabbitaPersistent(
                  options => { },
                  options =>
                  {
-                     options.UseMySql(Configuration.GetConnectionString("Pets"),
+                     options.UseMySql(configuration.GetConnectionString("Pets"),
                          new MariaDbServerVersion(new Version(10, 5, 8)));
                  }
-             )*/;
+             ); 
 
-        /* services.AddRabbitaDbPersistentMigrator(options =>
+         services.AddRabbitaDbPersistentMigrator(options =>
          {
-             options.ConnectionString = Configuration.GetConnectionString("PetsMigration");
+             options.ConnectionString = configuration.GetConnectionString("PetsMigration");
              options.DbCommandTimeout = 30;
-         });  */
+         });  
         services.AddEventBus();
         services.AddEventProcessor(registry => { });
         return services;

@@ -1,12 +1,13 @@
 ﻿namespace Pets.Api.Authorization;
 
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Domain.Authentication;
 
 using Microsoft.AspNetCore.Http;
 
-using Newtonsoft.Json;
 
 using Types;
 
@@ -42,6 +43,6 @@ public static class HttpContextExtensions
     public static ScopeAction GetApiScope(this HttpContext httpContext)
     {
         var scope = httpContext.User.FindFirst(x => x.Type.Equals(CustomClaimTypes.Scope));
-        return scope is null ? new ScopeAction() : JsonConvert.DeserializeObject<ScopeAction>(scope.Value);
+        return scope is null ? new ScopeAction() : JsonSerializer.Deserialize<ScopeAction>(scope.Value);
     }
 }

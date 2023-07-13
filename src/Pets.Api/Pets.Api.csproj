@@ -20,10 +20,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.8" />
-        <PackageReference Include="FeyverkSoft.Rabbita.Entity" Version="0.0.8" />
-        <PackageReference Include="FeyverkSoft.Rabbita.Entity.MariaDbTarget" Version="0.1.5" />
-        <PackageReference Include="FeyverkSoft.Rabbita.InProc" Version="0.0.5" />
+        <PackageReference Include="FeyverkSoft.Rabbita.Entity" Version="0.2.17" />
+        <PackageReference Include="FeyverkSoft.Rabbita.Entity.MariaDbTarget" Version="0.2.17" />
+        <PackageReference Include="FeyverkSoft.Rabbita.InProc" Version="0.2.17" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />

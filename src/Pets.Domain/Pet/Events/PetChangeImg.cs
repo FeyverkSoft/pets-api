@@ -1,6 +1,6 @@
 ﻿namespace Pets.Domain.Pet.Events;
 
-using Rabbita.Core;
+using Rabbita.Core.Event;
 
 /// <summary>
 ///     Cобытие изменения фотки животного в профайле

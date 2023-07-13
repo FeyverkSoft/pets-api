@@ -2,7 +2,7 @@
 
 using Exceptions;
 
-using Rabbita.Core;
+using Rabbita.Core.Command;
 
 public sealed class PasswordChangerService
 {

@@ -1,6 +1,6 @@
 ﻿namespace Pets.Domain.Pet.Events;
 
-using Rabbita.Core;
+using Rabbita.Core.Event;
 
 public class PetAnimalIdChanged : IEvent
 {
