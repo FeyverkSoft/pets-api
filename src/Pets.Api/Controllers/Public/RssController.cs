@@ -31,11 +31,7 @@ public sealed class RssController : ControllerBase
         var domain = config["Domain"];
         var result = await processor.Send(new GetPetsQuery(
             organisationId,
-            Offset: 0,
-            Limit: 100,
-            Genders: new List<PetGender>(),
-            PetStatuses: new List<PetState>()
-        ), cancellationToken);
+            PetStatuses: new List<PetState>(), Genders: new List<PetGender>(), Offset: 0, Limit: 100), cancellationToken);
         var sb = new StringBuilder(@$"<?xml version=""1.0"" encoding=""UTF-8""?>
 <rss version=""2.0"" xmlns:dc=""http://purl.org/dc/elements/1.1/"" xmlns:turbo=""http://turbo.yandex.ru"">
 <channel>

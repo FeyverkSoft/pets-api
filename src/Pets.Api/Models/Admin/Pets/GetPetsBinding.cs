@@ -26,6 +26,11 @@ public sealed class GetPetsBinding
     ///     Фильтр по полу
     /// </summary>
     public List<PetGender> Genders { get; set; } = new() { PetGender.Female, PetGender.Male, PetGender.Unset };
+    
+    /// <summary>
+    ///     Фильтр по типу
+    /// </summary>
+    public List<PetType> Types { get; set; } = new() { PetType.Cat, PetType.Dog, PetType.Unset, PetType.Bird };
 
     /// <summary>
     ///     Текстовый фильтр

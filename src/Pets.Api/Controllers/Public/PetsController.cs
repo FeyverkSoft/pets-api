@@ -34,12 +34,6 @@ public sealed class PetsController : ControllerBase
     {
         return Ok(await processor.Send(new GetPetsQuery(
             binding.OrganisationId,
-            Offset: binding.Offset,
-            Limit: binding.Limit,
-            Filter: binding.Text,
-            Genders: binding.Genders.Any()
-                ? binding.Genders
-                : new List<PetGender>(),
             PetStatuses: binding.PetStatuses.Any()
                 ? binding.PetStatuses
                 : new List<PetState>
@@ -49,8 +43,9 @@ public sealed class PetsController : ControllerBase
                     PetState.Critical,
                     PetState.Death,
                     PetState.Wanted
-                }
-        ), cancellationToken));
+                }, Genders: binding.Genders.Any()
+                ? binding.Genders
+                : new List<PetGender>(), Filter: binding.Text, Offset: binding.Offset, Limit: binding.Limit), cancellationToken));
     }
 
     /// <summary>

@@ -15,6 +15,7 @@ using Models.Admin.Pets;
 
 using Queries;
 using Queries.Pets;
+using Queries.Pets.Admin;
 
 using Types;
 using Types.Exceptions;
@@ -42,14 +43,8 @@ public sealed class PetsController : ControllerBase
         [FromQuery] GetPetsBinding binding,
         CancellationToken cancellationToken)
     {
-        return Ok(await processor.Send(new GetPetsQuery(
+        return Ok(await processor.Send(new AdminGetPetsQuery(
             binding.OrganisationId,
-            Offset: binding.Offset,
-            Limit: binding.Limit,
-            Filter: binding.Text,
-            Genders: binding.Genders.Any()
-                ? binding.Genders
-                : new List<PetGender>(),
             PetStatuses: binding.PetStatuses.Any()
                 ? binding.PetStatuses
                 : new List<PetState>
@@ -59,8 +54,17 @@ public sealed class PetsController : ControllerBase
                     PetState.Critical,
                     PetState.Death,
                     PetState.Wanted
-                }
-        ), cancellationToken));
+                }, 
+            Genders: binding.Genders.Any()
+                ? binding.Genders
+                : new List<PetGender>(), 
+            Filter: binding.Text, 
+            Offset: binding.Offset, 
+            Limit: binding.Limit, 
+            Types: binding.Types.Any()
+                ? binding.Types
+                : new List<PetType>()), 
+            cancellationToken));
     }
     
     /// <summary>
