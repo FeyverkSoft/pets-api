@@ -59,7 +59,7 @@ public sealed class Pet
     ///     Pet type
     ///     Собака/кот/енот/чупакабра
     /// </summary>
-    public PetType Type { get; }
+    public PetType Type { get; private set; }
 
     /// <summary>
     ///     Pet type
@@ -233,6 +233,22 @@ public sealed class Pet
         );
 
         AnimalId = animalId;
+        UpdateDate = updateDate;
+    }
+
+    public void ChangePetType(PetType type, DateTime updateDate)
+    {
+        if (Type == type)
+            return;
+
+        Events.Add(new PetTypeChanged(
+            Id,
+            type,
+            Type,
+            updateDate)
+        );
+
+        Type = type;
         UpdateDate = updateDate;
     }
 }

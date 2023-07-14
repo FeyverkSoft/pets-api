@@ -302,4 +302,43 @@ public sealed class PetsController : ControllerBase
             petId
         ), cancellationToken));
     }
+    
+    /// <summary>
+    ///     Update pet type
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="petId"></param>
+    /// <returns></returns>
+    [HttpPatch("{petId:guid}/type")]
+    [ProducesResponseType(typeof(PetView), 200)]
+    public async Task<IActionResult> UpdateType(
+        [FromRoute] Guid petId,
+        [FromServices] IMediator processor,
+        [FromServices] IPetUpdateService petUpdateService,
+        [FromBody] UpdateTypePetBinding binding,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await petUpdateService.SetType(
+                petId,
+                HttpContext.GetOrganisationId(),
+                binding.Type,
+                cancellationToken);
+        }
+        catch (NotFoundException e)
+        {
+            return Conflict(new ProblemDetails
+            {
+                Status = (Int32)HttpStatusCode.NotFound,
+                Type = "pet_not_found",
+                Detail = e.Message
+            });
+        }
+
+        return Ok(await processor.Send(new GetPetQuery(
+            User.GetOrganisationId(),
+            petId
+        ), cancellationToken));
+    }
 }

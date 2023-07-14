@@ -3,33 +3,9 @@
 using Rabbita.Core.Event;
 
 /// <summary>
-///     Cобытие изменения фотки животного в профайле
+/// Cобытие изменения описания животного в профайле
 /// </summary>
-public sealed class PetChangeDescription : IEvent
-{
-    protected PetChangeDescription()
-    {
-    }
-
-    public PetChangeDescription(Guid petId, String body, DateTime date)
-    {
-        PetId = petId;
-        Date = date;
-        Body = body;
-    }
-
-    /// <summary>
-    ///     Идентификатор питомца
-    /// </summary>
-    public Guid PetId { get; }
-
-    /// <summary>
-    ///     Дата события
-    /// </summary>
-    public DateTime Date { get; }
-
-    /// <summary>
-    ///     Ссылка на новую фотку
-    /// </summary>
-    public String Body { get; }
-}
+/// <param name="PetId">Идентификатор питомца</param>
+/// <param name="Date">Дата события</param>
+/// <param name="Body">Новое тело описания</param>
+public sealed record PetChangeDescription(Guid PetId, String Date, DateTime Body) : IEvent;

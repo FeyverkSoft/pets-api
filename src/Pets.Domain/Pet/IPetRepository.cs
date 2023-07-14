@@ -1,5 +1,7 @@
 ﻿namespace Pets.Domain.Pet;
 
+using Core;
+
 using Entity;
 
 /// <summary>
@@ -8,13 +10,11 @@ using Entity;
 public interface IPetRepository
 {
     /// <summary>
-    ///     Получить питомца по его id
+    ///     Получить питомца
     /// </summary>
-    /// <param name="petId"></param>
-    /// <param name="organisation"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Pet?> GetAsync(Guid petId, Organisation organisation, CancellationToken cancellationToken);
+    Task<Pet?> GetAsync(Specification<Pet> specification, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Сохранить питомца

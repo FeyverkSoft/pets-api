@@ -6,6 +6,8 @@ using Entity;
 
 using Exceptions;
 
+using Specs;
+
 using Types;
 using Types.Exceptions;
 
@@ -57,7 +59,8 @@ public sealed class PetService :
         Decimal? animalId,
         CancellationToken cancellationToken)
     {
-        var pet = await _petRepository.GetAsync(petId, (Organisation)organisationId, cancellationToken);
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
+        
         // если с таким id пет уже был найден, то выполняем проверку идемпотентности
         if (pet is not null)
         {
@@ -116,7 +119,7 @@ public sealed class PetService :
         String? mdBody,
         CancellationToken cancellationToken)
     {
-        var pet = await _petRepository.GetAsync(petId, (Organisation)organisationId, cancellationToken);
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
 
         if (pet is null)
             throw new PetNotFoundException(petId, organisationId);
@@ -143,7 +146,7 @@ public sealed class PetService :
     /// <returns></returns>
     public async Task UpdateName(Guid petId, Guid organisationId, String name, String reason, CancellationToken cancellationToken)
     {
-        var pet = await _petRepository.GetAsync(petId, (Organisation)organisationId, cancellationToken);
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
 
         if (pet is null)
             throw new PetNotFoundException(petId, organisationId);
@@ -172,7 +175,7 @@ public sealed class PetService :
     /// <returns></returns>
     public async Task SetGender(Guid petId, Guid organisationId, PetGender gender, CancellationToken cancellationToken)
     {
-        var pet = await _petRepository.GetAsync(petId, (Organisation)organisationId, cancellationToken);
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
 
         if (pet is null)
             throw new PetNotFoundException(petId, organisationId);
@@ -198,13 +201,35 @@ public sealed class PetService :
     /// <returns></returns>
     public async Task SetStatus(Guid petId, Guid organisationId, PetState state, CancellationToken cancellationToken)
     {
-        var pet = await _petRepository.GetAsync(petId, (Organisation)organisationId, cancellationToken);
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
 
         if (pet is null)
             throw new PetNotFoundException(petId, organisationId);
 
         pet.ChangePetStatus(
             state,
+            _dateTimeGetter.Get()
+        );
+
+        await _petRepository.SaveAsync(
+            pet,
+            cancellationToken
+        );
+    }
+
+    /// <summary>
+    /// Изменить тип питомца
+    /// </summary>
+    /// <returns></returns>
+    public async Task SetType(Guid petId, Guid organisationId, PetType type, CancellationToken cancellationToken)
+    {
+        var pet = await _petRepository.GetAsync(PetSpecs.IsSatisfiedById(petId, (Organisation)organisationId), cancellationToken);
+
+        if (pet is null)
+            throw new PetNotFoundException(petId, organisationId);
+
+        pet.ChangePetType(
+            type,
             _dateTimeGetter.Get()
         );
 

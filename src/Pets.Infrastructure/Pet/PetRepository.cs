@@ -2,6 +2,8 @@
 
 using System.Threading;
 
+using Core;
+
 using Domain.Pet;
 using Domain.Pet.Entity;
 
@@ -17,17 +19,14 @@ public sealed class PetRepository : IPetRepository
     }
 
     /// <summary>
-    ///     Получить питомца по его id
+    ///     Получить питомца
     /// </summary>
-    /// <param name="petId"></param>
-    /// <param name="organisation"></param>
+    /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<Pet?> GetAsync(Guid petId, Organisation organisation, CancellationToken cancellationToken)
+    public async Task<Pet?> GetAsync(Specification<Pet> specification, CancellationToken cancellationToken)
     {
-        return await _context.Pets.SingleOrDefaultAsync(_ => _.Id == petId &&
-                                                             _.Organisation == organisation,
-            cancellationToken);
+        return await _context.Pets.SingleOrDefaultAsync(specification, cancellationToken);
     }
 
     /// <summary>

@@ -60,4 +60,14 @@ public interface IPetUpdateService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task SetStatus(Guid petId, Guid organisationId, PetState state, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Изменить тип питомца
+    /// </summary>
+    /// <param name="petId"></param>
+    /// <param name="getOrganisationId"></param>
+    /// <param name="bindingType"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task SetType(Guid petId, Guid getOrganisationId, PetType bindingType, CancellationToken cancellationToken);
 }

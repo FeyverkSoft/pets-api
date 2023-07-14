@@ -4,16 +4,4 @@ using Rabbita.Core.Event;
 
 using Types;
 
-public class PetGenderChanged : IEvent
-{
-    public PetGenderChanged(Guid petId, PetGender gender, PetGender oldGender, DateTime date)
-    {
-        (PetId, Gender, OldGender, Date)
-            = (petId, gender, oldGender, date);
-    }
-
-    public Guid PetId { get; }
-    public PetGender Gender { get; }
-    public PetGender OldGender { get; }
-    public DateTime Date { get; }
-}
+public record PetGenderChanged(Guid PetId, PetGender Gender, PetGender OldGender, DateTime Date) : IEvent;
