@@ -43,8 +43,11 @@ public sealed class RefreshTokenStore : IRefreshTokenStore
 
         var dd = DateTime.UtcNow.AddSeconds(-1 * _lifeTime.Seconds * 0.1);
         // берём токен которому ещё жить более 10%
-        var newRefreshToken = await _context.RefreshTokens.SingleOrDefaultAsync(token =>
+        var newRefreshToken = await  _context.RefreshTokens
+                                  .OrderByDescending(t=>t.ExpireDate)
+                                  .FirstOrDefaultAsync(token =>
                                   token.UserId == oldRefreshToken.UserId
+                                  && token.IpAddress == ip
                                   && token.ExpireDate > dd, cancellationToken) ??
                               new RefreshToken(Guid.NewGuid().ToString(), oldRefreshToken.UserId, ip, DateTime.UtcNow.Add(_lifeTime));
 

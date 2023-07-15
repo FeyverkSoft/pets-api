@@ -247,3 +247,4 @@ logs/
 .idea/
 Pets.Types.xml
 /src/Pets.Api/Api_V2/src/Pets.Api/Pets.Api.xml
+/src/Pets.Api/appsettings.Development.json
