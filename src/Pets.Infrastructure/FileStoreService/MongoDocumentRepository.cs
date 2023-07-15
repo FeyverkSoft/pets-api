@@ -59,7 +59,7 @@ public sealed class MongoDocumentRepository : IDocumentRepository
 
     private async Task<BsonValue> GetHash(IFormFile file, CancellationToken cancellationToken)
     {
-        var data = _hasher.ComputeHash(file.OpenReadStream());
+        var data = await _hasher.ComputeHashAsync(file.OpenReadStream(), cancellationToken);
         return data.Aggregate(String.Empty, (current, t) => current + t.ToString("x2"));
     }
 }

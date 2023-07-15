@@ -26,8 +26,9 @@ public sealed class PetRepository : IPetRepository
     /// <returns></returns>
     public async Task<Pet?> GetAsync(Specification<Pet> specification, CancellationToken cancellationToken)
     {
-        return await _context.Pets.SingleOrDefaultAsync(specification, cancellationToken);
-    }
+        return await _context.Pets
+            .SingleOrDefaultAsync(specification, cancellationToken);
+    }                              
 
     /// <summary>
     ///     Сохранить питомца

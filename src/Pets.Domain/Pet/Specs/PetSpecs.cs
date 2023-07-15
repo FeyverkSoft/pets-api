@@ -8,7 +8,7 @@ using Types;
 
 public static class PetSpecs
 {
-    public static Specification<Pet> IsSatisfiedById(Guid id, Organisation organisation) => new(x => x.Id == id && x.Organisation.Id == organisation);
+    public static Specification<Pet> IsSatisfiedById(Guid id, Organisation organisation) => new(x => x.Id == id && x.Organisation == organisation);
 
     public static Specification<Pet> IsIdempotence(Pet pet) => new(
         x => x.Gender != pet.Gender ||
