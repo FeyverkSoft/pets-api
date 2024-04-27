@@ -7,7 +7,7 @@ using Types.Exceptions;
 /// </summary>
 public sealed class PetAlreadyExistsException : IdempotencyCheckException
 {
-    public PetAlreadyExistsException(Guid petId) : base($"Pet with id: {petId} and not matching data already exists;")
+    public PetAlreadyExistsException(Guid petId) : base(("Pet", petId))
     {
     }
 }

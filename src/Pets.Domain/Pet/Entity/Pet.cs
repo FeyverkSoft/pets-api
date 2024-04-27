@@ -2,11 +2,15 @@ namespace Pets.Domain.Pet.Entity;
 
 using System.Collections.Generic;
 
+using Core;
+
 using Events;
 
 using Rabbita.Core.Event;
 
 using Types;
+
+using ValueTypes;
 
 /// <summary>
 ///     Информация о животном
@@ -129,9 +133,9 @@ public sealed class Pet
 
         var before = beforePhotoLink ?? afterPhotoLink;
 
-        if (before is not null && !before.Equals(BeforePhotoLink, StringComparison.InvariantCultureIgnoreCase)) Events.Add(new PetChangeImg(Id, before, date));
+        if (before is not null && !before.IgnoreCaseEquals(BeforePhotoLink)) Events.Add(new PetChangeImg(Id, before, date));
 
-        if (afterPhotoLink is not null && !afterPhotoLink.Equals(AfterPhotoLink, StringComparison.InvariantCultureIgnoreCase))
+        if (afterPhotoLink is not null && !afterPhotoLink.IgnoreCaseEquals(AfterPhotoLink))
             Events.Add(new PetChangeImg(Id, afterPhotoLink, date));
 
         AfterPhotoLink = afterPhotoLink;

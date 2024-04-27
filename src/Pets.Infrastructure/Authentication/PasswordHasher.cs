@@ -3,6 +3,8 @@
 using System.Security.Cryptography;
 using System.Text;
 
+using Core;
+
 using Domain.Authentication;
 
 public sealed class PasswordHasher : IPasswordHasher
@@ -10,7 +12,7 @@ public sealed class PasswordHasher : IPasswordHasher
     public Boolean TestPassword(User user, String? password)
     {
         return GetHash(user.Id, user.Login, password)
-            .Equals(user.PasswordHash, StringComparison.InvariantCultureIgnoreCase);
+            .IgnoreCaseEquals(user.PasswordHash);
     }
 
     public String GetHash(User user, String password)

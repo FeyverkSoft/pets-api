@@ -11,6 +11,8 @@ using Specs;
 using Types;
 using Types.Exceptions;
 
+using ValueTypes;
+
 public sealed class PetService :
     IPetCreateService,
     IPetUpdateService
@@ -68,9 +70,9 @@ public sealed class PetService :
                 pet.Type != type ||
                 pet.PetState != petState ||
                 pet.AnimalId != animalId ||
-                !name.Equals(pet.Name, StringComparison.InvariantCultureIgnoreCase) ||
-                (mdShortBody is not null && !mdShortBody.Equals(pet.MdShortBody, StringComparison.InvariantCultureIgnoreCase)) ||
-                (mdBody is not null && !mdBody.Equals(pet.MdBody, StringComparison.InvariantCultureIgnoreCase))
+                !name.IgnoreCaseEquals(pet.Name) ||
+                (mdShortBody is not null && !mdShortBody.IgnoreCaseEquals(pet.MdShortBody)) ||
+                (mdBody is not null && !mdBody.IgnoreCaseEquals(pet.MdBody))
                )
                 throw new PetAlreadyExistsException(petId);
 

@@ -7,7 +7,7 @@ using System;
 /// </summary>
 public class IdempotencyCheckException : Exception
 {
-    public IdempotencyCheckException(String? message = null, Exception? innerException = null) : base(message, innerException)
+    public IdempotencyCheckException((String? Name, Guid Id) message, Exception? innerException = null) : base($"{message.Name} with id: {message.Id} and not matching data already exists;", innerException)
     {
     }
 }

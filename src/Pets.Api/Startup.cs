@@ -1,6 +1,5 @@
 namespace Pets.Api;
 
-using System.Configuration;
 using System.Data;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -14,6 +13,8 @@ using DB.Migrations;
 
 using Domain.Authentication;
 using Domain.Documents;
+using Domain.News;
+using Domain.Organisation;
 using Domain.Pet;
 
 using Extensions;
@@ -23,6 +24,8 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Authentication;
 using Infrastructure.FileStoreService;
 using Infrastructure.Markdown;
+using Infrastructure.News;
+using Infrastructure.Organisation;
 using Infrastructure.Pet;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -59,16 +62,15 @@ public static class Startup
         services.AddScoped<AuthorizationApiFilter>();
         services.AddTransient<ErrorHandlingMiddleware>();
 
+        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidationClientsideAdapters();
+        services.AddValidatorsFromAssemblyContaining<Program>();
+        
         services
             .AddControllers(options =>
             {
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<AuthorizationApiFilter>();
-            })
-            .AddFluentValidation(cfg =>
-            {
-                cfg.RegisterValidatorsFromAssemblyContaining<Program>();
-                cfg.LocalizationEnabled = false;
             })
             .AddJsonOptions(options =>
             {
@@ -134,6 +136,30 @@ public static class Startup
         services.AddScoped<IPetUpdateService, PetService>();
         services.AddScoped<IPetRepository, PetRepository>();
         services.AddDbContextPool<PetDbContext>(options =>
+        {
+            options.UseMySql(configuration.GetConnectionString("Pets"),
+                new MariaDbServerVersion(new Version(10, 5, 8)));
+        });
+
+        #endregion
+
+        #region org
+        
+        services.AddScoped<IOrganisationGetter, OrganisationRepository>();
+        services.AddDbContextPool<OrganisationDbContext>(options =>
+        {
+            options.UseMySql(configuration.GetConnectionString("Pets"),
+                new MariaDbServerVersion(new Version(10, 5, 8)));
+        });
+
+        #endregion
+        
+        #region news
+
+        services.AddScoped<INewsCreateService, NewsService>();
+        services.AddScoped<IPetGetter, NewsRepository>();
+        services.AddScoped<INewsRepository, NewsRepository>();
+        services.AddDbContextPool<NewsDbContext>(options =>
         {
             options.UseMySql(configuration.GetConnectionString("Pets"),
                 new MariaDbServerVersion(new Version(10, 5, 8)));

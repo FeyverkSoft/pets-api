@@ -1,6 +1,7 @@
 ﻿namespace Pets.Infrastructure.Pet;
 
 using Domain.Pet.Entity;
+using Domain.ValueTypes;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-﻿namespace Pets.Domain.Pet.Entity;
+﻿namespace Pets.Domain.ValueTypes;
 
 public sealed class Organisation
 {
