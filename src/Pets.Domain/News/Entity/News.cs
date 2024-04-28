@@ -49,12 +49,12 @@ public sealed record News
     /// <summary>
     /// Связанные животные с новостью
     /// </summary>
-    public ICollection<LinkedPets> LinkedPets { get; private set; }
+    public List<Pet> LinkedPets { get; private set; } = new();
 
     /// <summary>
     /// Теги новости
     /// </summary>
-    public ICollection<String> Tags { get; private set; }
+    public List<String> Tags { get; private set; } = new();
 
     public List<IEvent> Events { get; } = new();
 
@@ -116,12 +116,13 @@ public sealed record News
         var newPets = pets?
             .Where(t => t is not null)
             .DistinctBy(_ => _.Id);
-        var petIds = newPets.Select(_ => _.Id).Except(LinkedPets.Select(_ => _.PetId));
+        var petIds = newPets.Select(_ => _.Id).Except(LinkedPets.Select(_ => _.Id));
         foreach (var petId in petIds)
         {
             var p = newPets.FirstOrDefault(_ => _.Id == petId);
             if (p is null)
                 continue;
+            LinkedPets.Add(p);
             Events.Add(new PetLinkToNews(
                 PetId: Id,
                 PetName: p.Name,
@@ -133,19 +134,4 @@ public sealed record News
 
         UpdateDate = date;
     }
-};
-
-/// <summary>
-///     Список связанных с новостью животных
-/// </summary>
-/// <param name="PetId">Идентификатор животного</param>
-/// <param name="Name">Имя животного</param>
-public sealed record LinkedPets(Guid PetId, String Name)
-{
-    public static LinkedPets Create(Guid petId, String name)
-    {
-        return new LinkedPets(petId, name ?? throw new ArgumentNullException(nameof(name)));
-    }
-
-    public IEnumerable<News> News { get; private set; }
 };

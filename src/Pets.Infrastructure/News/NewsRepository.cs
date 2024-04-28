@@ -55,7 +55,7 @@ public sealed class NewsRepository : INewsRepository, IPetGetter
     /// <returns></returns>
     public async Task<IEnumerable<Pet?>> GetAsync(Organisation organisation, IEnumerable<Guid> ids,
         CancellationToken cancellationToken)
-        => await _context.Pets.AsNoTracking()
+        => await _context.Pets
             .Where(_ => ids.Contains(_.Id))
             .ToListAsync(cancellationToken);
 }

@@ -47,10 +47,10 @@ public sealed class NewsService : INewsCreateService
     public async Task<Guid> Create(Organisation organisation, Guid id, INewsCreateService.CreateNews request, CancellationToken cancellationToken)
     {
         var petsIds = request.LinkedPets?.Distinct() ?? new List<Guid>();
-        var (org, existsNews, pets) = await (
+        var (org, existsNews) = await (
             _organisationGetter.GetAsync(organisation, cancellationToken),
-            _newsRepository.GetAsync(NewSpecs.IsSatisfiedById(id, organisation), cancellationToken),
-            _petGetter.GetAsync(organisation, petsIds, cancellationToken));
+            _newsRepository.GetAsync(NewSpecs.IsSatisfiedById(id, organisation), cancellationToken));
+        var pets = await _petGetter.GetAsync(organisation, petsIds, cancellationToken);
         
         if (org is null)
         {

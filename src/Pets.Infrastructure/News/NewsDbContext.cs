@@ -1,6 +1,11 @@
 ﻿namespace Pets.Infrastructure.News;
 
+using System.Collections.Generic;
+
 using Domain.News.Entity;
+using Domain.ValueTypes;
+
+using Helpers;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -30,12 +35,11 @@ public sealed class NewsDbContext : PersistentMessagingDbContext
                 .ValueGeneratedNever();
 
             builder.Property(_ => _.Organisation)
+                .HasColumnName("OrganisationId")
+                .HasConversion(
+                    organisation => organisation.Id,
+                    guid => (Organisation)guid)
                 .IsRequired();
-
-            builder.HasOne(_ => _.Organisation)
-                .WithMany()
-                .HasForeignKey(_ => _.Organisation)
-                .HasPrincipalKey(_ => _.Id);
 
             builder.Property(_ => _.Title)
                 .HasMaxLength(128)
@@ -57,19 +61,30 @@ public sealed class NewsDbContext : PersistentMessagingDbContext
                 .IsRequired();
 
             builder.Property(_ => _.Tags)
-                .HasDefaultValue("[]")
+                .HasConversion(
+                    converterTo => converterTo == null ? new List<String>().ToJson() : converterTo.ToJson(),
+                    converterForm =>
+                        converterForm == null ? new List<String>() : converterForm.ParseJson<List<String>>()
+                )
+                .HasDefaultValue(new List<String>())
                 .HasMaxLength(1024)
                 .IsRequired();
-            
+
             builder.Property(_ => _.MdShortBody)
                 .HasMaxLength(512)
                 .IsRequired();
 
-            builder
-                .HasMany<LinkedPets>()
-                .WithMany(_=>_.News)
-                .UsingEntity("NewsPets");
-            
+            builder.HasMany(_ => _.LinkedPets)
+                .WithMany()
+                .UsingEntity("NewsPets",
+                    r => r.HasOne(typeof(Pet)).WithMany().HasForeignKey("PetId").HasPrincipalKey("Id"),
+                    l => l.HasOne(typeof(News)).WithMany().HasForeignKey("NewsId").HasPrincipalKey("Id"),
+                    j => j.HasKey("NewsId", "PetId"));
+
+            builder.Property(_ => _.ConcurrencyTokens)
+                .IsConcurrencyToken()
+                .IsRequired();
+
             builder.IsEvents(_ => _.Events);
         });
 
@@ -85,8 +100,18 @@ public sealed class NewsDbContext : PersistentMessagingDbContext
                 .ValueGeneratedNever();
 
             builder.HasIndex(_ => _.Id);
+            builder.Property(_ => _.Organisation)
+                .HasColumnName("OrganisationId")
+                .HasConversion(
+                    organisation => organisation.Id,
+                    guid => (Organisation)guid)
+                .IsRequired();
 
             builder.Property(_ => _.Name);
+
+            builder.HasMany(_ => _.News)
+                .WithMany()
+                .UsingEntity("NewsPets");
         });
 
         #endregion
