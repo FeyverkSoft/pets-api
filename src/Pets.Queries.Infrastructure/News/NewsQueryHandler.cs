@@ -17,10 +17,11 @@ using Types;
 public sealed class PetsQueryHandler :
     IRequestHandler<GetNewsQuery, Page<NewsView>>,
     IRequestHandler<GetSingleNewsQuery, NewsView?>,
-    IRequestHandler<GetAdminNewsQuery, Page<AdminNewsView>>
+    IRequestHandler<GetAdminNewsQuery, Page<AdminNewsView>>,
+    IRequestHandler<GetAdminSingleNewsQuery, AdminNewsView?>
 {
     private static readonly List<NewsState> DefaultNewsStatuses = Enum.GetNames(typeof(NewsState)).Select(Enum.Parse<NewsState>).ToList();
-    
+
     private readonly IDbConnection _db;
 
     public PetsQueryHandler(IDbConnection db)
@@ -117,19 +118,14 @@ public sealed class PetsQueryHandler :
                     query.Limit,
                     query.Offset,
                     query.NewsId,
-                    NewsStatuses = (query.NewsStatuses.Any() ? query.NewsStatuses : DefaultNewsStatuses).Select(_ => _.ToString()),
-                    query.Filter,
+                    NewsStatuses = (query?.NewsStatuses?.Any() == true ? query.NewsStatuses : DefaultNewsStatuses).Select(_ => _.ToString()),
+                    Filter = query.Filter == null ? null : $"%{query.Filter}%",
                 },
                 commandType: CommandType.Text,
                 cancellationToken: cancellationToken
             ));
         if (result is null)
-            return new Page<AdminNewsView>
-            {
-                Limit = query.Limit,
-                Offset = query.Offset,
-                Total = 0
-            };
+            return null;
 
         return new Page<AdminNewsView>
         {
@@ -143,11 +139,47 @@ public sealed class PetsQueryHandler :
                 MdShortBody: _.MdShortBody,
                 MdBody: _.MdBody,
                 CreateDate: _.CreateDate,
+                UpdateDate: _.UpdateDate,
                 LinkedPets: _.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
                     .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
                 Tags: _.Tags?.TryParseJson<List<String>>() ?? new List<String>(),
                 NewsState: _.State
             ))
         };
+    }
+
+    /// <summary>Handles a request</summary>
+    /// <param name="query">The request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Response from the request</returns>
+    public async Task<AdminNewsView?> Handle(GetAdminSingleNewsQuery query, CancellationToken cancellationToken)
+    {
+        var result = await _db.QuerySingleOrDefaultAsync<AdminSingleNewsDto>(
+            new CommandDefinition(
+                AdminSingleNewsDto.Sql,
+                new
+                {
+                    OrganisationId = query.OrganisationId,
+                    NewsId = query.NewsId,
+                },
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
+        if (result is null)
+            return null;
+
+        return new AdminNewsView(
+            Id: result.Id,
+            Title: result.Title,
+            ImgLink: result.ImgLink,
+            MdShortBody: result.MdShortBody,
+            MdBody: result.MdBody,
+            CreateDate: result.CreateDate,
+            UpdateDate: result.UpdateDate,
+            LinkedPets: result.LinkedPets?.TryParseJson<List<LinkedPetsDto>>()
+                .Select(lp => new LinkedPetsView(lp.Id, lp.Name)).ToList() ?? new List<LinkedPetsView>(),
+            Tags: result.Tags?.TryParseJson<List<String>>() ?? new List<String>(),
+            NewsState: result.State
+        );
     }
 }

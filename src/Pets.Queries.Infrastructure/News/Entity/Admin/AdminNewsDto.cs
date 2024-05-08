@@ -94,4 +94,9 @@ limit @Limit offset @Offset";
     ///     Статус новости
     /// </summary>
     public NewsState State { get; set; }
+
+    /// <summary>
+    /// Дата и время обновления новости по  utc
+    /// </summary>
+    public DateTime? UpdateDate { get; set; }
 }

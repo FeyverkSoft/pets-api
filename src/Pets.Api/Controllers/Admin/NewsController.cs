@@ -1,7 +1,5 @@
 ﻿namespace Pets.Api.Controllers.Admin;
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 using Authorization;
@@ -16,6 +14,7 @@ using Models.Admin.News;
 
 using Queries;
 using Queries.News.Admin;
+
 using Types.Exceptions;
 
 /// <summary>
@@ -41,7 +40,7 @@ public sealed class NewsController : ControllerBase
         [FromQuery] GetAdminNewsBinding binding,
         CancellationToken cancellationToken)
     {
-        return Ok( await processor.Send(new GetAdminNewsQuery(
+        return Ok(await processor.Send(new GetAdminNewsQuery(
             OrganisationId: User.GetOrganisationId(),
             NewsId: binding.NewsId,
             Offset: binding.Offset,
@@ -61,7 +60,7 @@ public sealed class NewsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{organisationId:guid}/{newsId:guid}")]
-    [ProducesResponseType(typeof(AdminNewsView), 200)]  
+    [ProducesResponseType(typeof(AdminNewsView), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Get(
         [FromServices] IMediator processor,
@@ -69,10 +68,10 @@ public sealed class NewsController : ControllerBase
         [FromRoute] Guid newsId,
         CancellationToken cancellationToken)
     {
-        var result = (await processor.Send(new GetAdminNewsQuery(
+        var result = await processor.Send(new GetAdminSingleNewsQuery(
             OrganisationId: User?.GetOrganisationId() ?? organisationId,
             NewsId: newsId
-        ), cancellationToken))?.Items?.FirstOrDefault();
+        ), cancellationToken);
 
         if (result is null)
             return NotFound(new ProblemDetails
@@ -120,10 +119,10 @@ public sealed class NewsController : ControllerBase
             });
         }
 
-        return Ok((await processor.Send(new GetAdminNewsQuery(
+        return Ok(await processor.Send(new GetAdminSingleNewsQuery(
             OrganisationId: User.GetOrganisationId(),
             NewsId: binding.NewsId
-        ), cancellationToken))?.Items?.FirstOrDefault());
+        ), cancellationToken));
     }
 
 

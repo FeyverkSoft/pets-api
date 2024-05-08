@@ -1,8 +1,10 @@
-﻿namespace Pets.Queries.Infrastructure.News.Entity;
+﻿namespace Pets.Queries.Infrastructure.News.Entity.Admin;
 
 using System;
 
-internal sealed class SingleNewsDto
+using Types;
+
+internal sealed class AdminSingleNewsDto
 {
     internal static readonly String Sql = @"
 select
@@ -60,6 +62,11 @@ where 1 = 1
     ///     Дата публикации новости
     /// </summary>
     public DateTime CreateDate { get; }
+    
+    /// <summary>
+    ///     Дата обновления новости
+    /// </summary>
+    public DateTime UpdateDate { get; }
 
     /// <summary>
     ///     Json
@@ -70,4 +77,9 @@ where 1 = 1
     ///     Заголовок новости
     /// </summary>
     public String Title { get; set; }
+
+    /// <summary>
+    /// Статус отображения новости
+    /// </summary>
+    public NewsState State { get; set; }
 }

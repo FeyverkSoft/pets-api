@@ -9,7 +9,7 @@ using Types.Exceptions;
 /// </summary>
 public class LinkedPetsNotFoundException : NotFoundException
 {
-    public LinkedPetsNotFoundException(IEnumerable<Guid> pets) : base($"Linked pets with news not found; ids: {String.Concat(pets, ";")}")
+    public LinkedPetsNotFoundException(IEnumerable<Guid> pets) : base($"Linked pets with news not found; ids: {String.Join(";", pets)}")
     {
     }
 }

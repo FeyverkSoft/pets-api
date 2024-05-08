@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 
+using Types.Exceptions;
+
 public class ErrorHandlingMiddleware : IMiddleware
 {
     private static readonly ActionDescriptor EmptyActionDescriptor = new();
@@ -43,7 +45,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             var resp = new ProblemDetails
             {
                 Type = ErrorCodes.InternalServerError,
-                Status = (Int32)HttpStatusCode.InternalServerError,
+                Status = GetStatus(exc),
 #if DEBUG
                     Detail = exc.Message,
 #else
@@ -54,8 +56,14 @@ public class ErrorHandlingMiddleware : IMiddleware
 
             await _executor.ExecuteAsync(actionContext, new ObjectResult(resp)
             {
-                StatusCode = (Int32)HttpStatusCode.InternalServerError
+                StatusCode = GetStatus(exc),
             });
         }
     }
+
+    private static Int32 GetStatus(Exception exc) => exc switch
+    {
+        NotFoundException => (Int32)HttpStatusCode.NotFound,
+        _ => (Int32)HttpStatusCode.InternalServerError,
+    };
 }

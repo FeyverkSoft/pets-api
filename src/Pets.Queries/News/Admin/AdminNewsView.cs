@@ -16,5 +16,6 @@ using Types;
 /// <param name="LinkedPets"></param>
 /// <param name="Tags">Теги новости</param>
 /// <param name="NewsState">Состояние новости</param>
-public sealed record AdminNewsView(Guid Id, String Title, String ImgLink, String MdShortBody, String MdBody, DateTime CreateDate, ICollection<LinkedPetsView> LinkedPets,
+public sealed record AdminNewsView(Guid Id, String Title, String ImgLink, String MdShortBody, String MdBody, DateTime CreateDate, DateTime? UpdateDate,
+    ICollection<LinkedPetsView> LinkedPets,
     ICollection<String> Tags, NewsState NewsState);

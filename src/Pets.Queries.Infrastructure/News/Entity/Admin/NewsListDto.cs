@@ -1,10 +1,20 @@
-﻿namespace Pets.Queries.Infrastructure.News.Entity;
+﻿namespace Pets.Queries.Infrastructure.News.Entity.Admin;
 
 using System;
 
-internal sealed class SingleNewsDto
+internal sealed class AdminNewsListDto
 {
     internal static readonly String Sql = @"
+select 
+    count(n.Id)   
+from `News` n
+where 1 = 1
+    and n.OrganisationId = @OrganisationId
+    and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
+    and (n.State in ('Active', 'Pinned')) 
+    and (@NewsId is null or n.Id = @NewsId)
+    and (@Tag is null or n.Tags like @Tag);
+
 select
     n.Id,
     n.Title,
@@ -12,9 +22,9 @@ select
     n.ImgLink,
     n.MdShortBody,
     n.MdBody,
+    n.State,
     _np.LinkedPets,
-    n.CreateDate,
-    n.UpdateDate
+    n.CreateDate
 from
     `News` n
 left join (
@@ -27,8 +37,13 @@ left join (
     ) _np on  _np.NewsId = n.Id
 where 1 = 1
     and n.OrganisationId = @OrganisationId
-    and n.Id = @NewsId
-";
+    and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
+    and (@NewsId is null or n.Id = @NewsId)
+    and (n.State in ('Active', 'Pinned')) 
+    and (@Tag is null or n.Tags like @Tag)
+order by
+    n.CreateDate desc
+limit @Limit offset @Offset";
 
     /// <summary>
     ///     Идентификатор новости
@@ -70,4 +85,9 @@ where 1 = 1
     ///     Заголовок новости
     /// </summary>
     public String Title { get; set; }
+    
+    /// <summary>
+    ///     Статус новости
+    /// </summary>
+    public String State { get; set; }
 }

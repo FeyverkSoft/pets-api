@@ -2,8 +2,4 @@
 
 using System;
 
-internal record LinkedPetsDto //(Guid Id, String Name )
-{
-    public Guid Id;
-    public String Name;
-}
+internal record LinkedPetsDto(Guid Id, String Name );
