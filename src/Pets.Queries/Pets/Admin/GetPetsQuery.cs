@@ -19,6 +19,6 @@ using Types;
 [MediatRDedublicateExecution(
     KeyPropertyNames = new[]
         { nameof(OrganisationId), nameof(PetStatuses), nameof(Genders), nameof(Filter), nameof(PetId), nameof(Offset), nameof(Limit) },
-    ThrottlingTimeMs = 2000)]
+    ThrottlingTimeMs = 50)]
 public sealed record AdminGetPetsQuery(Guid OrganisationId, List<PetState> PetStatuses, List<PetGender> Genders, List<PetType> Types, String? Filter = null,
     Int32 Offset = 0, Int32 Limit = 8, Guid? PetId = null) : PageQuery<PetView>(Limit: Limit, Offset: Offset);

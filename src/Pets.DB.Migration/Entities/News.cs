@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 
+using Types;
+
 internal sealed class News
 {
     /// <summary>
@@ -53,4 +55,9 @@ internal sealed class News
     ///     Список Петов в новости
     /// </summary>
     public IEnumerable<NewsPets> NewsPets { get; }
+
+    /// <summary>
+    /// Видимость новости
+    /// </summary>
+    public NewsState State { get; set; }
 }

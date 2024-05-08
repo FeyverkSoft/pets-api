@@ -7,6 +7,8 @@ using Events;
 
 using Rabbita.Core.Event;
 
+using Types;
+
 using ValueTypes;
 
 /// <summary>
@@ -67,6 +69,11 @@ public sealed record News
     /// Дата обновления новости
     /// </summary>
     public DateTime UpdateDate { get; private set; }
+
+    /// <summary>
+    /// Видимость новости
+    /// </summary>
+    public NewsState State { get; private set; } = NewsState.Active;
 
     /// <summary>
     /// Порождающий метод объектов типа News

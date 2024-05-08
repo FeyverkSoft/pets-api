@@ -1,8 +1,10 @@
-﻿namespace Pets.Queries.Infrastructure.News.Entity;
+﻿namespace Pets.Queries.Infrastructure.News.Entity.Admin;
 
 using System;
 
-internal sealed class NewsDto
+using Types;
+
+internal sealed class AdminNewsDto
 {
     internal static readonly String Sql = @"
 select 
@@ -11,8 +13,9 @@ from `News` n
 where 1 = 1
     and n.OrganisationId = @OrganisationId
     and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
-    and (n.State in ('Active', 'Pinned')) 
     and (@NewsId is null or n.Id = @NewsId)
+    and (n.`State` in @NewsStatuses)
+    and (@Filter is null or n.`MdBody` like @Filter or n.`MdShortBody` like @Filter)
     and (@Tag is null or n.Tags like @Tag);
 
 select
@@ -39,8 +42,9 @@ where 1 = 1
     and n.OrganisationId = @OrganisationId
     and (@PetId is null or exists(select 1 from `NewsPets` np where np.PetId = @PetId and n.Id = np.NewsId))
     and (@NewsId is null or n.Id = @NewsId)
-    and (n.State in ('Active', 'Pinned')) 
     and (@Tag is null or n.Tags like @Tag)
+    and (@Filter is null or n.`MdBody` like @Filter or n.`MdShortBody` like @Filter)
+    and (n.`State` in @NewsStatuses)
 order by
     n.CreateDate desc
 limit @Limit offset @Offset";
@@ -89,5 +93,5 @@ limit @Limit offset @Offset";
     /// <summary>
     ///     Статус новости
     /// </summary>
-    public String State { get; set; }
+    public NewsState State { get; set; }
 }

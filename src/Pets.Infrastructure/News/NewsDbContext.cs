@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Rabbita.Entity;
 using Rabbita.Entity.FluentExtensions;
 
+using Types;
+
 public sealed class NewsDbContext : PersistentMessagingDbContext
 {
     public NewsDbContext(DbContextOptions<NewsDbContext> options) : base(options)
@@ -53,6 +55,12 @@ public sealed class NewsDbContext : PersistentMessagingDbContext
                 .IsRequired(false);
             builder.Property(_ => _.MdShortBody)
                 .HasMaxLength(512)
+                .IsRequired();
+            
+            builder.Property(_ => _.State)
+                .HasConversion<String>()
+                .HasDefaultValue(NewsState.Active)
+                .HasMaxLength(64)
                 .IsRequired();
 
             builder.Property(_ => _.UpdateDate)

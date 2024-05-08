@@ -1,5 +1,7 @@
 ﻿namespace Pets.Api.Controllers.Admin;
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 using Authorization;
@@ -12,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using Models.Admin.News;
 
-using Queries.Pets;
-
+using Queries;
+using Queries.News.Admin;
 using Types.Exceptions;
 
 /// <summary>
@@ -32,16 +34,23 @@ public sealed class NewsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet]
-    //[ProducesResponseType(typeof(Page<AdminNewsView>), 200)]
+    [ProducesResponseType(typeof(Page<AdminNewsView>), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Get(
         [FromServices] IMediator processor,
-        [FromQuery] GetNewsBinding binding,
+        [FromQuery] GetAdminNewsBinding binding,
         CancellationToken cancellationToken)
     {
-        return Ok( /*await processor.Send(new AdminGetNewsQuery(
-            binding.OrganisationId), 
-            cancellationToken)*/);
+        return Ok( await processor.Send(new GetAdminNewsQuery(
+            OrganisationId: User.GetOrganisationId(),
+            NewsId: binding.NewsId,
+            Offset: binding.Offset,
+            Limit: binding.Limit,
+            Tag: binding.Tag,
+            PetId: binding.PetId,
+            Filter: binding.Filter,
+            NewsStatuses: binding.NewsStatuses
+        ), cancellationToken));
     }
 
     /// <summary>
@@ -51,8 +60,8 @@ public sealed class NewsController : ControllerBase
     /// <param name="newsId">идентификатор конкретной новости</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("{organisationId:guid}/{petId:guid}")]
-    //[ProducesResponseType(typeof(AdminNewsView), 200)]
+    [HttpGet("{organisationId:guid}/{newsId:guid}")]
+    [ProducesResponseType(typeof(AdminNewsView), 200)]  
     [ProducesResponseType(404)]
     public async Task<IActionResult> Get(
         [FromServices] IMediator processor,
@@ -60,19 +69,18 @@ public sealed class NewsController : ControllerBase
         [FromRoute] Guid newsId,
         CancellationToken cancellationToken)
     {
-        /*  var result = await processor.Send(new GetAdminNewsQuery(
-              organisationId,
-              newsId
-          ), cancellationToken);
-  
-          if (result is null)
-              return NotFound(new ProblemDetails
-              {
-                  Status = (Int32)HttpStatusCode.NotFound,
-                  Type = "news_not_found"
-              });
-  */
-        return Ok( /*result*/);
+        var result = (await processor.Send(new GetAdminNewsQuery(
+            OrganisationId: User?.GetOrganisationId() ?? organisationId,
+            NewsId: newsId
+        ), cancellationToken))?.Items?.FirstOrDefault();
+
+        if (result is null)
+            return NotFound(new ProblemDetails
+            {
+                Status = (Int32)HttpStatusCode.NotFound,
+                Type = "news_not_found"
+            });
+        return Ok(result);
     }
 
     /// <summary>
@@ -81,7 +89,7 @@ public sealed class NewsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(typeof(PetView), 200)]
+    [ProducesResponseType(typeof(AdminNewsView), 200)]
     public async Task<IActionResult> Create(
         [FromServices] IMediator processor,
         [FromServices] INewsCreateService newsCreateService,
@@ -112,10 +120,10 @@ public sealed class NewsController : ControllerBase
             });
         }
 
-        return Ok( /*await processor.Send(new GetAdminNewsQuery(
-            User.GetOrganisationId(),
-            binding.NewsId
-        ), cancellationToken)*/);
+        return Ok((await processor.Send(new GetAdminNewsQuery(
+            OrganisationId: User.GetOrganisationId(),
+            NewsId: binding.NewsId
+        ), cancellationToken))?.Items?.FirstOrDefault());
     }
 
 

@@ -247,6 +247,11 @@ public class MigrateDbContext : DbContext
             builder.Property(_ => _.Title)
                 .HasMaxLength(128)
                 .IsRequired();
+            builder.Property(_ => _.State)
+                .HasConversion<String>()
+                .HasDefaultValue(NewsState.Active)
+                .HasMaxLength(64)
+                .IsRequired();
 
             builder.Property(_ => _.MdBody)
                 .HasMaxLength(10240)
