@@ -25,4 +25,14 @@ public sealed class Organisation
     {
         return new Organisation(id);
     }
+    
+    public override Boolean Equals(Object? obj)
+    {
+        if (obj is Organisation org)
+        {
+            return org?.Id == Id;
+        }
+
+        return false;
+    }
 }

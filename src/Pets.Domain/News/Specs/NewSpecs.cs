@@ -12,10 +12,10 @@ public static class NewSpecs
 
     public static Specification<News> IsIdempotence(this News news) => new(
         x =>
-            x.ImgLink == news.ImgLink &&
-            x.Organisation == news.Organisation &&
+            (x.ImgLink != null && x.ImgLink.IgnoreCaseEquals(news.ImgLink)) &&
+            x.Organisation.Equals(news.Organisation) &&
             x.Id == news.Id &&
-            (x.Title != null && x.Title.IgnoreCaseEquals(news.Title)) && 
+            (x.Title != null && x.Title.IgnoreCaseEquals(news.Title)) &&
             (x.MdShortBody != null && x.MdShortBody.IgnoreCaseEquals(news.MdShortBody)) &&
             (x.MdBody != null && x.MdBody.IgnoreCaseEquals(news.MdBody)));
     
